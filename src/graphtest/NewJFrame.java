@@ -49,7 +49,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel1.add(x,BorderLayout.CENTER);  
         x.repaint();
         x.setVisible(true);                
-        
+        jButton2.doClick();
     }
 
     /**
@@ -172,11 +172,11 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 704, Short.MAX_VALUE)
+            .addGap(0, 757, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 393, Short.MAX_VALUE)
+            .addGap(0, 447, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -212,7 +212,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jToggleButton1.doClick();
-        x.autoArrange();             
+        x.autoArrange(HelloWorld.Arrange.CIRCLE);             
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

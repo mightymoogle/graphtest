@@ -2,6 +2,7 @@ package com.mxgraph.examples.swing;
 
 
 import com.mxgraph.layout.*;
+import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.handler.mxKeyboardHandler;
 import com.mxgraph.swing.handler.mxRubberband;
@@ -13,12 +14,15 @@ import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxEvent;
 import com.mxgraph.util.mxEventObject;
 import com.mxgraph.util.mxEventSource.mxIEventListener;
+import com.mxgraph.util.mxUndoManager;
 import com.mxgraph.view.mxGraph;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -27,6 +31,10 @@ public class HelloWorld extends JPanel {
     public enum Mode {
 
         HAND, BLOCK, ARROW
+    };
+    
+    public enum Arrange {
+        CIRCLE, HIERARCHY,FAST_ORGANIC        
     };
     /**
      *
@@ -38,7 +46,37 @@ public class HelloWorld extends JPanel {
             + mxConstants.STYLE_VERTICAL_ALIGN + "="
             + mxConstants.ALIGN_MIDDLE + ";"
             + mxConstants.STYLE_FILLCOLOR + "=yellow";
+       
+    private void generate(mxGraph graph,Object parent) {
+         graph.getModel().beginUpdate();
+        try {
+//            Object v1 = graph.insertVertex(parent, null, "1", 0, 0, 40,
+//                    40, style);
+//            Object v2 = graph.insertVertex(parent, null, "2", 0, 0, 40,
+//                    40, style);                                    
+//            graph.insertEdge(parent, null, "Edge", v1, v2);
+           Random rand = new Random();
+           ArrayList<Object> list = new ArrayList<>();
+            for (int i=0; i<15; i++) {                
+                
+                list.add(graph.insertVertex(parent, null, String.valueOf(i), 0, 0, 40,40, style));                                                                
+            }
+            
+             for (int i=0; i<55; i++) {                
+                 int r1=rand.nextInt(list.size());
+                 int r2=rand.nextInt(list.size());
+                 
+                graph.insertEdge(parent, null, "", list.get(r1), list.get(r2));
+            }
+            
+            
 
+
+        } finally {
+            graph.getModel().endUpdate();
+        }
+    }
+    
     public HelloWorld() {
         //super("Hello, World!");
         super();
@@ -50,19 +88,7 @@ public class HelloWorld extends JPanel {
 
 
 
-        graph.getModel().beginUpdate();
-        try {
-            Object v1 = graph.insertVertex(parent, null, "Hello", 20, 20, 40,
-                    40, style);
-            Object v2 = graph.insertVertex(parent, null, "World!", 240, 150,
-                    80, 30);
-            graph.insertEdge(parent, null, "Edge", v1, v2);
-            //   Object v3 = graph.insertVertex(parent, null, "WTF",2000,2000, 80,30);
-
-
-        } finally {
-            graph.getModel().endUpdate();
-        }
+       generate(graph,parent);
 
         graphComponent = new mxGraphComponent(graph);
 
@@ -98,10 +124,18 @@ public class HelloWorld extends JPanel {
 //                        System.out.println("edge="+evt.getProperty("cell"));
 //                    }
 //                });
+        
+        
+        //No more disconected edges
         graphComponent.getGraph().setCellsDisconnectable(false);
-
+        //No more CTRL+MOVE orphan edges
+        graphComponent.getGraph().setDisconnectOnMove(false);
+        graphComponent.getGraph().setAllowDanglingEdges(false);     
         //setVisible(true);                
-
+        
+        //Prevetns edge labels
+        graphComponent.getGraph().getStylesheet().
+                getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "1");
 
         //getContentPane().add(graphComponent);                                            
 
@@ -153,9 +187,20 @@ public class HelloWorld extends JPanel {
 
     }
 
-    public void autoArrange() {
-        mxIGraphLayout layout = new mxCircleLayout(graphComponent.getGraph());        
- 
+    public void autoArrange(Arrange r) {
+        
+        mxIGraphLayout layout;
+        layout = new mxFastOrganicLayout(graphComponent.getGraph());  
+        
+        if (r== Arrange.CIRCLE) {
+        layout = new mxCircleLayout(graphComponent.getGraph());        
+        } else {
+        if (r== Arrange.HIERARCHY)        
+        layout = new mxHierarchicalLayout(graphComponent.getGraph());        
+        }
+
+        //Flies offscreen
+        //mxIGraphLayout layout = new mxFastOrganicLayout(graphComponent.getGraph());        
                 
         try {
             graphComponent.getGraph().getModel().beginUpdate();
