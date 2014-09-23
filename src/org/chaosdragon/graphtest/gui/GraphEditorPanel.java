@@ -1,4 +1,4 @@
-package com.mxgraph.examples.swing;
+package org.chaosdragon.graphtest.gui;
 
 import com.mxgraph.io.mxCodec;
 import com.mxgraph.layout.*;
@@ -22,7 +22,7 @@ import com.mxgraph.util.mxXmlUtils;
 import com.mxgraph.util.png.mxPngEncodeParam;
 import com.mxgraph.util.png.mxPngImageEncoder;
 import com.mxgraph.view.mxGraph;
-import graphtest.MatrixTools;
+import org.chaosdragon.graphtest.gui.MatrixTools;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
@@ -39,11 +39,11 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class HelloWorld extends JPanel {
+public class GraphEditorPanel extends JPanel {
 
     public enum Mode {
 
-        HAND, BLOCK, ARROW
+        HAND, ARROW, READ_ONLY
     };
     
     public enum Arrange {
@@ -90,33 +90,21 @@ public class HelloWorld extends JPanel {
         }
     }
     
-    public HelloWorld() {
-        //super("Hello, World!");
-        super();
-        mxGraph graph = new mxGraph();
+    public void loadMatrix(Matrix matr) {
+      
+        if (matr==null) return;
+        
+        
+        
+    }
+    
+    private void initEditor() {
+         mxGraph graph = new mxGraph();
         Object parent = graph.getDefaultParent();
-
-
-
-
-
-
-       generate(graph,parent);
-
+        generate(graph,parent);
         graphComponent = new mxGraphComponent(graph);
 
-        //graphComponent.setCenterZoom(true);
-
-
-
-
-
-        //The selector thingy
-        new mxRubberband(graphComponent);
-        //The keyboard handler
-        new mxKeyboardHandler(graphComponent);
-
-
+        //graphComponent.setCenterZoom(true);        
 
         graphComponent.setEnterStopsCellEditing(true);
         graph.setCellsResizable(false);
@@ -150,9 +138,37 @@ public class HelloWorld extends JPanel {
         graphComponent.getGraph().getStylesheet().
                 getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "1");
 
-        //getContentPane().add(graphComponent);                                            
-
+        //getContentPane().add(graphComponent);       
     }
+    
+    public GraphEditorPanel(Matrix matr, boolean readOnly) {
+        
+        super();
+        initEditor();
+        
+        
+        if (readOnly==true) {
+            
+            //LoadMatrix
+            loadMatrix(matr);
+            //Do usual stuff
+            setMode(Mode.READ_ONLY);
+            
+        } else {
+            
+            //The selector thingy
+        new mxRubberband(graphComponent);
+        //The keyboard handler
+        new mxKeyboardHandler(graphComponent);
+        
+        loadMatrix(matr);
+        setMode(Mode.HAND);
+            
+            
+        }
+        
+    }    
+  
 
     public void setMode(Mode m) {
         
@@ -167,11 +183,13 @@ public class HelloWorld extends JPanel {
             return;
         }
 
-        if (m == Mode.BLOCK) {
+        if (m == Mode.READ_ONLY) {
             graph.setCellsMovable(false);
             graphComponent.setConnectable(false);
-            graphComponent.getGraph().setCellsSelectable(false);
-            //graphComponent.getGraph().setCellsEditable(true);
+            graphComponent.getGraph().setCellsSelectable(false);            
+            graphComponent.getGraph().setCellsEditable(false);
+            //graphComponent.getGraph().setCellsMovable(false);
+            
             return;
         }
 
@@ -181,8 +199,8 @@ public class HelloWorld extends JPanel {
             graphComponent.getGraph().setCellsSelectable(true);
             //graphComponent.getGraph().setCellsEditable(true);
             return;
-        }
-
+        }       
+        
     }
     
     protected void saveXmlPng(String filename,
@@ -389,7 +407,7 @@ public class HelloWorld extends JPanel {
 
         frames.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        HelloWorld frame = new HelloWorld();
+        GraphEditorPanel frame = new GraphEditorPanel(null,false);
         frame.setSize(1000, 1900);
         frame.setVisible(true);
         frames.add(frame);

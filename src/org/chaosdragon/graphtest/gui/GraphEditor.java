@@ -2,44 +2,35 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package graphtest;
+package org.chaosdragon.graphtest.gui;
 
-import com.mxgraph.examples.swing.HelloWorld;
-import com.mxgraph.layout.mxFastOrganicLayout;
-import com.mxgraph.layout.mxIGraphLayout;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 
 /**
  *
  * @author Mighty
  */
-public class NewJFrame extends javax.swing.JFrame {
+public class GraphEditor extends javax.swing.JDialog {
 
+    
+     private GraphEditorPanel x;    
+    
     /**
-     * Creates new form NewJFrame
+     * Creates new form GraphEditor
      */
-    private HelloWorld x = new HelloWorld();    
-    
-    
-    public NewJFrame() {
+    public GraphEditor(java.awt.Frame parent, boolean modal, Matrix matr, boolean readOnly) {
+        super(parent, modal);
+        initComponents();
         
+      
         
-        
-        
-        
-        initComponents();        
+        x= new GraphEditorPanel(matr,readOnly);        
         
         try {
-            Image i = ImageIO.read(getClass().getResource("/graphtest/icons/lightbulb.png"));
+            Image i = ImageIO.read(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/lightbulb.png"));
             setIconImage(i);
         } catch (IOException ex) {            
         }
@@ -48,8 +39,27 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel1.setLayout(new BorderLayout());
         jPanel1.add(x,BorderLayout.CENTER);  
         x.repaint();
-        x.setVisible(true);                
+                        
+        
         jButton2.doClick();
+        
+        if (readOnly) x.setMode(GraphEditorPanel.Mode.READ_ONLY);
+          if (readOnly) {
+            //jToolBar1.setVisible(false);
+              
+              jToggleButton1.setVisible(false);            
+              jToggleButton3.setVisible(false);
+              
+              jButton5.setVisible(false);
+              jButton2.setVisible(false);
+              jButton6.setVisible(false);
+              
+            this.setTitle(this.getTitle()+" [READ-ONLY]");
+        }
+        
+        x.setVisible(true);
+        
+        
     }
 
     /**
@@ -67,7 +77,7 @@ public class NewJFrame extends javax.swing.JFrame {
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jToggleButton3 = new javax.swing.JToggleButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        jToggleButton2 = new javax.swing.JToggleButton();
+        jButton5 = new javax.swing.JButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jButton4 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -75,20 +85,22 @@ public class NewJFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jButton3 = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(10, 32767));
+        jButton6 = new javax.swing.JButton();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Mighty Graph Editor");
-        setMinimumSize(new java.awt.Dimension(500, 500));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("GraphEditor");
+        setModal(true);
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
         jToolBar1.setMinimumSize(new java.awt.Dimension(100, 25));
 
         buttonGroup1.add(jToggleButton1);
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/graphtest/icons/cursor_hand.png"))); // NOI18N
+        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/cursor_hand.png"))); // NOI18N
         jToggleButton1.setSelected(true);
         jToggleButton1.setText("Hand");
         jToggleButton1.setFocusable(false);
@@ -103,7 +115,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jToolBar1.add(filler1);
 
         buttonGroup1.add(jToggleButton3);
-        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/graphtest/icons/right_arrow.png"))); // NOI18N
+        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/right_arrow.png"))); // NOI18N
         jToggleButton3.setText("Arrow");
         jToggleButton3.setFocusable(false);
         jToggleButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -116,18 +128,17 @@ public class NewJFrame extends javax.swing.JFrame {
         jToolBar1.add(jToggleButton3);
         jToolBar1.add(filler2);
 
-        buttonGroup1.add(jToggleButton2);
-        jToggleButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/graphtest/icons/playback_rec.png"))); // NOI18N
-        jToggleButton2.setText("Insert block");
-        jToggleButton2.setFocusable(false);
-        jToggleButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToggleButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/playback_rec.png"))); // NOI18N
+        jButton5.setText("Insert Block");
+        jButton5.setFocusable(false);
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton2ActionPerformed(evt);
+                jButton5ActionPerformed(evt);
             }
         });
-        jToolBar1.add(jToggleButton2);
+        jToolBar1.add(jButton5);
         jToolBar1.add(filler3);
 
         jButton4.setText("jButton4");
@@ -141,7 +152,7 @@ public class NewJFrame extends javax.swing.JFrame {
         });
         jToolBar1.add(jButton4);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/graphtest/icons/cog.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/cog.png"))); // NOI18N
         jButton2.setText("Auto Arrange");
         jButton2.setToolTipText("");
         jButton2.setFocusable(false);
@@ -155,7 +166,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jToolBar1.add(jButton2);
         jToolBar1.add(filler6);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/graphtest/icons/zoom-out.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/zoom-out.png"))); // NOI18N
         jButton1.setText("Zoom Out");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,14 +176,24 @@ public class NewJFrame extends javax.swing.JFrame {
         jToolBar1.add(jButton1);
         jToolBar1.add(filler4);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/graphtest/icons/zoom-in.png"))); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/zoom-in.png"))); // NOI18N
         jButton3.setText("Zoom In");
+        jButton3.setHideActionText(true);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
         jToolBar1.add(jButton3);
+        jToolBar1.add(filler7);
+
+        jButton6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/checkmark.png"))); // NOI18N
+        jButton6.setText("Finish");
+        jButton6.setFocusable(false);
+        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(jButton6);
         jToolBar1.add(filler5);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
@@ -184,11 +205,11 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 757, Short.MAX_VALUE)
+            .addGap(0, 847, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 447, Short.MAX_VALUE)
+            .addGap(0, 482, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel1);
@@ -198,38 +219,38 @@ public class NewJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       x.zoom(+1);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        x.setMode(GraphEditorPanel.Mode.HAND);
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
+    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
+        x.setMode(GraphEditorPanel.Mode.ARROW);
+    }//GEN-LAST:event_jToggleButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        x.save();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        jToggleButton1.doClick();
+                
+        x.autoArrange(GraphEditorPanel.Arrange.CIRCLE);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         x.zoom(-1);
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jToggleButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton2ActionPerformed
-        
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        x.zoom(+1);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+         
         x.addVertice();
-        //x.setMode(HelloWorld.Mode.BLOCK);        
         jToggleButton1.doClick();
-        
-    }//GEN-LAST:event_jToggleButton2ActionPerformed
-
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
-        x.setMode(HelloWorld.Mode.HAND);
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
-
-    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
-        x.setMode(HelloWorld.Mode.ARROW);
-    }//GEN-LAST:event_jToggleButton3ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        jToggleButton1.doClick();
-        x.autoArrange(HelloWorld.Arrange.CIRCLE);             
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        x.save();
-    }//GEN-LAST:event_jButton4ActionPerformed
+                
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,23 +269,27 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GraphEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GraphEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GraphEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GraphEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
-                
-                
-                new NewJFrame().setVisible(true);
+                GraphEditor dialog = new GraphEditor(new javax.swing.JFrame(), true,null, false);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -276,14 +301,16 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
     private javax.swing.JToggleButton jToggleButton3;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
