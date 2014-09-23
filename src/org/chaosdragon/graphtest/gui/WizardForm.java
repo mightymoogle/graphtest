@@ -113,6 +113,11 @@ public class WizardForm extends javax.swing.JFrame {
         jButton4.setText("See matrix");
         jButton4.setToolTipText("");
         jButton4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/db.png"))); // NOI18N
         jButton5.setText("Load from file(s)");
@@ -226,10 +231,38 @@ public class WizardForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,null,true); //Load ID here
+        
+        String[] ids = {"A","B"};
+        int[][] connections = {{0,0},{1,1}};
+        Matrix test = new Matrix(ids, connections);
+        
+        GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,false); //Load ID here
         mat.setVisible(true);
         
+        //Test of returned data, waits for dialog to finish
+        test = mat.getDone();
+        
+        if (test!=null) {
+            GraphEditor mat2 = new GraphEditor(this, rootPaneCheckingEnabled,test,true); //Load ID here
+            mat2.setVisible(true);
+        }
+        
+        
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+       
+        String[] ids = {"A","B","C","D"};
+        int[][] connections = {{0,1,0,0},{1,0,1,0},{0,0,0,1},{1,1,1,0}};
+        
+        Matrix test = new Matrix(ids, connections);
+        
+        GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,true); //Load ID here
+        mat.setVisible(true);
+        
+       
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments

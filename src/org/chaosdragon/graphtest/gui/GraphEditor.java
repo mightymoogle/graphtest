@@ -14,9 +14,16 @@ import javax.imageio.ImageIO;
  * @author Mighty
  */
 public class GraphEditor extends javax.swing.JDialog {
-
-    
+     
      private GraphEditorPanel x;    
+     private boolean done = false;
+     
+     public  Matrix getDone() {
+         if (!done) return null;
+         Matrix m = x.toMatrix();         
+         return m;
+     }
+     
     
     /**
      * Creates new form GraphEditor
@@ -27,8 +34,8 @@ public class GraphEditor extends javax.swing.JDialog {
         
       
         
-        x= new GraphEditorPanel(matr,readOnly);        
-        
+        x= new GraphEditorPanel(matr,readOnly);  
+                
         try {
             Image i = ImageIO.read(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/lightbulb.png"));
             setIconImage(i);
@@ -36,23 +43,23 @@ public class GraphEditor extends javax.swing.JDialog {
         }
         
         
-        jPanel1.setLayout(new BorderLayout());
-        jPanel1.add(x,BorderLayout.CENTER);  
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.add(x,BorderLayout.CENTER);  
         x.repaint();
                         
-        
-        jButton2.doClick();
+        //AUTOARRANGE
+        autoArrangeButton.doClick();
         
         if (readOnly) x.setMode(GraphEditorPanel.Mode.READ_ONLY);
           if (readOnly) {
             //jToolBar1.setVisible(false);
               
-              jToggleButton1.setVisible(false);            
-              jToggleButton3.setVisible(false);
+              handToggleButton.setVisible(false);            
+              arrowToggleButton.setVisible(false);
               
-              jButton5.setVisible(false);
-              jButton2.setVisible(false);
-              jButton6.setVisible(false);
+              insertButton.setVisible(false);
+              autoArrangeButton.setVisible(false);
+              finishButton.setVisible(false);
               
             this.setTitle(this.getTitle()+" [READ-ONLY]");
         }
@@ -72,185 +79,195 @@ public class GraphEditor extends javax.swing.JDialog {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jToolBar1 = new javax.swing.JToolBar();
-        jToggleButton1 = new javax.swing.JToggleButton();
+        topToolBar = new javax.swing.JToolBar();
+        handToggleButton = new javax.swing.JToggleButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        jToggleButton3 = new javax.swing.JToggleButton();
+        arrowToggleButton = new javax.swing.JToggleButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        jButton5 = new javax.swing.JButton();
+        insertButton = new javax.swing.JButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        jButton4 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        demoButton = new javax.swing.JButton();
+        autoArrangeButton = new javax.swing.JButton();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        jButton1 = new javax.swing.JButton();
+        zoomOutButton = new javax.swing.JButton();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        jButton3 = new javax.swing.JButton();
+        zoomInButton = new javax.swing.JButton();
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(10, 32767));
-        jButton6 = new javax.swing.JButton();
+        finishButton = new javax.swing.JButton();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        mainScroll = new javax.swing.JScrollPane();
+        mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("GraphEditor");
         setModal(true);
 
-        jToolBar1.setFloatable(false);
-        jToolBar1.setRollover(true);
-        jToolBar1.setMinimumSize(new java.awt.Dimension(100, 25));
+        topToolBar.setFloatable(false);
+        topToolBar.setRollover(true);
+        topToolBar.setMinimumSize(new java.awt.Dimension(100, 25));
 
-        buttonGroup1.add(jToggleButton1);
-        jToggleButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/cursor_hand.png"))); // NOI18N
-        jToggleButton1.setSelected(true);
-        jToggleButton1.setText("Hand");
-        jToggleButton1.setFocusable(false);
-        jToggleButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(handToggleButton);
+        handToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/cursor_hand.png"))); // NOI18N
+        handToggleButton.setSelected(true);
+        handToggleButton.setText("Hand");
+        handToggleButton.setFocusable(false);
+        handToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        handToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        handToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                handToggleButtonActionPerformed(evt);
             }
         });
-        jToolBar1.add(jToggleButton1);
-        jToolBar1.add(filler1);
+        topToolBar.add(handToggleButton);
+        topToolBar.add(filler1);
 
-        buttonGroup1.add(jToggleButton3);
-        jToggleButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/right_arrow.png"))); // NOI18N
-        jToggleButton3.setText("Arrow");
-        jToggleButton3.setFocusable(false);
-        jToggleButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jToggleButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToggleButton3.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(arrowToggleButton);
+        arrowToggleButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/right_arrow.png"))); // NOI18N
+        arrowToggleButton.setText("Arrow");
+        arrowToggleButton.setFocusable(false);
+        arrowToggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        arrowToggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        arrowToggleButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton3ActionPerformed(evt);
+                arrowToggleButtonActionPerformed(evt);
             }
         });
-        jToolBar1.add(jToggleButton3);
-        jToolBar1.add(filler2);
+        topToolBar.add(arrowToggleButton);
+        topToolBar.add(filler2);
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/playback_rec.png"))); // NOI18N
-        jButton5.setText("Insert Block");
-        jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        insertButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/playback_rec.png"))); // NOI18N
+        insertButton.setText("Insert Block");
+        insertButton.setFocusable(false);
+        insertButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        insertButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        insertButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                insertButtonActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton5);
-        jToolBar1.add(filler3);
+        topToolBar.add(insertButton);
+        topToolBar.add(filler3);
 
-        jButton4.setText("jButton4");
-        jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        demoButton.setText("DEMO");
+        demoButton.setFocusable(false);
+        demoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        demoButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        demoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                demoButtonActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton4);
+        topToolBar.add(demoButton);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/cog.png"))); // NOI18N
-        jButton2.setText("Auto Arrange");
-        jButton2.setToolTipText("");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        autoArrangeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/cog.png"))); // NOI18N
+        autoArrangeButton.setText("Auto Arrange");
+        autoArrangeButton.setToolTipText("");
+        autoArrangeButton.setFocusable(false);
+        autoArrangeButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        autoArrangeButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        autoArrangeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                autoArrangeButtonActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton2);
-        jToolBar1.add(filler6);
+        topToolBar.add(autoArrangeButton);
+        topToolBar.add(filler6);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/zoom-out.png"))); // NOI18N
-        jButton1.setText("Zoom Out");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        zoomOutButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/zoom-out.png"))); // NOI18N
+        zoomOutButton.setText("Zoom Out");
+        zoomOutButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                zoomOutButtonActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
-        jToolBar1.add(filler4);
+        topToolBar.add(zoomOutButton);
+        topToolBar.add(filler4);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/zoom-in.png"))); // NOI18N
-        jButton3.setText("Zoom In");
-        jButton3.setHideActionText(true);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        zoomInButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/zoom-in.png"))); // NOI18N
+        zoomInButton.setText("Zoom In");
+        zoomInButton.setHideActionText(true);
+        zoomInButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                zoomInButtonActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton3);
-        jToolBar1.add(filler7);
+        topToolBar.add(zoomInButton);
+        topToolBar.add(filler7);
 
-        jButton6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/checkmark.png"))); // NOI18N
-        jButton6.setText("Finish");
-        jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton6);
-        jToolBar1.add(filler5);
+        finishButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        finishButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/checkmark.png"))); // NOI18N
+        finishButton.setText("Finish");
+        finishButton.setFocusable(false);
+        finishButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        finishButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        finishButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                finishButtonActionPerformed(evt);
+            }
+        });
+        topToolBar.add(finishButton);
+        topToolBar.add(filler5);
 
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
+        getContentPane().add(topToolBar, java.awt.BorderLayout.NORTH);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 9));
-        jPanel1.setMaximumSize(new java.awt.Dimension(550, 550));
+        mainPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 9));
+        mainPanel.setMaximumSize(new java.awt.Dimension(550, 550));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 847, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 482, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setViewportView(jPanel1);
+        mainScroll.setViewportView(mainPanel);
 
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(mainScroll, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void handToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_handToggleButtonActionPerformed
         x.setMode(GraphEditorPanel.Mode.HAND);
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+    }//GEN-LAST:event_handToggleButtonActionPerformed
 
-    private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
+    private void arrowToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrowToggleButtonActionPerformed
         x.setMode(GraphEditorPanel.Mode.ARROW);
-    }//GEN-LAST:event_jToggleButton3ActionPerformed
+    }//GEN-LAST:event_arrowToggleButtonActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void demoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demoButtonActionPerformed
         x.save();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_demoButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        jToggleButton1.doClick();
+    private void autoArrangeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoArrangeButtonActionPerformed
+        handToggleButton.doClick();
                 
         x.autoArrange(GraphEditorPanel.Arrange.CIRCLE);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_autoArrangeButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void zoomOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomOutButtonActionPerformed
         x.zoom(-1);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_zoomOutButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void zoomInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomInButtonActionPerformed
         x.zoom(+1);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_zoomInButtonActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void insertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertButtonActionPerformed
          
         x.addVertice();
-        jToggleButton1.doClick();
+        handToggleButton.doClick();
                 
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_insertButtonActionPerformed
+
+    private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
+        done = true;
+        this.dispose();
+    }//GEN-LAST:event_finishButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,7 +311,10 @@ public class GraphEditor extends javax.swing.JDialog {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton arrowToggleButton;
+    private javax.swing.JButton autoArrangeButton;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton demoButton;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
@@ -302,16 +322,13 @@ public class GraphEditor extends javax.swing.JDialog {
     private javax.swing.Box.Filler filler5;
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton finishButton;
+    private javax.swing.JToggleButton handToggleButton;
+    private javax.swing.JButton insertButton;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JScrollPane mainScroll;
+    private javax.swing.JToolBar topToolBar;
+    private javax.swing.JButton zoomInButton;
+    private javax.swing.JButton zoomOutButton;
     // End of variables declaration//GEN-END:variables
 }

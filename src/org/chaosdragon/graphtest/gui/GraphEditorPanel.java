@@ -45,9 +45,12 @@ public class GraphEditorPanel extends JPanel {
 
         HAND, ARROW, READ_ONLY
     };
-    
+    private Mode currentMode;
+    private Mode previousMode;
+
     public enum Arrange {
-        CIRCLE, HIERARCHY,FAST_ORGANIC        
+
+        CIRCLE, HIERARCHY, FAST_ORGANIC
     };
     /**
      *
@@ -59,49 +62,91 @@ public class GraphEditorPanel extends JPanel {
             + mxConstants.STYLE_VERTICAL_ALIGN + "="
             + mxConstants.ALIGN_MIDDLE + ";"
             + mxConstants.STYLE_FILLCOLOR + "=yellow";
-       
-    private void generate(mxGraph graph,Object parent) {
-         graph.getModel().beginUpdate();
+
+//    private void generate(mxGraph graph,Object parent) {
+//         graph.getModel().beginUpdate();
+//        try {
+////            Object v1 = graph.insertVertex(parent, null, "1", 0, 0, 40,
+////                    40, style);
+////            Object v2 = graph.insertVertex(parent, null, "2", 0, 0, 40,
+////                    40, style);                                    
+////            graph.insertEdge(parent, null, "Edge", v1, v2);
+//           Random rand = new Random();
+//           ArrayList<Object> list = new ArrayList<>();
+//            for (int i=0; i<5; i++) {                
+//                
+//                list.add(graph.insertVertex(parent, null, String.valueOf(i), 0, 0, 40,40, style));                                                                
+//            }
+//            
+//             for (int i=0; i<5; i++) {                
+//                 int r1=rand.nextInt(list.size());
+//                 int r2=rand.nextInt(list.size());
+//                 
+//                graph.insertEdge(parent, null, "", list.get(r1), list.get(r2));
+//            }
+//            
+//            
+//
+//
+//        } finally {
+//            graph.getModel().endUpdate();
+//        }
+//    }
+    public void loadMatrix(Matrix matr) {
+
+        //nothing to load
+        if (matr == null) {
+            return;
+        }
+
+        setMode(Mode.HAND); //Make editable
+
+        mxGraph graph = graphComponent.getGraph();
+        Object parent = graph.getDefaultParent();
+        graph.getModel().beginUpdate();
+
         try {
-//            Object v1 = graph.insertVertex(parent, null, "1", 0, 0, 40,
-//                    40, style);
-//            Object v2 = graph.insertVertex(parent, null, "2", 0, 0, 40,
-//                    40, style);                                    
-//            graph.insertEdge(parent, null, "Edge", v1, v2);
-           Random rand = new Random();
-           ArrayList<Object> list = new ArrayList<>();
-            for (int i=0; i<5; i++) {                
+            String[] names = matr.getIds();
+            Object[] vertices = new Object[names.length];
+            
+            
+            for (int i = 0; i < names.length; i++) {
                 
-                list.add(graph.insertVertex(parent, null, String.valueOf(i), 0, 0, 40,40, style));                                                                
+                vertices[i]=graph.insertVertex(parent, null, names[i], 0, 0, 40, 40, style);
             }
             
-             for (int i=0; i<5; i++) {                
-                 int r1=rand.nextInt(list.size());
-                 int r2=rand.nextInt(list.size());
-                 
-                graph.insertEdge(parent, null, "", list.get(r1), list.get(r2));
+            int[][] connections = matr.getConnections();
+            
+            for (int i=0; i<names.length; i++) {
+                for (int j=0; j<names.length; j++) {
+                    
+                    if (connections[i][j]==1) {
+                        graph.insertEdge(parent, null, "", vertices[i], vertices[j]);
+                    }
+                    
+                }
             }
+            
+            
             
             
 
-
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             graph.getModel().endUpdate();
         }
+
+        undoMode(); //Get back to whatever mode it was
+
+
+
     }
-    
-    public void loadMatrix(Matrix matr) {
-      
-        if (matr==null) return;
-        
-        
-        
-    }
-    
+
     private void initEditor() {
-         mxGraph graph = new mxGraph();
+        mxGraph graph = new mxGraph();
         Object parent = graph.getDefaultParent();
-        generate(graph,parent);
+        //generate(graph,parent);
         graphComponent = new mxGraphComponent(graph);
 
         //graphComponent.setCenterZoom(true);        
@@ -116,7 +161,7 @@ public class GraphEditorPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(graphComponent, BorderLayout.CENTER);
 
-        
+
 //        graphComponent.getConnectionHandler().
 //                addListener(mxEvent.CONNECT, new mxIEventListener()
 //                {
@@ -125,57 +170,66 @@ public class GraphEditorPanel extends JPanel {
 //                        System.out.println("edge="+evt.getProperty("cell"));
 //                    }
 //                });
-        
-        
+
+
         //No more disconected edges
         graphComponent.getGraph().setCellsDisconnectable(false);
         //No more CTRL+MOVE orphan edges
         graphComponent.getGraph().setDisconnectOnMove(false);
-        graphComponent.getGraph().setAllowDanglingEdges(false);     
+        graphComponent.getGraph().setAllowDanglingEdges(false);
         //setVisible(true);                
-        
+
         //Prevetns edge labels
         graphComponent.getGraph().getStylesheet().
                 getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "1");
 
         //getContentPane().add(graphComponent);       
     }
-    
+
     public GraphEditorPanel(Matrix matr, boolean readOnly) {
-        
+
         super();
         initEditor();
-        
-        
-        if (readOnly==true) {
-            
+
+
+        if (readOnly == true) {
+
+
             //LoadMatrix
             loadMatrix(matr);
             //Do usual stuff
             setMode(Mode.READ_ONLY);
-            
+
         } else {
-            
+
+
+
+            loadMatrix(matr);
+            setMode(Mode.HAND);
+
             //The selector thingy
-        new mxRubberband(graphComponent);
-        //The keyboard handler
-        new mxKeyboardHandler(graphComponent);
-        
-        loadMatrix(matr);
-        setMode(Mode.HAND);
-            
-            
+            new mxRubberband(graphComponent);
+            //The keyboard handler
+            new mxKeyboardHandler(graphComponent);
         }
-        
-    }    
-  
+
+    }
 
     public void setMode(Mode m) {
-        
+
+        if (m == null) {
+            return;
+        }
+
+        previousMode = currentMode;
+        currentMode = m;
+
         mxGraph graph = graphComponent.getGraph();
 
-        if (m == Mode.ARROW) {            
-            graph.clearSelection();            
+
+
+        if (m == Mode.ARROW) {
+            graph.clearSelection();
             graph.setCellsMovable(false);
             graphComponent.setConnectable(true);
             graphComponent.getGraph().setCellsSelectable(false);
@@ -186,10 +240,10 @@ public class GraphEditorPanel extends JPanel {
         if (m == Mode.READ_ONLY) {
             graph.setCellsMovable(false);
             graphComponent.setConnectable(false);
-            graphComponent.getGraph().setCellsSelectable(false);            
+            graphComponent.getGraph().setCellsSelectable(false);
             graphComponent.getGraph().setCellsEditable(false);
             //graphComponent.getGraph().setCellsMovable(false);
-            
+
             return;
         }
 
@@ -199,64 +253,61 @@ public class GraphEditorPanel extends JPanel {
             graphComponent.getGraph().setCellsSelectable(true);
             //graphComponent.getGraph().setCellsEditable(true);
             return;
-        }       
-        
+        }
+
     }
-    
+
+    public void undoMode() {
+        setMode(previousMode);
+    }
+
     protected void saveXmlPng(String filename,
-				Color bg) throws IOException
-		{
-			mxGraphComponent graphComponent = this.graphComponent;
-			mxGraph graph = graphComponent.getGraph();
+            Color bg) throws IOException {
+        mxGraphComponent graphComponent = this.graphComponent;
+        mxGraph graph = graphComponent.getGraph();
 
-			// Creates the image for the PNG file
-			BufferedImage image = mxCellRenderer.createBufferedImage(graph,
-					null, 1, bg, graphComponent.isAntiAlias(), null,
-					graphComponent.getCanvas());
+        // Creates the image for the PNG file
+        BufferedImage image = mxCellRenderer.createBufferedImage(graph,
+                null, 1, bg, graphComponent.isAntiAlias(), null,
+                graphComponent.getCanvas());
 
-			// Creates the URL-encoded XML data
-			mxCodec codec = new mxCodec();
-			String xml = URLEncoder.encode(
-					mxXmlUtils.getXml(codec.encode(graph.getModel())), "UTF-8");
-			mxPngEncodeParam param = mxPngEncodeParam
-					.getDefaultEncodeParam(image);
-			param.setCompressedText(new String[] { "mxGraphModel", xml });
+        // Creates the URL-encoded XML data
+        mxCodec codec = new mxCodec();
+        String xml = URLEncoder.encode(
+                mxXmlUtils.getXml(codec.encode(graph.getModel())), "UTF-8");
+        mxPngEncodeParam param = mxPngEncodeParam
+                .getDefaultEncodeParam(image);
+        param.setCompressedText(new String[]{"mxGraphModel", xml});
 
-			// Saves as a PNG file
-			FileOutputStream outputStream = new FileOutputStream(new File(
-					filename));
-			try
-			{
-				mxPngImageEncoder encoder = new mxPngImageEncoder(outputStream,
-						param);
+        // Saves as a PNG file
+        FileOutputStream outputStream = new FileOutputStream(new File(
+                filename));
+        try {
+            mxPngImageEncoder encoder = new mxPngImageEncoder(outputStream,
+                    param);
 
-				if (image != null)
-				{
-					encoder.encode(image);
+            if (image != null) {
+                encoder.encode(image);
 
-				//	editor.setModified(false);
-				//	editor.setCurrentFile(new File(filename));
-				}
-				else
-				{
-					JOptionPane.showMessageDialog(graphComponent,
-							mxResources.get("noImageData"));
-				}
-			}
-			finally
-			{
-				outputStream.close();
-			}
-		}
-    
-    
+                //	editor.setModified(false);
+                //	editor.setCurrentFile(new File(filename));
+            } else {
+                JOptionPane.showMessageDialog(graphComponent,
+                        mxResources.get("noImageData"));
+            }
+        } finally {
+            outputStream.close();
+        }
+    }
+
     public void save() {
         try {
-        saveXmlPng("C:\\ss.png", Color.WHITE);
-        toMatrix(null);        
-                       
+            //saveXmlPng("C:\\ss.png", Color.WHITE);
+            toMatrix().print();
+
         } catch (Exception e) {
-        e.printStackTrace();}
+            e.printStackTrace();
+        }
     }
 
     public void addVertice() {
@@ -273,115 +324,80 @@ public class GraphEditorPanel extends JPanel {
         }
 
     }
-    
-    
-    public int[][] toMatrix(String[] resultNames) {
-        
+
+    public Matrix toMatrix() {
+
         mxGraph graph = graphComponent.getGraph();
-                
+
         Object[] vertices = graph.getChildVertices(graph.getDefaultParent());
-        
         int len = vertices.length;
-        
+
+        //For the matrix object
         int[][] matrix = new int[len][len];
-        resultNames = new String[len];
-        
-        for (int i=0;i<len; i++) {
-            resultNames[i] = (String)((mxCell)vertices[i]).getValue();
+        String[] resultNames = new String[len];
+
+        for (int i = 0; i < len; i++) {
+            resultNames[i] = (String) ((mxCell) vertices[i]).getValue();
         }
-        
-        
+
         //Get all vertices
-        for (int i=0; i<len; i++) { 
-            
-             mxCell one = ((mxCell)vertices[i]);
-             
-           for (int j=0; j<len; j++) {       
-            
-               
-                mxCell two = ((mxCell)vertices[j]);
-                
-               //Now check vertices
+        for (int i = 0; i < len; i++) {
+
+            mxCell one = ((mxCell) vertices[i]);
+
+            for (int j = 0; j < len; j++) {
+
+
+                mxCell two = ((mxCell) vertices[j]);
+
+                //Now check vertices
                 //Source-Target-Directed
-                if (graph.getEdgesBetween(one,two,true).length>0) {
-                    
-                    matrix[i][j]=1;
-                    System.out.println(""+one.getValue()+"->"+two.getValue());
-                    
+                if (graph.getEdgesBetween(one, two, true).length > 0) {
+
+                    matrix[i][j] = 1;
+                    System.out.println("" + one.getValue() + "->" + two.getValue());
+
                 }
-                
-        }           
-           
+
+            }
+
         }
-        
-        System.out.println("Base matrix"); 
-      MatrixTools.printMatrix(matrix, resultNames);
-        
-      
-      int counter = 0;      
-      int[][]m2 = matrix;
-      
-      //At first it is the base matrix, will add other later
-      int[][] end = matrix;
-      
-      //FIX 10 to "is equals to the last one or numbers just grow"
-      while (counter<10 && !MatrixTools.isMatrixZeroOnly(m2)) {
-         System.out.println("Matrix "+counter);
-         m2=MatrixTools.multiply(m2, matrix);              
-         
-         MatrixTools.printMatrix(m2, resultNames);     
-         
-         //Add all 1
-         end = MatrixTools.specialAdd(end, m2);
-         counter++;       
-                  
-      }
-      
-        System.out.println("FINAL MATRIX");
-         MatrixTools.printMatrix(end, resultNames); 
-        return null;
-    }
-    
-    public void loadMatrix(int x[][]) {
-        
-        return;
-        
+
+        return new Matrix(resultNames, matrix);
     }
 
     public void autoArrange(Arrange r) {
-        
+
         mxIGraphLayout layout;
-        layout = new mxFastOrganicLayout(graphComponent.getGraph());  
-        
-        if (r== Arrange.CIRCLE) {
-        layout = new mxCircleLayout(graphComponent.getGraph());        
+        layout = new mxFastOrganicLayout(graphComponent.getGraph());
+
+        if (r == Arrange.CIRCLE) {
+            layout = new mxCircleLayout(graphComponent.getGraph());
         } else {
-        if (r== Arrange.HIERARCHY)        
-        layout = new mxHierarchicalLayout(graphComponent.getGraph());        
+            if (r == Arrange.HIERARCHY) {
+                layout = new mxHierarchicalLayout(graphComponent.getGraph());
+            }
         }
 
         //Flies offscreen
         //mxIGraphLayout layout = new mxFastOrganicLayout(graphComponent.getGraph());        
-                
+
         try {
             graphComponent.getGraph().getModel().beginUpdate();
             layout.execute(graphComponent.getGraph().getDefaultParent());
         } finally {
-            
-          mxMorphing morph = new mxMorphing(graphComponent, 20, 1.2, 20);
-            
-            morph.addListener(mxEvent.DONE, new mxIEventListener() {
 
-            
-              @Override
-              public void invoke(Object o, mxEventObject eo) {
-                  graphComponent.getGraph().getModel().endUpdate();                  
-              }
+//            mxMorphing morph = new mxMorphing(graphComponent, 20, 1.2, 20);
+//
+//            morph.addListener(mxEvent.DONE, new mxIEventListener() {
+//                @Override
+//                public void invoke(Object o, mxEventObject eo) {
+                    graphComponent.getGraph().getModel().endUpdate();
+//                }
+//            });
+//
+//            morph.startAnimation();
 
-            });
-
-            morph.startAnimation();
-            
         }
     }
 
@@ -407,7 +423,7 @@ public class GraphEditorPanel extends JPanel {
 
         frames.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        GraphEditorPanel frame = new GraphEditorPanel(null,false);
+        GraphEditorPanel frame = new GraphEditorPanel(null, false);
         frame.setSize(1000, 1900);
         frame.setVisible(true);
         frames.add(frame);
