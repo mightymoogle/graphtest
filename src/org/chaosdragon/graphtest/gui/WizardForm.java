@@ -10,6 +10,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.FileChooserUI;
 import javax.swing.text.StyledDocument;
 import org.chaosdragon.graphtest.switcher.Command;
 import org.chaosdragon.graphtest.switcher.NullCommand;
@@ -49,6 +52,12 @@ public class WizardForm extends javax.swing.JFrame {
         s1.setVisible(true);  
         
         jList1.setModel(matrices);
+       
+        //FileChooser
+        fc.setMultiSelectionEnabled(true);
+         FileFilter filter = new FileNameExtensionFilter("CSV Graph", new String[] {"csv"});
+        fc.setFileFilter(filter);
+        fc.addChoosableFileFilter(filter);
         
     }
 
@@ -419,15 +428,23 @@ JOptionPane.showMessageDialog(
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+
         
-        MatrixFiles.generateCsvFile("C:\\myfile.csv", matrices.get(jList1.getSelectedIndex()));
+        int returnVal = fc.showSaveDialog(this);
         
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            
+        File[] s = fc.getSelectedFiles();
+        File ss = s[0];
+        String path = ss.getAbsolutePath();
+        if (!path.toLowerCase().endsWith(".csv")) path=path+".csv";
+        
+        MatrixFiles.generateCsvFile(path, matrices.get(jList1.getSelectedIndex()));
+        }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-
-         fc.setMultiSelectionEnabled(true);
-                 
+     
         int returnVal = fc.showOpenDialog(this);
         
         //????
@@ -437,10 +454,12 @@ JOptionPane.showMessageDialog(
             File[] files = fc.getSelectedFiles();
             
             for (File f: files) {            
-              Matrix n = MatrixFiles.loadFromCsvFile(f.getPath());
+              Matrix n = MatrixFiles.loadFromCsvFile(f.getAbsolutePath());
               matrices.add(n);
             }
               
+            
+            
         }
         
       
