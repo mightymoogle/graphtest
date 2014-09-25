@@ -128,6 +128,7 @@ public class WizardForm extends javax.swing.JFrame {
         s2.setBackground(new java.awt.Color(255, 153, 204));
         s2.setLayout(new java.awt.CardLayout());
 
+        jTextPane1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         jScrollPane2.setViewportView(jTextPane1);
 
         s2.add(jScrollPane2, "card2");
@@ -138,6 +139,11 @@ public class WizardForm extends javax.swing.JFrame {
 
         jList1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jList1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jList1ValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jList1);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/doc_plus (2).png"))); // NOI18N
@@ -398,7 +404,7 @@ public class WizardForm extends javax.swing.JFrame {
     }//GEN-LAST:event_previousButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-
+        if (jList1.getSelectedIndex()==-1) return;
         Matrix test = matrices.get(jList1.getSelectedIndex());                       
         GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,false); //Load ID here
         mat.setVisible(true);
@@ -406,7 +412,7 @@ public class WizardForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
+if (jList1.getSelectedIndex()==-1) return;
 JOptionPane.showMessageDialog(
          null, new JLabel( "<html><pre>" + matrices.get(jList1.getSelectedIndex()).print()));
  
@@ -424,6 +430,8 @@ JOptionPane.showMessageDialog(
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        if (jList1.getSelectedIndex()==-1) return;
         matrices.remove(jList1.getSelectedIndex());
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -467,12 +475,16 @@ JOptionPane.showMessageDialog(
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        
+        if (jList1.getSelectedIndex()==-1) return;
         Matrix test = matrices.get(jList1.getSelectedIndex());
         
         GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,true); //Load ID here
         mat.setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
+            
+    }//GEN-LAST:event_jList1ValueChanged
 
     /**
      * @param args the command line arguments
