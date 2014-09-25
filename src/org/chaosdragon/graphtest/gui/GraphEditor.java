@@ -18,13 +18,8 @@ public class GraphEditor extends javax.swing.JDialog {
      private GraphEditorPanel x;    
      private boolean done = false;
      
-     public  Matrix getDone() {
-         if (!done) return null;
-         Matrix m = x.toMatrix();         
-         return m;
-     }
-     
-    
+     Matrix input;    
+        
     /**
      * Creates new form GraphEditor
      */
@@ -32,9 +27,9 @@ public class GraphEditor extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         
-      
-        
-        x= new GraphEditorPanel(matr,readOnly);  
+        input = matr;
+              
+        x= new GraphEditorPanel(input,readOnly);  
                 
         try {
             Image i = ImageIO.read(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/lightbulb.png"));
@@ -86,7 +81,6 @@ public class GraphEditor extends javax.swing.JDialog {
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         insertButton = new javax.swing.JButton();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        demoButton = new javax.swing.JButton();
         autoArrangeButton = new javax.swing.JButton();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         zoomOutButton = new javax.swing.JButton();
@@ -147,17 +141,6 @@ public class GraphEditor extends javax.swing.JDialog {
         });
         topToolBar.add(insertButton);
         topToolBar.add(filler3);
-
-        demoButton.setText("DEMO");
-        demoButton.setFocusable(false);
-        demoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        demoButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        demoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                demoButtonActionPerformed(evt);
-            }
-        });
-        topToolBar.add(demoButton);
 
         autoArrangeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/cog.png"))); // NOI18N
         autoArrangeButton.setText("Auto Arrange");
@@ -239,10 +222,6 @@ public class GraphEditor extends javax.swing.JDialog {
         x.setMode(GraphEditorPanel.Mode.ARROW);
     }//GEN-LAST:event_arrowToggleButtonActionPerformed
 
-    private void demoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_demoButtonActionPerformed
-        x.save();
-    }//GEN-LAST:event_demoButtonActionPerformed
-
     private void autoArrangeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoArrangeButtonActionPerformed
         handToggleButton.doClick();
                 
@@ -265,7 +244,8 @@ public class GraphEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_insertButtonActionPerformed
 
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
-        done = true;
+           
+         x.updateMatrix();               
         this.dispose();
     }//GEN-LAST:event_finishButtonActionPerformed
 
@@ -314,7 +294,6 @@ public class GraphEditor extends javax.swing.JDialog {
     private javax.swing.JToggleButton arrowToggleButton;
     private javax.swing.JButton autoArrangeButton;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton demoButton;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;

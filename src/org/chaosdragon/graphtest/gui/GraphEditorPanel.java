@@ -63,37 +63,12 @@ public class GraphEditorPanel extends JPanel {
             + mxConstants.ALIGN_MIDDLE + ";"
             + mxConstants.STYLE_FILLCOLOR + "=yellow";
 
-//    private void generate(mxGraph graph,Object parent) {
-//         graph.getModel().beginUpdate();
-//        try {
-////            Object v1 = graph.insertVertex(parent, null, "1", 0, 0, 40,
-////                    40, style);
-////            Object v2 = graph.insertVertex(parent, null, "2", 0, 0, 40,
-////                    40, style);                                    
-////            graph.insertEdge(parent, null, "Edge", v1, v2);
-//           Random rand = new Random();
-//           ArrayList<Object> list = new ArrayList<>();
-//            for (int i=0; i<5; i++) {                
-//                
-//                list.add(graph.insertVertex(parent, null, String.valueOf(i), 0, 0, 40,40, style));                                                                
-//            }
-//            
-//             for (int i=0; i<5; i++) {                
-//                 int r1=rand.nextInt(list.size());
-//                 int r2=rand.nextInt(list.size());
-//                 
-//                graph.insertEdge(parent, null, "", list.get(r1), list.get(r2));
-//            }
-//            
-//            
-//
-//
-//        } finally {
-//            graph.getModel().endUpdate();
-//        }
-//    }
+    private Matrix editMatrix;
+    
+    
     public void loadMatrix(Matrix matr) {
 
+        editMatrix = matr;
         //nothing to load
         if (matr == null) {
             return;
@@ -303,7 +278,7 @@ public class GraphEditorPanel extends JPanel {
     public void save() {
         try {
             //saveXmlPng("C:\\ss.png", Color.WHITE);
-            toMatrix().print();
+         //   toMatrix().print();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -325,7 +300,7 @@ public class GraphEditorPanel extends JPanel {
 
     }
 
-    public Matrix toMatrix() {
+    public void updateMatrix() {
 
         mxGraph graph = graphComponent.getGraph();
 
@@ -362,8 +337,10 @@ public class GraphEditorPanel extends JPanel {
             }
 
         }
-
-        return new Matrix(resultNames, matrix);
+                
+        editMatrix.setConnections(matrix);
+        editMatrix.setIds(resultNames);        
+       
     }
 
     public void autoArrange(Arrange r) {

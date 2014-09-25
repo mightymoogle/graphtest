@@ -4,6 +4,10 @@
  */
 package org.chaosdragon.graphtest.gui;
 
+import java.util.Arrays;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
+
 /**
  *
  * @author Mighty
@@ -12,16 +16,41 @@ public class Matrix {
     
     private String[] ids;
     private int[][] connections;
+    private String name="Default";
     //Coordinates???
 
     
+public static int[][] cloneArray(int[][] src) {
+    int length = src.length;
+    int[][] target = new int[length][src[0].length];
+    for (int i = 0; i < length; i++) {
+        System.arraycopy(src[i], 0, target[i], 0, src[i].length);
+    }
+    return target;
+}
+    
+    //Copy constructor
+    public Matrix(Matrix m) {
+                          
+        //Must not forget this...
+        this.connections = cloneArray(m.connections);                
+        this.ids = Arrays.copyOf(m.ids, m.ids.length);
+        this.name = new String(m.getName());
+    }
+    
     public Matrix() {
-        
+        ids = new String[0];
+        connections = new int[0][0];
     }
     
     public Matrix(String[] ids, int[][] connections) {
         this.ids = ids;
         this.connections = connections;
+    }
+    
+    public Matrix(String[] ids, int[][] connections, String name) {
+        this(ids,connections);
+        this.name=name;
     }
     
     /**
@@ -53,36 +82,24 @@ public class Matrix {
     }
         
     
-    public void print() {
-                //CUT HERE
-                
-        System.out.println("Base matrix");             
-        MatrixTools.printMatrix(connections, ids);
-        
-      
-      int counter = 0;      
-      int[][]m2 = connections;
-      
-      //At first it is the base matrix, will add other later
-      int[][] end = connections;
-      
-      //FIX 10 to "is equals to the last one or numbers just grow"
-      while (counter<10 && !MatrixTools.isMatrixZeroOnly(m2)) {
-         System.out.println("Matrix "+counter);
-         m2=MatrixTools.multiply(m2, connections);              
-         
-         MatrixTools.printMatrix(m2, ids);     
-         
-         //Add all 1
-         end = MatrixTools.specialAdd(end, m2);
-         counter++;       
-                  
-      }
-      
-        System.out.println("FINAL MATRIX");
-        MatrixTools.printMatrix(end, ids);         
+    
+    
+    public String print() {                
+        return MatrixTools.printMatrix(connections, ids);             
+    }        
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
-    
-    
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
     
 }

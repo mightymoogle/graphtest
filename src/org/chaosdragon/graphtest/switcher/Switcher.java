@@ -16,16 +16,33 @@ public class Switcher {
    private List<Command> history = new ArrayList<Command>();
  
    public void storeAndExecute(Command cmd) {
-      this.history.add(cmd); // optional 
-      cmd.execute();        
-   }
+      
+       //Add the command if it executes
+       this.history.add(cmd);
+       cmd.execute();    
+      
+       }     
+         
    
    public void undo() {       
        //Undo the last
-       Command victim = history.get(history.size());       
+       if (history.size()==0) return;
+       
+       Command victim = history.get(history.size()-1);       
        victim.undo();
        //Remove from list
-       history.remove(victim);       
+       history.remove(victim);              
+       
    }
+   
+   
+   public Command getLastStep() {       
+         
+       if (history.size()==0) return new NullCommand(); 
+       
+       return history.get(history.size()-1);
+       
+   } 
+      
    
 }

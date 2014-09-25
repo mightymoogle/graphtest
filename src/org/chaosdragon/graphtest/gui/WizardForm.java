@@ -4,6 +4,19 @@
  */
 package org.chaosdragon.graphtest.gui;
 
+import java.io.File;
+import java.util.*;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.text.StyledDocument;
+import org.chaosdragon.graphtest.switcher.Command;
+import org.chaosdragon.graphtest.switcher.NullCommand;
+import org.chaosdragon.graphtest.switcher.Step1;
+import org.chaosdragon.graphtest.switcher.Step2;
+import org.chaosdragon.graphtest.switcher.Switcher;
+
 /**
  *
  * @author Guest
@@ -13,8 +26,30 @@ public class WizardForm extends javax.swing.JFrame {
     /**
      * Creates new form WizardForm
      */
+    private int totalSteps = 10;
+    private int stepNumber = 1;
+    private Command currentStep;   
+    private Switcher switcher= new Switcher();
+    final JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+    
+    MatrixListModel matrices = new MatrixListModel(new ArrayList<Matrix>());
+    
+    private HashMap<Class<? extends Command>, JPanel> panelMap = new HashMap<>();
+    
     public WizardForm() {
-        initComponents();
+        initComponents();         
+        
+        
+        
+        panelMap.put(Step1.class, s1);
+        panelMap.put(Step2.class, s2);
+        
+        //currentStep = new Step1();
+        s2.setVisible(false);
+        s1.setVisible(true);  
+        
+        jList1.setModel(matrices);
+        
     }
 
     /**
@@ -29,6 +64,9 @@ public class WizardForm extends javax.swing.JFrame {
         topPanel = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
         middlePanel = new javax.swing.JPanel();
+        s2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         s1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
@@ -38,6 +76,7 @@ public class WizardForm extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         bottomPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
@@ -49,7 +88,6 @@ public class WizardForm extends javax.swing.JFrame {
         setTitle("Special Data Processing Technologies © 2014 David Griberman");
         setMinimumSize(new java.awt.Dimension(1024, 768));
         setPreferredSize(new java.awt.Dimension(1024, 768));
-        setResizable(false);
 
         topPanel.setPreferredSize(new java.awt.Dimension(651, 50));
 
@@ -76,16 +114,20 @@ public class WizardForm extends javax.swing.JFrame {
 
         middlePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         middlePanel.setPreferredSize(new java.awt.Dimension(1167, 566));
-        middlePanel.setLayout(new java.awt.BorderLayout());
+        middlePanel.setLayout(new java.awt.CardLayout());
+
+        s2.setBackground(new java.awt.Color(255, 153, 204));
+        s2.setLayout(new java.awt.CardLayout());
+
+        jScrollPane2.setViewportView(jTextPane1);
+
+        s2.add(jScrollPane2, "card2");
+
+        middlePanel.add(s2, "card2");
 
         s1.setBackground(new java.awt.Color(204, 255, 204));
 
         jList1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "S1", "S2", "S3", "S4" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jList1);
 
@@ -93,11 +135,21 @@ public class WizardForm extends javax.swing.JFrame {
         jButton1.setText("Add Requirement");
         jButton1.setToolTipText("");
         jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/doc_delete (2).png"))); // NOI18N
         jButton2.setText("Remove Requirement");
         jButton2.setToolTipText("");
         jButton2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/lightbulb (2).png"))); // NOI18N
         jButton3.setText("Edit graph");
@@ -123,11 +175,31 @@ public class WizardForm extends javax.swing.JFrame {
         jButton5.setText("Load from file(s)");
         jButton5.setToolTipText("");
         jButton5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/save.png"))); // NOI18N
         jButton6.setText("Save selected to file");
         jButton6.setToolTipText("");
         jButton6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/zoom.png"))); // NOI18N
+        jButton7.setText("See Graph");
+        jButton7.setToolTipText("");
+        jButton7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout s1Layout = new javax.swing.GroupLayout(s1);
         s1.setLayout(s1Layout);
@@ -142,7 +214,8 @@ public class WizardForm extends javax.swing.JFrame {
                     .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(702, Short.MAX_VALUE))
         );
         s1Layout.setVerticalGroup(
@@ -156,15 +229,17 @@ public class WizardForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton7)
+                .addGap(7, 7, 7)
                 .addComponent(jButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton6)
-                .addContainerGap(244, Short.MAX_VALUE))
+                .addContainerGap(237, Short.MAX_VALUE))
         );
 
-        middlePanel.add(s1, java.awt.BorderLayout.CENTER);
+        middlePanel.add(s1, "card3");
 
         getContentPane().add(middlePanel, java.awt.BorderLayout.CENTER);
 
@@ -176,9 +251,19 @@ public class WizardForm extends javax.swing.JFrame {
         });
 
         nextButton.setText("Next >");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
 
         previousButton.setText("< Previous");
         previousButton.setToolTipText("");
+        previousButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                previousButtonActionPerformed(evt);
+            }
+        });
 
         progressBar.setMaximum(9);
         progressBar.setToolTipText("");
@@ -190,6 +275,11 @@ public class WizardForm extends javax.swing.JFrame {
         undoButton.setText("Undo last step");
         undoButton.setToolTipText("");
         undoButton.setEnabled(false);
+        undoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                undoButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout bottomPanelLayout = new javax.swing.GroupLayout(bottomPanel);
         bottomPanel.setLayout(bottomPanelLayout);
@@ -227,42 +317,143 @@ public class WizardForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+
+        
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
-        String[] ids = {"A","B"};
-        int[][] connections = {{0,0},{1,1}};
-        Matrix test = new Matrix(ids, connections);
-        
-        GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,false); //Load ID here
-        mat.setVisible(true);
-        
-        //Test of returned data, waits for dialog to finish
-        test = mat.getDone();
-        
-        if (test!=null) {
-            GraphEditor mat2 = new GraphEditor(this, rootPaneCheckingEnabled,test,true); //Load ID here
-            mat2.setVisible(true);
+    public void clearText() {
+        try {
+        jTextPane1.getDocument().remove(0, jTextPane1.getDocument().getLength());
+        } catch (Exception e) {e.printStackTrace();
+               
+                }
+    }
+    
+    
+    public void printText(String line) {
+        try {
+        StyledDocument doc = jTextPane1.getStyledDocument();
+        doc.insertString(doc.getLength(), line, null);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         
+    }
+    
+    
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+
+        if (currentStep==null) {
+            
+          //  String[] ids = {"3","5","13","14","16","20"};
+          //  int[][] connections = {{0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0},{1,1,1,1,1,0}};
+
+          //  Matrix test = new Matrix(ids, connections);          
+            
+          //  ArrayList<Matrix> arr = new ArrayList<>();            
+                        
+            
+            //arr.add(test);
+                        
+            
+            currentStep=new Step1(matrices.getList(),this);
+        }        
         
+        currentStep.execute();
+        currentStep=currentStep.getNext();
+        setActivePanel(panelMap.get(currentStep.getClass()));
+       
+       
+       // switcher.storeAndExecute(currentStep);                                      
+        
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+        
+    public void setActivePanel(JPanel p) {
+        
+        s1.setVisible(false);
+        s2.setVisible(false);        
+         
+        p.setVisible(true);        
+    }
+    
+    
+    private void previousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousButtonActionPerformed
+       
+           if (currentStep.getClass()==Step2.class) {
+            
+         //  setActivePanel(1);
+         //  currentStep=new Step1();
+       } 
+           
+    }//GEN-LAST:event_previousButtonActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        Matrix test = matrices.get(jList1.getSelectedIndex());                       
+        GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,false); //Load ID here
+        mat.setVisible(true);
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       
-        String[] ids = {"A","B","C","D"};
-        int[][] connections = {{0,1,0,0},{1,0,1,0},{0,0,0,1},{1,1,1,0}};
+
+JOptionPane.showMessageDialog(
+         null, new JLabel( "<html><pre>" + matrices.get(jList1.getSelectedIndex()).print()));
+ 
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_undoButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        Matrix test = new Matrix(ids, connections);
+        matrices.add(new Matrix());           
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        matrices.remove(jList1.getSelectedIndex());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        
+        MatrixFiles.generateCsvFile("C:\\myfile.csv", matrices.get(jList1.getSelectedIndex()));
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+
+         fc.setMultiSelectionEnabled(true);
+                 
+        int returnVal = fc.showOpenDialog(this);
+        
+        //????
+        if (returnVal==JFileChooser.APPROVE_OPTION) {
+            
+            
+            File[] files = fc.getSelectedFiles();
+            
+            for (File f: files) {            
+              Matrix n = MatrixFiles.loadFromCsvFile(f.getPath());
+              matrices.add(n);
+            }
+              
+        }
+        
+      
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        
+        Matrix test = matrices.get(jList1.getSelectedIndex());
         
         GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,true); //Load ID here
         mat.setVisible(true);
-        
-       
-        
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -308,13 +499,17 @@ public class WizardForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JPanel middlePanel;
     private javax.swing.JButton nextButton;
     private javax.swing.JButton previousButton;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JPanel s1;
+    private javax.swing.JPanel s2;
     private javax.swing.JPanel topPanel;
     private javax.swing.JButton undoButton;
     // End of variables declaration//GEN-END:variables

@@ -8,7 +8,9 @@ package org.chaosdragon.graphtest.switcher;
  *
  * @author Mighty
  */
-public interface Command {
-   void execute();
-   void undo();
+public interface Command {      
+   public boolean execute();
+   public void undo();
+   public Command getNext();
+   
 }

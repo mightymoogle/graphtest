@@ -6,6 +6,8 @@ package org.chaosdragon.graphtest.switcher;
 
 import org.chaosdragon.graphtest.gui.Matrix;
 import java.util.ArrayList;
+import javax.swing.JPanel;
+import org.chaosdragon.graphtest.gui.WizardForm;
 
 /**
  *
@@ -14,28 +16,33 @@ import java.util.ArrayList;
 public class Step2 implements Command{
 
     ArrayList<Matrix> requirements;
-    
-    public void startup() {
-        //Initialize stuff
-        requirements=new ArrayList<>();
-    }
-    
-    
-    public Step2(ArrayList<Matrix> requirements) {
-        //Startup
-        startup();
+    WizardForm w;   
+   
+    public Step2(ArrayList<Matrix> requirements, WizardForm p) {
+        w=p;
+        this.requirements=requirements;
     }
     
     
     @Override
-    public void execute() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean execute() {        
+    
+     //requirements.get(0).print();               
+     return false;
+      
     }
 
     @Override
-    public void undo() {  
-        //Just start all over
-        startup();
+    public void undo() {          
+        
+      //  w.clearText();        
+        
     }
+
+    @Override
+    public Command getNext() {
+        return new Step1(requirements,w);
+    }
+ 
     
 }

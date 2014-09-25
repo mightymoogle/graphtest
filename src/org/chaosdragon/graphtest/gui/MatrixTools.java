@@ -74,26 +74,30 @@ public class MatrixTools {
         return source;
     }
     
-    public static void printMatrix(int[][] matrix, String[] resultNames) {
+    public static String printMatrix(int[][] matrix, String[] resultNames) {
+        
+        String r = "   ";
         
         int len = matrix.length;        
        
-        System.out.print("    ");
+        
         for (int i=0; i<len;i++) {
-            System.out.format("%3s",resultNames[i]);
+            r=r+String.format("%3s",resultNames[i]);
         }
-        System.out.println("");
-        System.out.println("------------------------------");
+        r=r+("")+"\n";
+        r=r+("------------------------------")+"\n";
         
         for (int i=0; i<len; i++) {
-              System.out.format("%4s",resultNames[i]+"|");
+             r=r+String.format("%4s",resultNames[i]+"|");
 
             for (int j=0; j<len; j++) {
-                System.out.format("%3d",matrix[i][j]);                
+                r=r+String.format("%3d",matrix[i][j]);                
             }
             
-            System.out.println("");
+            r=r+""+"\n";
         }
+       
+        return r;
         
     }
     
