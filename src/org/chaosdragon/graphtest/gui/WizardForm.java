@@ -14,11 +14,12 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.FileChooserUI;
 import javax.swing.text.StyledDocument;
-import org.chaosdragon.graphtest.switcher.Command;
-import org.chaosdragon.graphtest.switcher.NullCommand;
-import org.chaosdragon.graphtest.switcher.Step1;
-import org.chaosdragon.graphtest.switcher.Step2;
-import org.chaosdragon.graphtest.switcher.Switcher;
+import org.chaosdragon.graphtest.steps.Command;
+import org.chaosdragon.graphtest.steps.NullCommand;
+import org.chaosdragon.graphtest.steps.Step3;
+import org.chaosdragon.graphtest.steps.Step1;
+import org.chaosdragon.graphtest.steps.Step2;
+import org.chaosdragon.graphtest.steps.Switcher;
 
 /**
  *
@@ -35,21 +36,43 @@ public class WizardForm extends javax.swing.JFrame {
     private Switcher switcher= new Switcher();
     final JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
     
+    
+    
+    
     MatrixListModel matrices = new MatrixListModel(new ArrayList<Matrix>());
     
     private HashMap<Class<? extends Command>, JPanel> panelMap = new HashMap<>();
     
+    
+    public void updateNextPrevButtons() {
+        
+        if (currentStep==null 
+                || currentStep.getClass().equals(NullCommand.class) 
+         || currentStep.getClass().equals(Step1.class))        
+        {previousButton.setEnabled(false);} else {
+        previousButton.setEnabled(true);        
+    }
+        
+    
+        
+        
+        
+    }    
+    
     public WizardForm() {
         initComponents();         
         
-        
+        fc.setCurrentDirectory(new File("h:\\Archive\\RTU\\Specializeta Datu Apstrade (Novickis)\\Faili\\"));
         
         panelMap.put(Step1.class, s1);
-        panelMap.put(Step2.class, s2);
-        
+        panelMap.put(Step2.class, s2);        
+        panelMap.put(Step3.class, s2);
+        panelMap.put(NullCommand.class, s1);
+        progressBarStateChanged(null);
         //currentStep = new Step1();
         s2.setVisible(false);
         s1.setVisible(true);  
+        updateNextPrevButtons();                      
         
         jList1.setModel(matrices);
        
@@ -264,6 +287,7 @@ public class WizardForm extends javax.swing.JFrame {
         s2.setBackground(new java.awt.Color(255, 153, 204));
         s2.setLayout(new java.awt.CardLayout());
 
+        jTextPane1.setEditable(false);
         jTextPane1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
         jScrollPane2.setViewportView(jTextPane1);
 
@@ -295,12 +319,17 @@ public class WizardForm extends javax.swing.JFrame {
             }
         });
 
-        progressBar.setMaximum(9);
+        progressBar.setMaximum(8);
+        progressBar.setMinimum(1);
         progressBar.setToolTipText("");
-        progressBar.setValue(4);
         progressBar.setRequestFocusEnabled(false);
         progressBar.setString("Step 4 of 10 (Part 1/3)");
         progressBar.setStringPainted(true);
+        progressBar.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                progressBarStateChanged(evt);
+            }
+        });
 
         undoButton.setText("Undo last step");
         undoButton.setToolTipText("");
@@ -362,8 +391,9 @@ public class WizardForm extends javax.swing.JFrame {
     
     public void printText(String line) {
         try {
-        StyledDocument doc = jTextPane1.getStyledDocument();
+        StyledDocument doc = jTextPane1.getStyledDocument();                
         doc.insertString(doc.getLength(), line, null);
+                        
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -373,29 +403,25 @@ public class WizardForm extends javax.swing.JFrame {
     
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
-        if (currentStep==null) {
-            
-          //  String[] ids = {"3","5","13","14","16","20"};
-          //  int[][] connections = {{0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0},{0,0,0,0,0,0},{1,1,1,1,1,0}};
-
-          //  Matrix test = new Matrix(ids, connections);          
-            
-          //  ArrayList<Matrix> arr = new ArrayList<>();            
-                        
-            
-            //arr.add(test);
-                        
+        progressBar.setValue(progressBar.getValue()+1);
+        
+        if (currentStep==null || currentStep.getClass().equals(Step1.class)) {
             
             currentStep=new Step1(matrices.getList(),this);
-        }        
+            currentStep.setPreviousCommand(new NullCommand());
+        }                                
         
+        //Execute the step
         currentStep.execute();
-        currentStep=currentStep.getNext();
-        setActivePanel(panelMap.get(currentStep.getClass()));
-       
-       
-       // switcher.storeAndExecute(currentStep);                                      
         
+        Command previous = currentStep;
+        //Get next step
+        currentStep=currentStep.getNext();                        
+        currentStep.setPreviousCommand(previous);
+        
+        //Find the according panel to the next step and set it
+        setActivePanel(panelMap.get(currentStep.getClass()));                              
+
     }//GEN-LAST:event_nextButtonActionPerformed
 
         
@@ -405,17 +431,26 @@ public class WizardForm extends javax.swing.JFrame {
         s2.setVisible(false);        
          
         p.setVisible(true);        
+        
+        infoLabel.setText(currentStep.getClass().toString());
+        updateNextPrevButtons();
+        
     }
     
     
     private void previousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousButtonActionPerformed
        
-           if (currentStep.getClass()==Step2.class) {
-            
-         //  setActivePanel(1);
-         //  currentStep=new Step1();
-       } 
-           
+        progressBar.setValue(progressBar.getValue()-2);
+        currentStep = currentStep.getPreviousCommand();
+        
+        if (currentStep.getClass().equals(Step1.class)) {
+            setActivePanel(panelMap.get(currentStep.getClass())); 
+            return;
+        }
+        
+        currentStep = currentStep.getPreviousCommand();
+        this.nextButtonActionPerformed(evt);          
+    
     }//GEN-LAST:event_previousButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -448,6 +483,7 @@ JOptionPane.showMessageDialog(
 
         if (jList1.getSelectedIndex()==-1) return;
         matrices.remove(jList1.getSelectedIndex());
+        jList1.clearSelection();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -504,6 +540,10 @@ JOptionPane.showMessageDialog(
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void progressBarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_progressBarStateChanged
+        progressBar.setString("Step "+progressBar.getValue()+" of "+progressBar.getMaximum());
+    }//GEN-LAST:event_progressBarStateChanged
 
     /**
      * @param args the command line arguments

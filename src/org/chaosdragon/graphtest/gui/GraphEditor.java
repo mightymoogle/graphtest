@@ -8,6 +8,8 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -246,9 +248,23 @@ public class GraphEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_insertButtonActionPerformed
 
     private void finishButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_finishButtonActionPerformed
-           
+    
+        int validationResult = x.validateMatrix();
+        
+        if (validationResult==0) {
          x.updateMatrix();               
         this.dispose();
+    } else {
+        
+        switch (validationResult) {
+            
+            case -1:                 
+                JOptionPane.showMessageDialog(this, "Two vertices can't have the same names.","Warning",JOptionPane.WARNING_MESSAGE);
+                break;        
+            
+        }
+        
+    }
     }//GEN-LAST:event_finishButtonActionPerformed
 
     /**

@@ -7,6 +7,7 @@ import com.mxgraph.model.mxCell;
 import com.mxgraph.swing.handler.mxKeyboardHandler;
 import com.mxgraph.swing.handler.mxRubberband;
 import javax.swing.JFrame;
+import java.util.*;
 
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.swing.util.mxMorphing;
@@ -47,7 +48,8 @@ public class GraphEditorPanel extends JPanel {
     };
     private Mode currentMode;
     private Mode previousMode;
-
+    private int newCounter = 0; //Counts the index for insertion.
+    
     public enum Arrange {
 
         CIRCLE, HIERARCHY, FAST_ORGANIC
@@ -291,7 +293,7 @@ public class GraphEditorPanel extends JPanel {
         graph.getModel().beginUpdate();
         Object parent = graph.getDefaultParent();
         try {
-            Object v1 = graph.insertVertex(parent, null, "1", 0, 0, 40,
+            Object v1 = graph.insertVertex(parent, null, String.valueOf(++newCounter), 0, 0, 40,
                     40, style);
 
         } finally {
@@ -299,12 +301,31 @@ public class GraphEditorPanel extends JPanel {
         }
 
     }
+    
+    
+    public int validateMatrix() {
+        
+        mxGraph graph = graphComponent.getGraph();
+        Object[] vertices = graph.getChildVertices(graph.getDefaultParent());  
+        HashSet<String> names= new HashSet<>();
+                
+       for (int i = 0; i < vertices.length; i++) {
+           //Add the names to hasset.
+           names.add((String) ((mxCell) vertices[i]).getValue());
+        }
+       
+       if (names.size()!=vertices.length) return -1;
+        
+       return 0;
+        
+    }
+    
 
     public void updateMatrix() {
 
         mxGraph graph = graphComponent.getGraph();
 
-        Object[] vertices = graph.getChildVertices(graph.getDefaultParent());
+        Object[] vertices = graph.getChildVertices(graph.getDefaultParent());                        
         int len = vertices.length;
 
         //For the matrix object

@@ -35,8 +35,8 @@ public class MatrixFiles {
                 String[] itemLine = line.split(cvsSplitBy);
                 
                 for (int i=0; i<itemLine.length;i++) {
-                    
-                    items[i][j]=Integer.parseInt(itemLine[i]);
+                    //BACKWARDS!
+                    items[j][i]=Integer.parseInt(itemLine[i]);
                     
                 }                
                 j++;

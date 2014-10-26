@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.chaosdragon.graphtest.switcher;
+package org.chaosdragon.graphtest.steps;
 
 import org.chaosdragon.graphtest.gui.*;
 import java.util.ArrayList;
@@ -15,10 +15,12 @@ import org.chaosdragon.graphtest.gui.WizardForm;
  *
  * @author Mighty
  */
-public class Step1 implements Command{
+public class Step1 extends Command{
 
     ArrayList<Matrix> requirements;
-    WizardForm w;          
+    WizardForm w;  
+    
+    ArrayList<Matrix> reachabilityMatrices = new ArrayList<>();
         
     public Step1(ArrayList<Matrix> requirements, WizardForm p) {
         this.w = p;
@@ -29,16 +31,15 @@ public class Step1 implements Command{
     //Does nothing
     @Override
     public boolean execute() {       
-        w.clearText();
+       w.clearText();
        // w.printText("FUCK YOU ALL!");
       //w.printText(requirements.get(0).print());
       
       Matrix m = new Matrix(requirements.get(0)); //Get a copy to avoid editing
       
-      w.printText("BASE MATRIX "+"\n");
+      w.printText("BASE MATRIX "+"\n");      
       w.printText(MatrixTools.printMatrix(m.getConnections(), m.getIds())); 
-      
-      
+                  
       String[] ids = m.getIds();        
       int counter = 0;      
       int[][]m2 = m.getConnections();      
@@ -71,6 +72,8 @@ public class Step1 implements Command{
          //JOptionPane.showMessageDialog(
          //null, new JLabel( "<html><pre>" + MatrixTools.printMatrix(end, ids)));
         
+        reachabilityMatrices.add(new Matrix(ids,end));
+        
         return true;
     }
     
@@ -84,7 +87,7 @@ public class Step1 implements Command{
     
     public Command getNext() {
         
-        return new Step2(requirements,w);
+        return new Step2(reachabilityMatrices,w);
         
     }
   
