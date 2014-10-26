@@ -64,6 +64,7 @@ public class WizardForm extends javax.swing.JFrame {
         
         fc.setCurrentDirectory(new File("h:\\Archive\\RTU\\Specializeta Datu Apstrade (Novickis)\\Faili\\"));
         
+        
         panelMap.put(Step1.class, s1);
         panelMap.put(Step2.class, s2);        
         panelMap.put(Step3.class, s2);
@@ -93,6 +94,8 @@ public class WizardForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         topPanel = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
         middlePanel = new javax.swing.JPanel();
@@ -116,6 +119,16 @@ public class WizardForm extends javax.swing.JFrame {
         previousButton = new javax.swing.JButton();
         progressBar = new javax.swing.JProgressBar();
         undoButton = new javax.swing.JButton();
+
+        jMenuItem1.setMnemonic('c');
+        jMenuItem1.setText("Copy");
+        jMenuItem1.setToolTipText("");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Special Data Processing Technologies © 2014 David Griberman");
@@ -289,6 +302,7 @@ public class WizardForm extends javax.swing.JFrame {
 
         jTextPane1.setEditable(false);
         jTextPane1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        jTextPane1.setComponentPopupMenu(jPopupMenu1);
         jScrollPane2.setViewportView(jTextPane1);
 
         s2.add(jScrollPane2, "card2");
@@ -545,6 +559,12 @@ JOptionPane.showMessageDialog(
         progressBar.setString("Step "+progressBar.getValue()+" of "+progressBar.getMaximum());
     }//GEN-LAST:event_progressBarStateChanged
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        
+        jTextPane1.copy();
+        
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -592,6 +612,8 @@ JOptionPane.showMessageDialog(
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JList jList1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextPane jTextPane1;
