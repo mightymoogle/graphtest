@@ -94,6 +94,8 @@ public class GraphEditor extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("GraphEditor");
+        setLocationByPlatform(true);
+        setMinimumSize(new java.awt.Dimension(300, 200));
         setModal(true);
 
         topToolBar.setFloatable(false);

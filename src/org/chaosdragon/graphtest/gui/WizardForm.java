@@ -73,9 +73,6 @@ public class WizardForm extends javax.swing.JFrame {
         topPanel = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
         middlePanel = new javax.swing.JPanel();
-        s2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
         s1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList();
@@ -86,6 +83,10 @@ public class WizardForm extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        s2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
         bottomPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
@@ -124,16 +125,6 @@ public class WizardForm extends javax.swing.JFrame {
         middlePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         middlePanel.setPreferredSize(new java.awt.Dimension(1167, 566));
         middlePanel.setLayout(new java.awt.CardLayout());
-
-        s2.setBackground(new java.awt.Color(255, 153, 204));
-        s2.setLayout(new java.awt.CardLayout());
-
-        jTextPane1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        jScrollPane2.setViewportView(jTextPane1);
-
-        s2.add(jScrollPane2, "card2");
-
-        middlePanel.add(s2, "card2");
 
         s1.setBackground(new java.awt.Color(204, 255, 204));
 
@@ -216,6 +207,17 @@ public class WizardForm extends javax.swing.JFrame {
             }
         });
 
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/info (2).png"))); // NOI18N
+        jButton8.setText("Edit matrix");
+        jButton8.setToolTipText("");
+        jButton8.setEnabled(false);
+        jButton8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout s1Layout = new javax.swing.GroupLayout(s1);
         s1.setLayout(s1Layout);
         s1Layout.setHorizontalGroup(
@@ -230,7 +232,8 @@ public class WizardForm extends javax.swing.JFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(702, Short.MAX_VALUE))
         );
         s1Layout.setVerticalGroup(
@@ -245,16 +248,28 @@ public class WizardForm extends javax.swing.JFrame {
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
-                .addGap(7, 7, 7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
 
         middlePanel.add(s1, "card3");
+
+        s2.setBackground(new java.awt.Color(255, 153, 204));
+        s2.setLayout(new java.awt.CardLayout());
+
+        jTextPane1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        jScrollPane2.setViewportView(jTextPane1);
+
+        s2.add(jScrollPane2, "card2");
+
+        middlePanel.add(s2, "card2");
 
         getContentPane().add(middlePanel, java.awt.BorderLayout.CENTER);
 
@@ -486,6 +501,10 @@ JOptionPane.showMessageDialog(
             
     }//GEN-LAST:event_jList1ValueChanged
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -531,6 +550,7 @@ JOptionPane.showMessageDialog(
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
