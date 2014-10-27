@@ -132,7 +132,7 @@ public class WizardForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Special Data Processing Technologies © 2014 David Griberman");
-        setMinimumSize(new java.awt.Dimension(1024, 768));
+        setMinimumSize(new java.awt.Dimension(700, 668));
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
         topPanel.setPreferredSize(new java.awt.Dimension(651, 50));
