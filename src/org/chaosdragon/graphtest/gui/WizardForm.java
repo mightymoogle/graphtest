@@ -301,7 +301,7 @@ public class WizardForm extends javax.swing.JFrame {
         s2.setLayout(new java.awt.CardLayout());
 
         jTextPane1.setEditable(false);
-        jTextPane1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        jTextPane1.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 14)); // NOI18N
         jTextPane1.setComponentPopupMenu(jPopupMenu1);
         jScrollPane2.setViewportView(jTextPane1);
 

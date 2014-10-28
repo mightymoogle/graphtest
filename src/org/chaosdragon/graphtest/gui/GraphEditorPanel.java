@@ -328,13 +328,12 @@ public class GraphEditorPanel extends JPanel {
         Object[] vertices = graph.getChildVertices(graph.getDefaultParent());                        
         int len = vertices.length;
         
-               
-        
-
         //For the matrix object
         int[][] matrix = new int[len][len];
         String[] resultNames = new String[len];
         
+        
+        //SORTING THE MATRIX
         TreeMap<String,Object> map = new TreeMap<>();
                 
         for (int i = 0; i < len; i++) {
@@ -342,9 +341,12 @@ public class GraphEditorPanel extends JPanel {
             map.put(name, vertices[i]);          
         }
         int ele=0;
+        //REPOSITIONING
         for (Map.Entry<String,Object> m : map.entrySet()) {            
             vertices[ele++]=m.getValue();            
         }
+        map = null;
+        //SORTED THE MATRIX
         
         
         for (int i = 0; i < len; i++) {
@@ -443,7 +445,6 @@ public class GraphEditorPanel extends JPanel {
         frame.setSize(1000, 1900);
         frame.setVisible(true);
         frames.add(frame);
-
         frames.setVisible(true);
 
     }

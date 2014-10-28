@@ -76,22 +76,35 @@ public class MatrixTools {
     
     public static String printMatrix(int[][] matrix, String[] resultNames) {
         
-        String r = "   ";
-        
+        //STRING BUILDER HERE!!!!!!!!!!!
+                
         int len = matrix.length;        
-       
-        
-        for (int i=0; i<len;i++) {
-            r=r+String.format("%3s",resultNames[i]);
-        }
-        r=r+("")+"\n";
-        r=r+("---------------------------------------------")+"\n";
+        int maxLength = 0;
         
         for (int i=0; i<len; i++) {
-             r=r+String.format("%4s",resultNames[i]+"|");
+            if (resultNames[i].length()>maxLength)
+                maxLength = resultNames[i].length();
+        }
+        
+        maxLength++;
+        
+        String r = String.format("%"+(maxLength+1)+"s", "");
+        
+        for (int i=0; i<len;i++) {
+            r=r+String.format("%"+maxLength+"s",resultNames[i]);
+        }
+        r=r+"\n";
+        
+        for (int i=0; i<=len; i++) {
+            for (int j=0; j<=maxLength; j++) r=r+"-";
+        }
+        r=r+'\n';
+                
+        for (int i=0; i<len; i++) {
+             r=r+String.format("%"+(maxLength+1)+"s",resultNames[i]+"|");
 
             for (int j=0; j<len; j++) {
-                r=r+String.format("%3d",matrix[i][j]);                
+                r=r+String.format("%"+maxLength+"d",matrix[i][j]);                
             }
             
             r=r+""+"\n";

@@ -34,16 +34,21 @@ public class Step1 extends Command{
     @Override
     public boolean execute() {       
        int current = 0;
+       w.clearText();
+       for (int cc=0; cc<requirements.size();cc++) {
+       
+           w.printText("**** REQUIREMENT "+(cc+1)+ " ****\n");
+           
        for (int i=0; i<requirements.size(); i++) {
            reachabilityMatrices.add(new ArrayList<Matrix>());
        }
         
-        w.clearText();
+        
        
        
       //w.printText(requirements.get(0).print());
       
-      Matrix m = new Matrix(requirements.get(0)); //Get a copy to avoid editing
+      Matrix m = new Matrix(requirements.get(current)); //Get a copy to avoid editing
       
       w.printText("BASE MATRIX "+"\n");      
       w.printText(MatrixTools.printMatrix(m.getConnections(), m.getIds())); 
@@ -80,7 +85,10 @@ public class Step1 extends Command{
          //JOptionPane.showMessageDialog(
          //null, new JLabel( "<html><pre>" + MatrixTools.printMatrix(end, ids)));
         reachabilityMatrices.get(current).add(new Matrix(ids,end));
-                
+       
+        current++;
+       }
+       
         return true;
     }
     
