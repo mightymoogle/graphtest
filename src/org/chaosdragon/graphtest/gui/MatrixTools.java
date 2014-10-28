@@ -85,7 +85,7 @@ public class MatrixTools {
             r=r+String.format("%3s",resultNames[i]);
         }
         r=r+("")+"\n";
-        r=r+("------------------------------")+"\n";
+        r=r+("---------------------------------------------")+"\n";
         
         for (int i=0; i<len; i++) {
              r=r+String.format("%4s",resultNames[i]+"|");

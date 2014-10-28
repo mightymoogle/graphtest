@@ -20,19 +20,27 @@ public class Step1 extends Command{
     ArrayList<Matrix> requirements;
     WizardForm w;  
     
-    ArrayList<Matrix> reachabilityMatrices = new ArrayList<>();
+    //One for List each requirement
+    ArrayList<ArrayList<Matrix>>
+            reachabilityMatrices = new ArrayList<>();
         
+    
     public Step1(ArrayList<Matrix> requirements, WizardForm p) {
         this.w = p;
         this.requirements = requirements;
     }
-    
-    
+        
     //Does nothing
     @Override
     public boolean execute() {       
-       w.clearText();
-       // w.printText("FUCK YOU ALL!");
+       int current = 0;
+       for (int i=0; i<requirements.size(); i++) {
+           reachabilityMatrices.add(new ArrayList<Matrix>());
+       }
+        
+        w.clearText();
+       
+       
       //w.printText(requirements.get(0).print());
       
       Matrix m = new Matrix(requirements.get(0)); //Get a copy to avoid editing
@@ -71,9 +79,8 @@ public class Step1 extends Command{
         //A beautiful dialog box with matrix
          //JOptionPane.showMessageDialog(
          //null, new JLabel( "<html><pre>" + MatrixTools.printMatrix(end, ids)));
-        
-        reachabilityMatrices.add(new Matrix(ids,end));
-        
+        reachabilityMatrices.get(current).add(new Matrix(ids,end));
+                
         return true;
     }
     
@@ -87,7 +94,7 @@ public class Step1 extends Command{
     
     public Command getNext() {
         
-        return new Step2(reachabilityMatrices,w);
+        return new Step2(reachabilityMatrices.get(0),w);
         
     }
   
