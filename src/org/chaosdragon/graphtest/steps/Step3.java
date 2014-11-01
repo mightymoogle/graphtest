@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.JPanel;
 import org.chaosdragon.graphtest.gui.WizardForm;
+import org.chaosdragon.tools.NaturalOrderComparator;
 
 /**
  *
@@ -20,16 +21,17 @@ import org.chaosdragon.graphtest.gui.WizardForm;
 public class Step3 extends Command{
    
     WizardForm w;   
-    ArrayList<Set<String>> precedentSets;
-    ArrayList<Set<String>> reachabilitySets;
-    String[] ids;
+    ArrayList<ArrayList<Set<String>>> precedentSets;
+    ArrayList<ArrayList<Set<String>>> reachabilitySets;
+    ArrayList<String[]> ids;
     
     
     //Must be put inside an arraylist...
-    Set<String> informationalElements=new TreeSet<>();
-    Set<String> requirementGroups=new TreeSet<>();            
+    ArrayList<Set<String>> informationalElements;
+    ArrayList<Set<String>> requirementGroups;
    
-    public Step3(WizardForm p,ArrayList<Set<String>> precedentSets,ArrayList<Set<String>> reachabilitySets,String[] ids) {
+    public Step3(WizardForm p, ArrayList<ArrayList<Set<String>>> precedentSets, 
+            ArrayList<ArrayList<Set<String>>> reachabilitySets,ArrayList<String[]> ids) {
         w=p;
         this.precedentSets=precedentSets;
         this.reachabilitySets=reachabilitySets;
@@ -41,39 +43,57 @@ public class Step3 extends Command{
     public boolean execute() {        
     
       w.clearText();
-      int current=0; // CURRENT INDEX;
+      
+      informationalElements = new ArrayList<>();
+      requirementGroups = new ArrayList<>();
+      
+      for (int i=0; i<precedentSets.size(); i++) {
+        informationalElements.add(new TreeSet<>(new NaturalOrderComparator()));
+        requirementGroups.add(new TreeSet<>(new NaturalOrderComparator()));
+      }
+      
             
-    
+    for (int current=0; current<precedentSets.size();current++) {
       
       
-     for (int i=0; i<precedentSets.size(); i++) {
+     for (int i=0; i<precedentSets.get(current).size(); i++) {
          
          //If has something -> to group requirements
-         if (precedentSets.get(i).size()>0) {
-             requirementGroups.add(ids[i]);
+         if (precedentSets.get(current).get(i).size()>0) {
+             requirementGroups.get(current).add(ids.get(current)[i]);
              //w.printText(""+ids[i]+"="+precedentSets.get(i)+"\n");
              
          } 
          //Otherwise -> informational elements         
          else {
-             informationalElements.add(ids[i]);
+             informationalElements.get(current).add(ids.get(current)[i]);
          }
          
      }
      
+    
       
-     //Current = requirement number!!!
-     w.printText("Informational elements:");
-     w.printText("\n");         
-     w.printText("D"+(current+1)+"f="+informationalElements.toString());
-     w.printText("\n");         
-     w.printText("\n");         
-     w.printText("Requirement groups:");
-     w.printText("\n");
-     w.printText("D"+(current+1)+"g="+requirementGroups.toString());
+    }    
+    
+    
+    w.printText("Informational elements:");
+    for (int current=0; current<informationalElements.size(); current++) {
+     
+     w.printText("\nD"+(current+1)+"f="+informationalElements.get(current));
+    }
       
+     
+     w.printText("\n\nRequirement groups:");
+      for (int current=0; current<informationalElements.size(); current++) {
+     
+     w.printText("\nD"+(current+1)+"g="+requirementGroups.get(current));
+      }
+    
+    
+    
+    
      return false;
-      
+    
     }
 
     @Override
