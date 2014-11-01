@@ -39,6 +39,7 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import org.chaosdragon.tools.NaturalOrderComparator;
 
 public class GraphEditorPanel extends JPanel {
 
@@ -334,7 +335,9 @@ public class GraphEditorPanel extends JPanel {
         
         
         //SORTING THE MATRIX
-        TreeMap<String,Object> map = new TreeMap<>();
+        
+        //Ensures 2<10 with strings
+        TreeMap<String,Object> map = new TreeMap<>(new NaturalOrderComparator());
                 
         for (int i = 0; i < len; i++) {
             String name= (String) ((mxCell) vertices[i]).getValue();

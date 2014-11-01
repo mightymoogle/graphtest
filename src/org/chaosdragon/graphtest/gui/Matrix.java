@@ -16,7 +16,7 @@ public class Matrix {
 
     private String[] ids;
     private int[][] connections;
-    private String name = "Default";
+    private String name = "S";
     //Coordinates???
 
     public static int[][] cloneArray(int[][] src) {

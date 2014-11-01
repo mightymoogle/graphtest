@@ -31,7 +31,7 @@ public class MatrixListModel extends AbstractListModel{
 
     @Override
     public Object getElementAt(int index) {
-        return m.get(index).getName()+"["+index+"]";
+        return m.get(index).getName()+"["+(index+1)+"]";
     }    
     
     public Matrix get(int index) {

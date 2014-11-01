@@ -32,27 +32,34 @@ public class Step1 extends Command{
         
     //Does nothing
     @Override
-    public boolean execute() {       
+    public boolean execute() {     
+        
+        final boolean PRINTALL = false;
+        
        int current = 0;
        w.clearText();
        for (int cc=0; cc<requirements.size();cc++) {
        
-           w.printText("**** REQUIREMENT "+(cc+1)+ " ****\n");
+       if (PRINTALL)
+           w.printText("**** REQUIREMENT "+(cc+1)+ " ****\n");       
            
-       for (int i=0; i<requirements.size(); i++) {
-           reachabilityMatrices.add(new ArrayList<Matrix>());
-       }
+        for (int i=0; i<requirements.size(); i++) {
+            reachabilityMatrices.add(new ArrayList<Matrix>());
+        }
         
-        
+      
        
        
       //w.printText(requirements.get(0).print());
       
       Matrix m = new Matrix(requirements.get(current)); //Get a copy to avoid editing
       
+       if (PRINTALL) {
       w.printText("BASE MATRIX "+"\n");      
       w.printText(MatrixTools.printMatrix(m.getConnections(), m.getIds())); 
-                  
+       }            
+      
+      
       String[] ids = m.getIds();        
       int counter = 0;      
       int[][]m2 = m.getConnections();      
@@ -68,8 +75,10 @@ public class Step1 extends Command{
                   
          m2=MatrixTools.multiply(m2, m.getConnections());              
          
+          if (PRINTALL) {
          w.printText("\n"+"Matrix step "+counter+"\n");
          w.printText(MatrixTools.printMatrix(m2, ids));     
+          }
          
          //Add all 1
          end = MatrixTools.specialAdd(end, m2);
@@ -77,7 +86,7 @@ public class Step1 extends Command{
                   
       }
       
-        w.printText("\n"+"Reachability Matrix:"+"\n");
+        w.printText("\n"+"Reachability Matrix A"+(current+1)+":\n");
         w.printText(MatrixTools.printMatrix(end, ids)+"\n");
            
         
