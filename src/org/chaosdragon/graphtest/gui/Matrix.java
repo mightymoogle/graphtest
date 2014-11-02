@@ -40,6 +40,22 @@ public class Matrix {
         ids = new String[0];
         connections = new int[0][0];
     }
+    
+    public boolean isConnected(String one, String two) {
+        
+        for (int i=0; i<connections.length; i++) {
+            
+            for (int j=0; j<connections[i].length; j++) {
+                
+                if (ids[i].equals(one)&&ids[j].equals(two)&&connections[i][j]==1) {
+                    
+                    return true;                  
+                    
+                }                
+            }            
+        }      
+        return false;        
+    }
 
     public void sort() {
         String[] old = ids;
@@ -99,6 +115,12 @@ public class Matrix {
     public String print() {
         return MatrixTools.printMatrix(connections, ids);
     }
+    
+    @Override
+    public String toString() {
+        return print();
+    }
+    
 
     /**
      * @return the name
@@ -114,4 +136,17 @@ public class Matrix {
         this.name = name;
     }
 
+    public static void main(String[] args) {
+        
+        String[] ids = {"d1","d4","d7"};
+        int[][] matr = {{1,0,0},{1,1,0},{1,1,1}};
+        
+        
+        Matrix m = new Matrix(ids,matr);
+        System.out.println(m);
+        System.out.println(m.isConnected("d1", "d1"));
+        
+        
+    }
+    
 }

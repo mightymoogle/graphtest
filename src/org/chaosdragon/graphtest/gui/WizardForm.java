@@ -14,12 +14,8 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.FileChooserUI;
 import javax.swing.text.StyledDocument;
-import org.chaosdragon.graphtest.steps.Command;
-import org.chaosdragon.graphtest.steps.NullCommand;
-import org.chaosdragon.graphtest.steps.Step3;
-import org.chaosdragon.graphtest.steps.Step1;
-import org.chaosdragon.graphtest.steps.Step2;
-import org.chaosdragon.graphtest.steps.Switcher;
+import org.chaosdragon.graphtest.steps.*;
+
 
 /**
  *
@@ -68,6 +64,7 @@ public class WizardForm extends javax.swing.JFrame {
         panelMap.put(Step1.class, s1);
         panelMap.put(Step2.class, s2);        
         panelMap.put(Step3.class, s2);
+        panelMap.put(Step4.class, s2);
         panelMap.put(NullCommand.class, s1);
         progressBarStateChanged(null);
         //currentStep = new Step1();
@@ -76,6 +73,7 @@ public class WizardForm extends javax.swing.JFrame {
         updateNextPrevButtons();                      
         
         jList1.setModel(matrices);
+        jList1ValueChanged(null);
        
         //FileChooser
         fc.setMultiSelectionEnabled(true);
@@ -417,13 +415,24 @@ public class WizardForm extends javax.swing.JFrame {
     
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
-        progressBar.setValue(progressBar.getValue()+1);
+       
         
         if (currentStep==null || currentStep.getClass().equals(Step1.class)) {
+            
+            //MUST CHECK EMPTYNESS TOO
+            if(matrices.getSize()==0) {
+                JOptionPane.showMessageDialog(
+                this, "You must add at least one requirement!", "Requirements missing", JOptionPane.WARNING_MESSAGE);
+                
+                return;
+            }
             
             currentStep=new Step1(matrices.getList(),this);
             currentStep.setPreviousCommand(new NullCommand());
         }                                
+        
+         progressBar.setValue(progressBar.getValue()+1);
+        
         
         //Execute the step
         currentStep.execute();
@@ -548,7 +557,16 @@ JOptionPane.showMessageDialog(
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
-            
+                  
+        //Buttons that turn off when nothing is selected in list
+        boolean isElementSelected = (jList1.getSelectedIndex()!=-1);
+      
+            jButton2.setEnabled(isElementSelected);
+            jButton3.setEnabled(isElementSelected);
+            jButton4.setEnabled(isElementSelected);
+            jButton6.setEnabled(isElementSelected);
+            jButton7.setEnabled(isElementSelected);
+   
     }//GEN-LAST:event_jList1ValueChanged
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed

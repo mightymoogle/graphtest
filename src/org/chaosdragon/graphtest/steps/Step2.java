@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * FINDS PRECEDENCE AND REACHABILITY SETS (Slide 31-32)
  */
 package org.chaosdragon.graphtest.steps;
 
@@ -20,7 +19,7 @@ import org.chaosdragon.tools.NaturalOrderComparator;
  */
 public class Step2 extends Command {
 
-    private ArrayList<Matrix> requirements;
+    private ArrayList<Matrix> reachabilityMatrices;
     private WizardForm w;
 
     //Must be put inside of a map or something...
@@ -30,7 +29,7 @@ public class Step2 extends Command {
 
     public Step2(ArrayList<Matrix> requirements, WizardForm p) {
         w = p;
-        this.requirements = requirements;
+        this.reachabilityMatrices = requirements;
     }
 
     @Override
@@ -41,7 +40,7 @@ public class Step2 extends Command {
             reachabilitySets = new ArrayList<>();
 
                 //Each requirement gets its own array list
-            for (int i = 0; i < requirements.size(); i++) {
+            for (int i = 0; i < reachabilityMatrices.size(); i++) {
                 precedentSets.add(new ArrayList());
                 reachabilitySets.add(new ArrayList());
             }
@@ -49,13 +48,13 @@ public class Step2 extends Command {
            
             
             
-        for (int current = 0; current < requirements.size(); current++) {
+        for (int current = 0; current < reachabilityMatrices.size(); current++) {
 
             
 
         
 
-            Matrix m = new Matrix(requirements.get(current)); //Get a copy to avoid editing
+            Matrix m = new Matrix(reachabilityMatrices.get(current)); //Get a copy to avoid editing
 
             String[] ids = m.getIds();
             newIds.add(ids);
@@ -91,7 +90,7 @@ public class Step2 extends Command {
         
                 w.printText("Precedence sets:");
                 w.printText("\n");
-                for (int cc=0; cc<requirements.size();cc++) {
+                for (int cc=0; cc<reachabilityMatrices.size();cc++) {
                     for (int i=0; i<precedentSets.get(cc).size(); i++) {
                         w.printText(" C"+(cc+1)+"(d"+newIds.get(cc)[i]+")="+precedentSets.get(cc).get(i).toString());
                         w.printText("\n");
@@ -102,7 +101,7 @@ public class Step2 extends Command {
                 w.printText("\n");                
                 w.printText("Reachability sets:");
                 w.printText("\n");                
-               for (int cc=0; cc<requirements.size();cc++) {
+               for (int cc=0; cc<reachabilityMatrices.size();cc++) {
                     for (int i=0; i<reachabilitySets.get(cc).size(); i++) {
                         w.printText(" F"+(cc+1)+"(d"+newIds.get(cc)[i]+")="+reachabilitySets.get(cc).get(i).toString());
                         w.printText("\n");
@@ -126,7 +125,7 @@ public class Step2 extends Command {
     public Command getNext() {
         //return new Step1(requirements,w);
        // return new Step3(w, null, null, ids);
-        return new Step3(w, precedentSets, reachabilitySets, newIds);
+        return new Step3(w, precedentSets, reachabilitySets, newIds, reachabilityMatrices);
 
     }
 

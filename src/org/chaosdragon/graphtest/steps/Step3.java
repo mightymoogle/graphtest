@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * CREATES INFORMATIONAL ELEMENTS AND GROUP REQUIREMENTS (Slide 33)
  */
 package org.chaosdragon.graphtest.steps;
 
@@ -23,6 +22,8 @@ public class Step3 extends Command{
     WizardForm w;   
     ArrayList<ArrayList<Set<String>>> precedentSets;
     ArrayList<ArrayList<Set<String>>> reachabilitySets;
+    ArrayList<Matrix> reachabilityMatrices;
+    
     ArrayList<String[]> ids;
     
     
@@ -31,11 +32,15 @@ public class Step3 extends Command{
     ArrayList<Set<String>> requirementGroups;
    
     public Step3(WizardForm p, ArrayList<ArrayList<Set<String>>> precedentSets, 
-            ArrayList<ArrayList<Set<String>>> reachabilitySets,ArrayList<String[]> ids) {
+            ArrayList<ArrayList<Set<String>>> reachabilitySets,ArrayList<String[]> ids,
+            ArrayList<Matrix> reachabilityMatrices) {
         w=p;
         this.precedentSets=precedentSets;
         this.reachabilitySets=reachabilitySets;
         this.ids = ids;
+        
+        //Pass Throught
+        this.reachabilityMatrices = reachabilityMatrices;
     }
     
     
@@ -48,8 +53,8 @@ public class Step3 extends Command{
       requirementGroups = new ArrayList<>();
       
       for (int i=0; i<precedentSets.size(); i++) {
-        informationalElements.add(new TreeSet<>(new NaturalOrderComparator()));
-        requirementGroups.add(new TreeSet<>(new NaturalOrderComparator()));
+        informationalElements.add(new TreeSet<String>(new NaturalOrderComparator()));
+        requirementGroups.add(new TreeSet<String>(new NaturalOrderComparator()));
       }
       
             
@@ -110,7 +115,7 @@ public class Step3 extends Command{
         
         
         //MUST ALSO PROVIDE F FROM PREVIOUS (REACHABILITY)???????
-        return new Step3(w, precedentSets, reachabilitySets,ids);
+        return new Step4(w, informationalElements, requirementGroups,precedentSets, reachabilitySets,ids,reachabilityMatrices);
     }
  
     

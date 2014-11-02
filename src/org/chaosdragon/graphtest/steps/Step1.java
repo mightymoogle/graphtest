@@ -1,6 +1,5 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * STARTUP AND FIND REACHABILITY MATRICES (Slide 26-30)
  */
 package org.chaosdragon.graphtest.steps;
 
