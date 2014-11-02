@@ -28,7 +28,13 @@ public class Step6 extends Command{
     ArrayList<ArrayList<Set<String>>> reachabilitySets;
     ArrayList<String[]> ids;
     ArrayList<Matrix> reachabilityMatrices;   
-
+    ArrayList<Matrix> submatrices;
+    //Current requirement -> Level-> Group
+    ArrayList<ArrayList<Set<String>>> groupLevels;
+    
+    //Current requirement -> Group id from D-> Content
+    ArrayList<ArrayList<Set<String>>> groupInformation;
+    
     public Step6(Step5 old) {
         w=old.w;
         requirements = old.requirements;
@@ -38,34 +44,24 @@ public class Step6 extends Command{
         reachabilitySets=old.reachabilitySets;
         ids = old.ids;
         reachabilityMatrices=old.reachabilityMatrices;
-    }
-    
-    public static int getNumberFromIDS(String[] ids, String description) {
-        
-        int num = 0;
-        for (String s:ids) {
-            
-            if (s.equals(description)) return num;
-            num++;
-            
-        }
-        
-        
-        return -1;
+        submatrices = old.submatrices;
+        groupLevels=old.groupLevels;
     }
     
     
     @Override
     public boolean execute() {        
     
-      w.clearText();
-      w.printText("STEP 6\n");         
+      w.clearText();          
+      groupInformation = new ArrayList<>();
       
       //DELETE ELEMENTS FROM Bk
       for (int current=0; current<requirements.size(); current++) {
           
            w.printText("Requirement "+(current+1)+":\n");
           
+           groupInformation.add(new ArrayList<Set<String>>());
+           
            Matrix b = new Matrix(requirements.get(current));
            int size = b.getConnections().length;
            Set<String> D= new TreeSet<String>(requirementGroups.get(current));           
@@ -96,6 +92,7 @@ public class Step6 extends Command{
                }
                
               w.printText("H"+S1+"="+H+"\n");
+              groupInformation.get(current).add(H);
            }           
                      
           w.printText("\n");
@@ -109,20 +106,11 @@ public class Step6 extends Command{
     
     }
 
-    @Override
-    public void undo() {          
-        
-      //  w.clearText();        
-        
-    }
 
     @Override
     public Command getNext() {
-        //return new Step1(requirements,w);
-        //return new Step3();
-                
-        //MUST ALSO PROVIDE F FROM PREVIOUS (REACHABILITY)???????
-        return new FinalCommand();
+        
+        return new Step7(this);
     }
  
     
