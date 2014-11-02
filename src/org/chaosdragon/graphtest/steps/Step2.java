@@ -124,11 +124,7 @@ public class Step2 extends Command {
 
     }
 
-    @Override
-    public void undo() {
 
-      //  w.clearText();        
-    }
 
     @Override
     public Command getNext() {

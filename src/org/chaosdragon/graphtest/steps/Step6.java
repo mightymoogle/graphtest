@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.*;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.JPanel;
@@ -33,7 +34,7 @@ public class Step6 extends Command{
     ArrayList<ArrayList<Set<String>>> groupLevels;
     
     //Current requirement -> Group id from D-> Content
-    ArrayList<ArrayList<Set<String>>> groupInformation;
+   ArrayList<Map<String,Set<String>>> groupInformation;
     
     public Step6(Step5 old) {
         w=old.w;
@@ -60,7 +61,7 @@ public class Step6 extends Command{
           
            w.printText("Requirement "+(current+1)+":\n");
           
-           groupInformation.add(new ArrayList<Set<String>>());
+           groupInformation.add(new TreeMap<String, Set<String>>(new NaturalOrderComparator()));
            
            Matrix b = new Matrix(requirements.get(current));
            int size = b.getConnections().length;
@@ -92,7 +93,7 @@ public class Step6 extends Command{
                }
                
               w.printText("H"+S1+"="+H+"\n");
-              groupInformation.get(current).add(H);
+              groupInformation.get(current).put(S1, H);
            }           
                      
           w.printText("\n");

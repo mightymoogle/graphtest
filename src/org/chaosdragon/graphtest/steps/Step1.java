@@ -106,11 +106,7 @@ public class Step1 extends Command{
     
     //Resets the List
     
-    @Override
-    public void undo() {  
-                
-                
-    }
+
     
     public Command getNext() {
         return new Step2(this);

@@ -59,14 +59,14 @@ public class WizardForm extends javax.swing.JFrame {
         initComponents();         
         
         fc.setCurrentDirectory(new File("h:\\Archive\\RTU\\Specializeta Datu Apstrade (Novickis)\\Faili\\"));
-        
-        
+                
         panelMap.put(Step1.class, s1);
         panelMap.put(Step2.class, s2);        
         panelMap.put(Step3.class, s2);
         panelMap.put(Step4.class, s2);
         panelMap.put(Step5.class, s2);
         panelMap.put(Step6.class, s2);                
+        panelMap.put(Step7.class, s2);  
         panelMap.put(NullCommand.class, s1);
         panelMap.put(FinalCommand.class, s2);
         progressBarStateChanged(null);

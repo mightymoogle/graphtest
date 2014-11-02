@@ -24,16 +24,16 @@ public class Switcher {
        }     
          
    
-   public void undo() {       
-       //Undo the last
-       if (history.size()==0) return;
-       
-       Command victim = history.get(history.size()-1);       
-       victim.undo();
-       //Remove from list
-       history.remove(victim);              
-       
-   }
+//   public void undo() {       
+//       //Undo the last
+//       if (history.size()==0) return;
+//       
+//       Command victim = history.get(history.size()-1);       
+//       victim.undo();
+//       //Remove from list
+//       history.remove(victim);              
+//       
+//   }
    
    
    public Command getLastStep() {       

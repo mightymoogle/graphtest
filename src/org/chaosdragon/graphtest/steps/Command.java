@@ -10,7 +10,7 @@ package org.chaosdragon.graphtest.steps;
  */
 public abstract class Command {      
    abstract public boolean execute();
-   abstract public void undo();
+//   abstract public void undo();
    abstract public Command getNext();
    
    private Command previousCommand;
@@ -29,19 +29,19 @@ public abstract class Command {
         this.previousCommand = previousCommand;
     }   
      
-    public class CommandBuilder{
+//    public class CommandBuilder{
+//        
+//        public CommandBuilder() {
+//            
+//        }
+//        
+//        public Command buildCommand() {
+//            
+//            return null;
+//            
+//        }        
         
-        public CommandBuilder() {
-            
-        }
-        
-        public Command buildCommand() {
-            
-            return null;
-            
-        }        
-        
-    }
+//    }
     
     
    

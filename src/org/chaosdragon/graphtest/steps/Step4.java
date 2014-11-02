@@ -29,6 +29,7 @@ public class Step4 extends Command{
     //Must be put inside an arraylist...
     ArrayList<Set<String>> informationalElements;
     ArrayList<Set<String>> requirementGroups;
+    ArrayList<Matrix> submatrices;
    
     public Step4(Step3 old) {
         w=old.w;
@@ -46,6 +47,7 @@ public class Step4 extends Command{
     public boolean execute() {        
     
       w.clearText();
+      submatrices= new ArrayList<>();
                
       for (int current=0; current<requirementGroups.size(); current++) {
           
@@ -79,6 +81,7 @@ public class Step4 extends Command{
           Matrix m = new Matrix(newIds, matr);
           w.printText(m.toString());          
           w.printText("\n");
+          submatrices.add(m);
           
       }
 
@@ -86,20 +89,11 @@ public class Step4 extends Command{
     
     }
 
-    @Override
-    public void undo() {          
-        
-      //  w.clearText();        
-        
-    }
+
 
     @Override
     public Command getNext() {
-        //return new Step1(requirements,w);
-        //return new Step3();
-        
-        
-        //MUST ALSO PROVIDE F FROM PREVIOUS (REACHABILITY)???????
+
         return new Step5(this);
     }
  

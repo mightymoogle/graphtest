@@ -26,11 +26,15 @@ public class Step5 extends Command{
     ArrayList<ArrayList<Set<String>>> reachabilitySets;
     ArrayList<String[]> ids;
     ArrayList<Matrix> reachabilityMatrices;
+    ArrayList<Matrix> submatrices;
     
     
     //Must be put inside an arraylist...
     ArrayList<Set<String>> informationalElements;
     ArrayList<Set<String>> requirementGroups;
+    
+    //Current requirement -> Level-> Group
+    ArrayList<ArrayList<Set<String>>> groupLevels;
    
     public Step5(Step4 old) {
         w=old.w;
@@ -41,6 +45,7 @@ public class Step5 extends Command{
         reachabilitySets=old.reachabilitySets;
         ids = old.ids;
         reachabilityMatrices=old.reachabilityMatrices;
+        submatrices=old.submatrices;
     }
     
     public static int getNumberFromIDS(String[] ids, String description) {
@@ -61,12 +66,14 @@ public class Step5 extends Command{
     @Override
     public boolean execute() {        
     
-      w.clearText();
-      w.printText("STEP 5\n");         
+      w.clearText();     
+      
+      groupLevels = new ArrayList<>();
       
       //For each requirement
       for (int current=0; current<requirementGroups.size(); current++) {
            
+          groupLevels.add(new ArrayList<Set<String>>());
           //For each requirement group per requirement?
         
             Set<String> D= new TreeSet<String>(requirementGroups.get(current));     
@@ -102,17 +109,23 @@ public class Step5 extends Command{
     
           }
             w.printText("--------------\n");
-            w.printText("P1 group:"+level1+"\n");
+            w.printText("P1 group = "+level1+"\n");
             
             
             int level = 1;
-            Set<String> level2 = new HashSet<>(level1);
+            Set<String> level2 = new TreeSet<>(level1);
             //FOR OTHER LEVELS    
             //FIX SIZE HERE
+            
+            //Add the first level
+            groupLevels.get(current).add(level1);
+            
             int sizeLimit = D.size();            
             while (level1.size()<sizeLimit)  {
             level++;
-            level1=new HashSet<>(level2);
+            //For the current LEVEL
+            Set<String>levelX=new TreeSet<>();
+            level1=new TreeSet<>(level2);
             D.removeAll(level1);
              
              for (String SS: D) {                          
@@ -133,14 +146,21 @@ public class Step5 extends Command{
                            
                C2.retainAll(F);            
                if(F.equals(C2)){                
-                    w.printText("P"+level+" also "+SS+"\n");
-                    level2.add(SS);
+                    //w.printText("P"+level+" group: "+SS+"\n");
+                    level2.add(SS); //The global one
+                    levelX.add(SS); //Only current level
                }
                 
                }
+          //Add current level to super array
+             
+          if (levelX.size()>0) {
+              w.printText("P"+level+" group = "+levelX+"\n");
+              groupLevels.get(current).add(levelX);
+          }
       }
             
-
+    
           
          
       }
@@ -149,12 +169,7 @@ public class Step5 extends Command{
     
     }
 
-    @Override
-    public void undo() {          
-        
-      //  w.clearText();        
-        
-    }
+
 
     @Override
     public Command getNext() {
