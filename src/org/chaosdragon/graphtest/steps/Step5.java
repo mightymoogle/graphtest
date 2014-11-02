@@ -47,45 +47,106 @@ public class Step5 extends Command{
         this.reachabilityMatrices=reachabilityMatrices;
     }
     
+    public static int getNumberFromIDS(String[] ids, String description) {
+        
+        int num = 0;
+        for (String s:ids) {
+            
+            if (s.equals(description)) return num;
+            num++;
+            
+        }
+        
+        
+        return -1;
+    }
+    
     
     @Override
     public boolean execute() {        
     
       w.clearText();
-               
+      w.printText("STEP 5\n");         
+      
+      //For each requirement
       for (int current=0; current<requirementGroups.size(); current++) {
-          
-          Set<String> group = requirementGroups.get(current);
-          int[][] matr = new int[group.size()][group.size()];
-          
-          int i = 0;
-          int j = 0;
-          
-         //IDs for the new sub-matrix
-          String[] newIds = new String[matr.length];
-          
-        for(String s1:group) {
+           
+          //For each requirement group per requirement?
+        
+            Set<String> D= new TreeSet<String>(requirementGroups.get(current));     
+            Set<String> level1 = new TreeSet<String>(new NaturalOrderComparator());
             
-            //Setting of ids
-            newIds[i] = s1;  
-            for(String s2:group) {
+            
+            for (String SS: D) {                          
+                      
+                //CurrentElement = 1 (2nd in Set, but SS = 4...)
+             int  currentElement = getNumberFromIDS(ids.get(current), SS);
                 
-                //It is 1 if there is a connection in the big matrix OR if it is itself!
-                if (reachabilityMatrices.get(current).isConnected(s1, s2)||s1.equals(s2)) {
-                    matr[i][j]=1;
-                }
+            Set<String> F = new TreeSet<String>(reachabilitySets.get(current).get(currentElement));          
+            Set<String> C = new TreeSet<String>(precedentSets.get(current).get(currentElement));
+
+            String thisElement;
+            
+            thisElement = SS;
+            //Add the current element for some reason....?????
+            F.add(thisElement);
+            C.add(thisElement);
+            
+            Set<String> C2;          
+            
+            //For m=1
+            int level =1;
+            C2 = new TreeSet<String>(C);
+            C2.retainAll(F);
+            if(F.equals(C2)) {
+                //System.out.println(thisElement+ " P"+level);
+                level1.add(thisElement);
+                level++;
+            }          
+    
+          }
+            w.printText("--------------\n");
+            w.printText("P1 group:"+level1+"\n");
+            
+            
+            int level = 1;
+            Set<String> level2 = new HashSet<>(level1);
+            //FOR OTHER LEVELS    
+            //FIX SIZE HERE
+            int sizeLimit = D.size();            
+            while (level1.size()<sizeLimit)  {
+            level++;
+            level1=new HashSet<>(level2);
+            D.removeAll(level1);
+             
+             for (String SS: D) {                          
+                      
+             //CurrentElement = 1 (2nd in Set, but SS = 4...)
+             int  currentElement = getNumberFromIDS(ids.get(current), SS);
                 
-                j++;                
-            }   
-            j=0;
-            i++;
-        }
+                Set<String> F = new TreeSet<String>(reachabilitySets.get(current).get(currentElement));          
+                Set<String> C = new TreeSet<String>(precedentSets.get(current).get(currentElement));
+                
+                F.add(SS);
+                C.add(SS);
+                
+                    Set<String> C2;                      
+                F.removeAll(level1);                    
+                    
+               C2 = new TreeSet<String>(C);
+                           
+               C2.retainAll(F);            
+               if(F.equals(C2)){                
+                    w.printText("P"+level+" also "+SS+"\n");
+                    level2.add(SS);
+               }
+                
+               }
+      }
+            
+
           
-          w.printText("Submatrix A"+(current+1)+"g:\n");
-          Matrix m = new Matrix(newIds, matr);
-          w.printText(m.toString());          
-          w.printText("\n");
-          
+         
       }
 
      return false;
