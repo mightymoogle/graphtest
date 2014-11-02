@@ -41,7 +41,7 @@ public class WizardForm extends javax.swing.JFrame {
     
     
     public void updateNextPrevButtons() {
-        
+        nextButton.setEnabled(true);
         if (currentStep==null 
                 || currentStep.getClass().equals(NullCommand.class) 
          || currentStep.getClass().equals(Step1.class))        
@@ -49,7 +49,7 @@ public class WizardForm extends javax.swing.JFrame {
         previousButton.setEnabled(true);        
     }
         
-    
+    if (currentStep instanceof FinalCommand) nextButton.setEnabled(false);
         
         
         
@@ -66,7 +66,9 @@ public class WizardForm extends javax.swing.JFrame {
         panelMap.put(Step3.class, s2);
         panelMap.put(Step4.class, s2);
         panelMap.put(Step5.class, s2);
+        panelMap.put(Step6.class, s2);                
         panelMap.put(NullCommand.class, s1);
+        panelMap.put(FinalCommand.class, s2);
         progressBarStateChanged(null);
         //currentStep = new Step1();
         s2.setVisible(false);

@@ -25,26 +25,20 @@ public class Step4 extends Command{
     ArrayList<ArrayList<Set<String>>> reachabilitySets;
     ArrayList<String[]> ids;
     ArrayList<Matrix> reachabilityMatrices;
-    
-    
+    ArrayList<Matrix> requirements;    
     //Must be put inside an arraylist...
     ArrayList<Set<String>> informationalElements;
     ArrayList<Set<String>> requirementGroups;
    
-    public Step4(WizardForm p,
-            ArrayList<Set<String>> informationalElements,
-            ArrayList<Set<String>> requirementGroups,
-            
-            ArrayList<ArrayList<Set<String>>> precedentSets, 
-            ArrayList<ArrayList<Set<String>>> reachabilitySets,ArrayList<String[]> ids,
-            ArrayList<Matrix> reachabilityMatrices) {
-        w=p;
-        this.informationalElements=informationalElements;
-        this.requirementGroups=requirementGroups;
-        this.precedentSets=precedentSets;
-        this.reachabilitySets=reachabilitySets;
-        this.ids = ids;
-        this.reachabilityMatrices=reachabilityMatrices;
+    public Step4(Step3 old) {
+        w=old.w;
+        requirements=old.requirements;
+        informationalElements=old.informationalElements;
+        requirementGroups=old.requirementGroups;
+        precedentSets=old.precedentSets;
+        reachabilitySets=old.reachabilitySets;
+        ids = old.ids;
+        reachabilityMatrices=old.reachabilityMatrices;
     }
     
     
@@ -106,7 +100,7 @@ public class Step4 extends Command{
         
         
         //MUST ALSO PROVIDE F FROM PREVIOUS (REACHABILITY)???????
-        return new Step5(w, informationalElements, requirementGroups,precedentSets, reachabilitySets,ids,reachabilityMatrices);
+        return new Step5(this);
     }
  
     

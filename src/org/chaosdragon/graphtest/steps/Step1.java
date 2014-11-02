@@ -28,6 +28,10 @@ public class Step1 extends Command{
         this.w = p;
         this.requirements = requirements;
     }
+    
+    public Step1(Step1 old) {        
+        this(old.requirements,old.w);        
+    }    
         
     //Does nothing
     @Override
@@ -109,8 +113,8 @@ public class Step1 extends Command{
     }
     
     public Command getNext() {
-        
-        return new Step2(reachabilityMatrices,w);
+        return new Step2(this);
+        //return new Step2(reachabilityMatrices,w,requirements);
         
     }
   

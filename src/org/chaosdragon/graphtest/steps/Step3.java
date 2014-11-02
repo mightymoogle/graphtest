@@ -23,6 +23,7 @@ public class Step3 extends Command{
     ArrayList<ArrayList<Set<String>>> precedentSets;
     ArrayList<ArrayList<Set<String>>> reachabilitySets;
     ArrayList<Matrix> reachabilityMatrices;
+    ArrayList<Matrix> requirements;
     
     ArrayList<String[]> ids;
     
@@ -33,15 +34,30 @@ public class Step3 extends Command{
    
     public Step3(WizardForm p, ArrayList<ArrayList<Set<String>>> precedentSets, 
             ArrayList<ArrayList<Set<String>>> reachabilitySets,ArrayList<String[]> ids,
-            ArrayList<Matrix> reachabilityMatrices) {
+            ArrayList<Matrix> reachabilityMatrices,ArrayList<Matrix> requirements) {
         w=p;
         this.precedentSets=precedentSets;
+        this.requirements = requirements;
         this.reachabilitySets=reachabilitySets;
         this.ids = ids;
         
         //Pass Throught
         this.reachabilityMatrices = reachabilityMatrices;
     }
+    
+    public Step3(Step2 old) {
+        
+        w=old.w;
+        precedentSets=old.precedentSets;
+        requirements = old.requirements;
+        reachabilitySets=old.reachabilitySets;
+        ids = old.newIds;
+        
+        //Pass Throught
+        reachabilityMatrices = old.reachabilityMatrices;
+
+    }
+    
     
     
     @Override
@@ -110,12 +126,8 @@ public class Step3 extends Command{
 
     @Override
     public Command getNext() {
-        //return new Step1(requirements,w);
-        //return new Step3();
-        
-        
-        //MUST ALSO PROVIDE F FROM PREVIOUS (REACHABILITY)???????
-        return new Step4(w, informationalElements, requirementGroups,precedentSets, reachabilitySets,ids,reachabilityMatrices);
+
+        return new Step4(this);
     }
  
     

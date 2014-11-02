@@ -29,5 +29,20 @@ public abstract class Command {
         this.previousCommand = previousCommand;
     }   
      
+    public class CommandBuilder{
+        
+        public CommandBuilder() {
+            
+        }
+        
+        public Command buildCommand() {
+            
+            return null;
+            
+        }        
+        
+    }
+    
+    
    
 }

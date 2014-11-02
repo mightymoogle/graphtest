@@ -19,18 +19,27 @@ import org.chaosdragon.tools.NaturalOrderComparator;
  */
 public class Step2 extends Command {
 
-    private ArrayList<Matrix> reachabilityMatrices;
-    private WizardForm w;
+    ArrayList<Matrix> requirements;
+    ArrayList<Matrix> reachabilityMatrices;
+    WizardForm w;
 
     //Must be put inside of a map or something...
-    private ArrayList<ArrayList<Set<String>>> precedentSets;
-    private ArrayList<ArrayList<Set<String>>> reachabilitySets;
+    ArrayList<ArrayList<Set<String>>> precedentSets;
+    ArrayList<ArrayList<Set<String>>> reachabilitySets;
     ArrayList<String[]> newIds = new ArrayList<>();
 
-    public Step2(ArrayList<Matrix> requirements, WizardForm p) {
+    public Step2(ArrayList<Matrix> reach, WizardForm p,ArrayList<Matrix> requirements) {
         w = p;
         this.reachabilityMatrices = requirements;
+        this.requirements=requirements;
     }
+    
+    public Step2(Step1 old) {        
+        w = old.w;
+        reachabilityMatrices = old.reachabilityMatrices;
+        requirements = old.requirements;        
+    }
+    
 
     @Override
     public boolean execute() {
@@ -125,7 +134,7 @@ public class Step2 extends Command {
     public Command getNext() {
         //return new Step1(requirements,w);
        // return new Step3(w, null, null, ids);
-        return new Step3(w, precedentSets, reachabilitySets, newIds, reachabilityMatrices);
+        return new Step3(this);
 
     }
 

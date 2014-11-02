@@ -1,5 +1,5 @@
 /*
- * ????? (Slide - 35)
+ * Groups levels??? NOT COMPLETE!!!!!!!! (Slide - 35)
  */
 package org.chaosdragon.graphtest.steps;
 
@@ -22,6 +22,7 @@ public class Step5 extends Command{
    
     WizardForm w;   
     ArrayList<ArrayList<Set<String>>> precedentSets;
+    ArrayList<Matrix> requirements;
     ArrayList<ArrayList<Set<String>>> reachabilitySets;
     ArrayList<String[]> ids;
     ArrayList<Matrix> reachabilityMatrices;
@@ -31,20 +32,15 @@ public class Step5 extends Command{
     ArrayList<Set<String>> informationalElements;
     ArrayList<Set<String>> requirementGroups;
    
-    public Step5(WizardForm p,
-            ArrayList<Set<String>> informationalElements,
-            ArrayList<Set<String>> requirementGroups,
-            
-            ArrayList<ArrayList<Set<String>>> precedentSets, 
-            ArrayList<ArrayList<Set<String>>> reachabilitySets,ArrayList<String[]> ids,
-            ArrayList<Matrix> reachabilityMatrices) {
-        w=p;
-        this.informationalElements=informationalElements;
-        this.requirementGroups=requirementGroups;
-        this.precedentSets=precedentSets;
-        this.reachabilitySets=reachabilitySets;
-        this.ids = ids;
-        this.reachabilityMatrices=reachabilityMatrices;
+    public Step5(Step4 old) {
+        w=old.w;
+       requirements=old.requirements;
+        informationalElements=old.informationalElements;
+       requirementGroups=old.requirementGroups;
+        precedentSets=old.precedentSets;
+        reachabilitySets=old.reachabilitySets;
+        ids = old.ids;
+        reachabilityMatrices=old.reachabilityMatrices;
     }
     
     public static int getNumberFromIDS(String[] ids, String description) {
@@ -166,8 +162,8 @@ public class Step5 extends Command{
         //return new Step3();
         
         
-        //MUST ALSO PROVIDE F FROM PREVIOUS (REACHABILITY)???????
-        return new Step5(w, informationalElements, requirementGroups,precedentSets, reachabilitySets,ids,reachabilityMatrices);
+        //NOT COMPLETE!
+        return new Step6(this);
     }
  
     
