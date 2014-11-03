@@ -92,11 +92,10 @@ public class Step1 extends Command{
         w.printText("\n"+"Reachability Matrix A"+(current+1)+":\n");
         w.printText(MatrixTools.printMatrix(end, ids)+"\n");
            
-        
-        //A beautiful dialog box with matrix
-         //JOptionPane.showMessageDialog(
-         //null, new JLabel( "<html><pre>" + MatrixTools.printMatrix(end, ids)));
-        reachabilityMatrices.add(new Matrix(ids,end));
+                 
+        Matrix ma = new Matrix(ids,end);
+        w.addToMatrixBox("A"+(current+1), ma);
+        reachabilityMatrices.add(ma);
        
         current++;
        }

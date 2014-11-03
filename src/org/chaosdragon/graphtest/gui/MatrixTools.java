@@ -150,7 +150,7 @@ public class MatrixTools {
         int[][] m2 = {{1,1},{0,1}};
         
         ArrayList<int[]>list = remainingOnes(m, m2);
-        System.out.println("");
+       
         
         
     }

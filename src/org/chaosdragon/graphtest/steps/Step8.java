@@ -136,16 +136,17 @@ public class Step8 extends Command {
                     }
                 }
                                 
-                System.out.println(b);
-                
+            
                        
               
                 
                 
             }
-          
-          GraphEditor mat = new GraphEditor(w, true,b,true); //Load ID here
-          mat.setVisible(true);
+             System.out.println(b);
+               newMatrices.add(b);
+       ///PUT MATRIX HERE
+            w.printText("Matrix B"+(current+1)+"*"+"\n"+b+"\n");
+            w.addToMatrixBox("B"+(current+1)+"*", b);
                         
         }
 

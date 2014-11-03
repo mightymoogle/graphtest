@@ -121,7 +121,7 @@ public class Step7 extends Command {
                             if (submatrix.isConnected(Hz.getKey(),Hy.getKey())) {
 
                                 delete.add(""+Hx.getKey()+","+Hy.getKey());
-                                b2.setValue(Hx.getKey(), Hy.getKey(), current);
+                                b2.setValue(Hx.getKey(), Hy.getKey(), 0);
                                 
                             } else {
 
@@ -140,6 +140,7 @@ public class Step7 extends Command {
             
             
             w.printText("\nResulting matrix:\n"+b2+"\n");
+            w.addToMatrixBox("B"+(current+1)+"*", b2);
             newRequirements.add(b2);
         }
         

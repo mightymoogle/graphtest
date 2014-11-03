@@ -78,7 +78,7 @@ public class Matrix {
                 if (old[i].equals(ids[j])) {
                     
                     //Write to new array or move columns and rows
-                    System.out.println(ids[j]);
+                  //  System.out.println(ids[j]);
                 }
             }
         }
@@ -154,8 +154,8 @@ public class Matrix {
         
         
         Matrix m = new Matrix(ids,matr);
-        System.out.println(m);
-        System.out.println(m.isConnected("d1", "d1"));
+       // System.out.println(m);
+       // System.out.println(m.isConnected("d1", "d1"));
         
         
     }

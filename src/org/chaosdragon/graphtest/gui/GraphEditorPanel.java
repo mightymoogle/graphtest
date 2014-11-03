@@ -163,7 +163,8 @@ public class GraphEditorPanel extends JPanel {
 
         //getContentPane().add(graphComponent);       
     }
-
+    
+    
     public GraphEditorPanel(Matrix matr, boolean readOnly) {
 
         super();
@@ -371,7 +372,7 @@ public class GraphEditorPanel extends JPanel {
                 if (graph.getEdgesBetween(one, two, true).length > 0) {
 
                     matrix[i][j] = 1;
-                    System.out.println("" + one.getValue() + "->" + two.getValue());
+                   // System.out.println("" + one.getValue() + "->" + two.getValue());
 
                 }
 
@@ -418,7 +419,7 @@ public class GraphEditorPanel extends JPanel {
 //            });
 //
 //            morph.startAnimation();
-
+                        
         }
     }
 
@@ -433,8 +434,8 @@ public class GraphEditorPanel extends JPanel {
                 graphComponent.zoomOut();
             }
         }
-        System.out.println(this.getSize().height);
-        System.out.println(graphComponent.getSize().height);
+      //  System.out.println(this.getSize().height);
+      //  System.out.println(graphComponent.getSize().height);
     }
 
     public static void main(String[] args) {

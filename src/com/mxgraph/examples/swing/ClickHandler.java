@@ -49,7 +49,7 @@ public class ClickHandler extends JFrame
 				
 				if (cell != null)
 				{
-					System.out.println("cell="+graph.getLabel(cell));
+					//System.out.println("cell="+graph.getLabel(cell));
 				}
 			}
 		});

@@ -19,7 +19,7 @@ public class GraphEditor extends javax.swing.JDialog {
      
      private GraphEditorPanel x;    
      private boolean done = false;
-     
+     private GraphEditorPanel.Arrange arrangeType = GraphEditorPanel.Arrange.CIRCLE;     
      Matrix input;    
         
     /**
@@ -64,6 +64,21 @@ public class GraphEditor extends javax.swing.JDialog {
         x.setVisible(true);
         
         
+    }    
+    
+    
+    //Call after SetArrange() if it was read_only. Fixes bug
+    public void fixReadOnly() {
+        x.setMode(GraphEditorPanel.Mode.READ_ONLY);
+    }
+
+    public void updateTitle(String text) {
+        this.setTitle(this.getTitle()+" - "+text);        
+    }
+    
+    public void setArrange(GraphEditorPanel.Arrange m) {
+        arrangeType = m;
+        autoArrangeButton.doClick();
     }
 
     /**
@@ -229,7 +244,7 @@ public class GraphEditor extends javax.swing.JDialog {
     private void autoArrangeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoArrangeButtonActionPerformed
         handToggleButton.doClick();
                 
-        x.autoArrange(GraphEditorPanel.Arrange.CIRCLE);
+        x.autoArrange(arrangeType);
     }//GEN-LAST:event_autoArrangeButtonActionPerformed
 
     private void zoomOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomOutButtonActionPerformed

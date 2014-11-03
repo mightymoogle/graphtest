@@ -79,6 +79,11 @@ public class Step4 extends Command{
           
           w.printText("Submatrix A"+(current+1)+"g:\n");
           Matrix m = new Matrix(newIds, matr);
+                       
+          w.addToMatrixBox("A"+(current+1)+"g", m);
+        
+          
+          
           w.printText(m.toString());          
           w.printText("\n");
           submatrices.add(m);

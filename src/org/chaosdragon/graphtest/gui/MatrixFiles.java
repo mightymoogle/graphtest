@@ -59,7 +59,7 @@ public class MatrixFiles {
             }
         }
         
-        System.out.println(newMatrix.print());
+       // System.out.println(newMatrix.print());
         return newMatrix;
 
     }

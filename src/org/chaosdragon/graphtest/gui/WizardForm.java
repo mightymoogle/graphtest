@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.FileChooserUI;
 import javax.swing.text.StyledDocument;
 import org.chaosdragon.graphtest.steps.*;
+import org.chaosdragon.tools.NaturalOrderComparator;
 
 
 /**
@@ -32,7 +33,7 @@ public class WizardForm extends javax.swing.JFrame {
     private Switcher switcher= new Switcher();
     final JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
     
-    
+    private Map<String, Matrix> matrixMap;
     
     
     MatrixListModel matrices = new MatrixListModel(new ArrayList<Matrix>());
@@ -113,8 +114,13 @@ public class WizardForm extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         s2 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextPane1 = new javax.swing.JTextPane();
+        matrixPanel = new javax.swing.JPanel();
+        matrixBox = new javax.swing.JComboBox();
+        jButton9 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         bottomPanel = new javax.swing.JPanel();
         cancelButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
@@ -302,12 +308,64 @@ public class WizardForm extends javax.swing.JFrame {
         s2.setBackground(new java.awt.Color(255, 153, 204));
         s2.setLayout(new java.awt.CardLayout());
 
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
         jTextPane1.setEditable(false);
         jTextPane1.setFont(new java.awt.Font("Lucida Sans Typewriter", 0, 14)); // NOI18N
         jTextPane1.setComponentPopupMenu(jPopupMenu1);
         jScrollPane2.setViewportView(jTextPane1);
 
-        s2.add(jScrollPane2, "card2");
+        jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        matrixPanel.setName(""); // NOI18N
+        matrixPanel.setPreferredSize(new java.awt.Dimension(100, 406));
+        matrixPanel.setRequestFocusEnabled(false);
+
+        matrixBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                matrixBoxActionPerformed(evt);
+            }
+        });
+
+        jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/zoom.png"))); // NOI18N
+        jButton9.setToolTipText("");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("View graph");
+
+        javax.swing.GroupLayout matrixPanelLayout = new javax.swing.GroupLayout(matrixPanel);
+        matrixPanel.setLayout(matrixPanelLayout);
+        matrixPanelLayout.setHorizontalGroup(
+            matrixPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(matrixPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(matrixPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                    .addComponent(matrixBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(matrixPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        matrixPanelLayout.setVerticalGroup(
+            matrixPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(matrixPanelLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(matrixBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton9)
+                .addContainerGap(307, Short.MAX_VALUE))
+        );
+
+        jPanel1.add(matrixPanel, java.awt.BorderLayout.EAST);
+
+        s2.add(jPanel1, "card3");
 
         middlePanel.add(s2, "card2");
 
@@ -398,10 +456,25 @@ public class WizardForm extends javax.swing.JFrame {
 
     public void clearText() {
         try {
+            
+        matrixPanel.setVisible(false);
+        matrixBox.removeAllItems();
+        matrixMap = new TreeMap<>(new NaturalOrderComparator());
+        
+        
         jTextPane1.getDocument().remove(0, jTextPane1.getDocument().getLength());
         } catch (Exception e) {e.printStackTrace();
                
                 }
+    }
+    
+    public void addToMatrixBox(String name, Matrix m) {
+        
+        matrixBox.addItem(name);
+        matrixMap.put(name, m);        
+        
+        matrixPanel.setVisible(true);
+        
     }
     
     
@@ -557,6 +630,11 @@ JOptionPane.showMessageDialog(
         Matrix test = matrices.get(jList1.getSelectedIndex());
         
         GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,true); //Load ID here
+        
+         mat.setArrange(GraphEditorPanel.Arrange.FAST_ORGANIC);            
+         mat.fixReadOnly();
+         mat.updateTitle(jList1.getSelectedValue().toString());     
+        
         mat.setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -586,6 +664,25 @@ JOptionPane.showMessageDialog(
         jTextPane1.copy();
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        
+        if (matrixBox.getSelectedItem()!=null) {
+            Matrix m = matrixMap.get(matrixBox.getSelectedItem());        
+
+            GraphEditor mat = new GraphEditor(this,true,m,true); //Load ID here
+            mat.setArrange(GraphEditorPanel.Arrange.FAST_ORGANIC);            
+            mat.fixReadOnly();
+            mat.updateTitle(matrixBox.getSelectedItem().toString());            
+            
+            mat.setVisible(true);
+        }
+         
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void matrixBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matrixBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_matrixBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -633,12 +730,17 @@ JOptionPane.showMessageDialog(
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JList jList1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JComboBox matrixBox;
+    private javax.swing.JPanel matrixPanel;
     private javax.swing.JPanel middlePanel;
     private javax.swing.JButton nextButton;
     private javax.swing.JButton previousButton;

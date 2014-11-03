@@ -506,7 +506,7 @@ public class EditorActions
 					}
 					catch (PrinterException e2)
 					{
-						System.out.println(e2);
+						//System.out.println(e2);
 					}
 				}
 			}
