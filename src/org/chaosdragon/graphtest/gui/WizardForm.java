@@ -67,6 +67,7 @@ public class WizardForm extends javax.swing.JFrame {
         panelMap.put(Step5.class, s2);
         panelMap.put(Step6.class, s2);                
         panelMap.put(Step7.class, s2);  
+        panelMap.put(Step8.class, s2);  
         panelMap.put(NullCommand.class, s1);
         panelMap.put(FinalCommand.class, s2);
         progressBarStateChanged(null);
@@ -334,7 +335,7 @@ public class WizardForm extends javax.swing.JFrame {
             }
         });
 
-        progressBar.setMaximum(8);
+        progressBar.setMaximum(25);
         progressBar.setMinimum(1);
         progressBar.setToolTipText("");
         progressBar.setRequestFocusEnabled(false);

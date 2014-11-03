@@ -7,6 +7,7 @@ package org.chaosdragon.graphtest.gui;
 import java.util.Arrays;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
+import org.chaosdragon.graphtest.steps.Step5;
 
 /**
  *
@@ -39,6 +40,16 @@ public class Matrix {
     public Matrix() {
         ids = new String[0];
         connections = new int[0][0];
+    }
+    
+    public void setValue(int x, int y, int value) {        
+        connections[x][y]=value;        
+    }
+    
+    public void setValue(String x, String y, int value) {        
+        int x1 = Step5.getNumberFromIDS(ids, x);
+        int y1 = Step5.getNumberFromIDS(ids, y);
+        setValue(x1,y1,value);        
     }
     
     public boolean isConnected(String one, String two) {
