@@ -57,20 +57,50 @@ public class Step8 extends Command {
     @Override
     public boolean execute() {
 
+        ArrayList<Matrix> newMatrices = new ArrayList<Matrix>();
         w.clearText();
         w.printText("Step 8\n");
-        
+
         for (int current = 0; current < requirements.size(); current++) {
-            
-            //Reizinam un citi brinumi
-        
-            
-            
-            //Gala jaizdod Bk
+
+            //Formejam Matricu
+            int size = requirementGroups.get(current).size();
+            int[][] matr = new int[size][size];
+            Set<String> group = requirementGroups.get(current);
+
+            int i = 0;
+            int j = 0;
+
+            //IDs for the new sub-matrix
+            String[] newIds = new String[matr.length];
+
+            for (String s1 : group) {
+
+                //Setting of ids
+                newIds[i] = s1;
+                for (String s2 : group) {
+
+                    //It is 1 if there is a connection in the big matrix
+                    if (newRequirements.get(current).isConnected(s1, s2)) {
+                        matr[i][j] = 1;
+                    }
+
+                    j++;
+                }
+                j = 0;
+                i++;
+            }
+
+            w.printText("Submatrix A" + (current + 1) + "g:\n");
+            Matrix m = new Matrix(newIds, matr);
+            w.printText(m.toString());
+            w.printText("\n");
+            newMatrices.add(m);
+
         }
-        
-        
-        
+
+        //Reizinam un citi brinumi
+        //Gala jaizdod Bk no pilna
         return false;
 
     }
@@ -79,6 +109,7 @@ public class Step8 extends Command {
     public Command getNext() {
 
         return new FinalCommand();
+
     }
 
 }
