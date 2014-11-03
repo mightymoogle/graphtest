@@ -88,7 +88,7 @@ public class MatrixTools {
         for (int i=0; i<size; i++) {
             for (int j=0; j<size; j++) {
                 
-                if (oldMatr[i][j]==1 && newMatr[1][1]==1) {
+                if (oldMatr[i][j]==1 && newMatr[i][j]==1) {
                     
                     
                     int[] p = {i,j};

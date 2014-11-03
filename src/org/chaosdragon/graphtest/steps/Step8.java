@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.swing.JPanel;
+import org.chaosdragon.graphtest.gui.GraphEditor;
 import org.chaosdragon.graphtest.gui.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
 import org.chaosdragon.tools.NaturalOrderComparator;
@@ -104,7 +105,8 @@ public class Step8 extends Command {
 
             Matrix m2 = new Matrix(m);
             //ArrayList<int[]> foundStuff = new ArrayList<>();
-            //size-1 may be incorrect!!!
+           
+            //s=2 may be incorret! see slide 46
             for (int s = 2; s < size; s++) {
 
                 int[][] contentMatrix
@@ -117,16 +119,39 @@ public class Step8 extends Command {
                         contentMatrix).toString() + "\n");
                 //Find stuff
 
+                //Compare first one with content matrix
                 ArrayList<int[]> found = MatrixTools.remainingOnes(
                         m.getConnections(), m2.getConnections());
 
-                System.out.println(found);
+                if (found.size()>0) {
+                    
+                    for (int[] item:found) {
+                    
+                        //Get strings from values recieved
+                        String s1 = m.getIds()[item[0]];
+                        String s2 = m.getIds()[item[0]];
+                        
+                        b.setValue(s1, s2, 0);                        
+                    
+                    }
+                }
+                                
+                System.out.println(b);
+                
+                       
+              
+                
                 
             }
-
+          
+          GraphEditor mat = new GraphEditor(w, true,b,true); //Load ID here
+          mat.setVisible(true);
                         
         }
 
+       
+        
+        
         //Reizinam un citi brinumi
         //Gala jaizdod Bk no pilna
         return false;
