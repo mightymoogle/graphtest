@@ -4,6 +4,8 @@
  */
 package org.chaosdragon.graphtest.gui;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Mighty
@@ -74,6 +76,34 @@ public class MatrixTools {
         return source;
     }
     
+    
+    //
+    public static ArrayList<int[]> remainingOnes(int[][] oldMatr, int[][] newMatr) {
+        
+                
+        ArrayList<int[]> foundRemnants = new ArrayList<>();
+        int size=oldMatr.length;
+        if (size!=newMatr.length) return null; //FAIL
+        
+        for (int i=0; i<size; i++) {
+            for (int j=0; j<size; j++) {
+                
+                if (oldMatr[i][j]==1 && newMatr[1][1]==1) {
+                    
+                    
+                    int[] p = {i,j};
+                    
+                    foundRemnants.add(p);
+                                        
+                }
+                
+            }
+        }
+        
+        return foundRemnants;
+    }
+    
+    
     public static String printMatrix(int[][] matrix, String[] resultNames) {
         
         //STRING BUILDER HERE!!!!!!!!!!!
@@ -113,5 +143,17 @@ public class MatrixTools {
         return r;
         
     }
+    
+    public static void main(String[] args) {
+        
+        int[][] m = {{1,0},{1,0}};
+        int[][] m2 = {{1,1},{0,1}};
+        
+        ArrayList<int[]>list = remainingOnes(m, m2);
+        System.out.println("");
+        
+        
+    }
+    
     
 }

@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.swing.JPanel;
+import org.chaosdragon.graphtest.gui.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
 import org.chaosdragon.tools.NaturalOrderComparator;
 
@@ -57,7 +58,9 @@ public class Step8 extends Command {
     @Override
     public boolean execute() {
 
+        //Newly added
         ArrayList<Matrix> newMatrices = new ArrayList<Matrix>();
+
         w.clearText();
         w.printText("Step 8\n");
 
@@ -91,12 +94,37 @@ public class Step8 extends Command {
                 i++;
             }
 
-            w.printText("Submatrix A" + (current + 1) + "g:\n");
+            w.printText("Matrix B" + (current + 1) + "g:\n");
             Matrix m = new Matrix(newIds, matr);
+            Matrix b = new Matrix(newRequirements.get(current));
+
             w.printText(m.toString());
             w.printText("\n");
             newMatrices.add(m);
 
+            Matrix m2 = new Matrix(m);
+            //ArrayList<int[]> foundStuff = new ArrayList<>();
+            //size-1 may be incorrect!!!
+            for (int s = 2; s < size; s++) {
+
+                int[][] contentMatrix
+                        = MatrixTools.multiply(m.getConnections(),
+                                m2.getConnections());
+                m2.setConnections(contentMatrix);
+
+                w.printText("λ" + (s) + ":\n");
+                w.printText(new Matrix(m.getIds(),
+                        contentMatrix).toString() + "\n");
+                //Find stuff
+
+                ArrayList<int[]> found = MatrixTools.remainingOnes(
+                        m.getConnections(), m2.getConnections());
+
+                System.out.println(found);
+                
+            }
+
+                        
         }
 
         //Reizinam un citi brinumi
