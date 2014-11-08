@@ -248,7 +248,7 @@ public class GraphEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_autoArrangeButtonActionPerformed
 
     private void zoomOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomOutButtonActionPerformed
-        x.zoom(-1);
+        x.zoom(-1);        
     }//GEN-LAST:event_zoomOutButtonActionPerformed
 
     private void zoomInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomInButtonActionPerformed

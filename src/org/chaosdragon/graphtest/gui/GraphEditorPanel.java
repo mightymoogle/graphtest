@@ -433,7 +433,8 @@ public class GraphEditorPanel extends JPanel {
             if (z < 0) {
                 graphComponent.zoomOut();
             }
-        }
+        }        
+        
       //  System.out.println(this.getSize().height);
       //  System.out.println(graphComponent.getSize().height);
     }

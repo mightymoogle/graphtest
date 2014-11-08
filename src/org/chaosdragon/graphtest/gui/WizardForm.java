@@ -17,7 +17,6 @@ import javax.swing.text.StyledDocument;
 import org.chaosdragon.graphtest.steps.*;
 import org.chaosdragon.tools.NaturalOrderComparator;
 
-
 /**
  *
  * @author Guest
@@ -29,62 +28,76 @@ public class WizardForm extends javax.swing.JFrame {
      */
     private int totalSteps = 10;
     private int stepNumber = 1;
-    private Command currentStep;   
-    private Switcher switcher= new Switcher();
+    private Command currentStep;
+    private Switcher switcher = new Switcher();
     final JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
-    
+
     private Map<String, Matrix> matrixMap;
-    
-    
+
     MatrixListModel matrices = new MatrixListModel(new ArrayList<Matrix>());
-    
+
     private HashMap<Class<? extends Command>, JPanel> panelMap = new HashMap<>();
-    
-    
+
     public void updateNextPrevButtons() {
         nextButton.setEnabled(true);
-        if (currentStep==null 
-                || currentStep.getClass().equals(NullCommand.class) 
-         || currentStep.getClass().equals(Step1.class))        
-        {previousButton.setEnabled(false);} else {
-        previousButton.setEnabled(true);        
+        if (currentStep == null
+                || currentStep.getClass().equals(NullCommand.class)
+                || currentStep.getClass().equals(Step1.class)) {
+            previousButton.setEnabled(false);
+        } else {
+            previousButton.setEnabled(true);
+        }
+
+        if (currentStep instanceof FinalCommand) {
+            nextButton.setEnabled(false);
+        }
+
     }
+
+    //Sets path and automatically loads file
+    public void setTestEnvironment() {
+        fc.setCurrentDirectory(new File("h:\\Archive\\RTU\\Specializeta Datu Apstrade (Novickis)\\Faili\\"));
+        extraSteps.setSelected(true);
         
-    if (currentStep instanceof FinalCommand) nextButton.setEnabled(false);
+        File f = new File(fc.getCurrentDirectory()+"\\Lekcijas\\LekcijasS4.csv");        
+        Matrix n = MatrixFiles.loadFromCsvFile(f.getAbsolutePath());
+        matrices.add(n);
         
         
-        
-    }    
+    }
     
     public WizardForm() {
-        initComponents();         
+        initComponents();             
         
-        fc.setCurrentDirectory(new File("h:\\Archive\\RTU\\Specializeta Datu Apstrade (Novickis)\\Faili\\"));
-                
+        
         panelMap.put(Step1.class, s1);
-        panelMap.put(Step2.class, s2);        
+        panelMap.put(Step2.class, s2);
         panelMap.put(Step3.class, s2);
         panelMap.put(Step4.class, s2);
         panelMap.put(Step5.class, s2);
-        panelMap.put(Step6.class, s2);                
-        panelMap.put(Step7.class, s2);  
-        panelMap.put(Step8.class, s2);  
+        panelMap.put(Step6.class, s2);
+        panelMap.put(Step7.class, s2);
+        panelMap.put(Step8.class, s2);
         panelMap.put(NullCommand.class, s1);
         panelMap.put(FinalCommand.class, s2);
         progressBarStateChanged(null);
         //currentStep = new Step1();
         s2.setVisible(false);
-        s1.setVisible(true);  
-        updateNextPrevButtons();                      
-        
+        s1.setVisible(true);
+        updateNextPrevButtons();
+
         jList1.setModel(matrices);
         jList1ValueChanged(null);
-       
+
         //FileChooser
         fc.setMultiSelectionEnabled(true);
-         FileFilter filter = new FileNameExtensionFilter("CSV Graph", new String[] {"csv"});
+        FileFilter filter = new FileNameExtensionFilter("CSV Graph", new String[]{"csv"});
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
+
+        
+        //Disable for real situation
+        setTestEnvironment();
         
     }
 
@@ -122,11 +135,10 @@ public class WizardForm extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         bottomPanel = new javax.swing.JPanel();
-        cancelButton = new javax.swing.JButton();
         nextButton = new javax.swing.JButton();
         previousButton = new javax.swing.JButton();
         progressBar = new javax.swing.JProgressBar();
-        undoButton = new javax.swing.JButton();
+        extraSteps = new javax.swing.JCheckBox();
 
         jMenuItem1.setMnemonic('c');
         jMenuItem1.setText("Copy");
@@ -371,13 +383,6 @@ public class WizardForm extends javax.swing.JFrame {
 
         getContentPane().add(middlePanel, java.awt.BorderLayout.CENTER);
 
-        cancelButton.setText("Cancel");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
-            }
-        });
-
         nextButton.setText("Next >");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -405,14 +410,8 @@ public class WizardForm extends javax.swing.JFrame {
             }
         });
 
-        undoButton.setText("Undo last step");
-        undoButton.setToolTipText("");
-        undoButton.setEnabled(false);
-        undoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                undoButtonActionPerformed(evt);
-            }
-        });
+        extraSteps.setText("Do not show extra steps");
+        extraSteps.setName(""); // NOI18N
 
         javax.swing.GroupLayout bottomPanelLayout = new javax.swing.GroupLayout(bottomPanel);
         bottomPanel.setLayout(bottomPanelLayout);
@@ -420,15 +419,13 @@ public class WizardForm extends javax.swing.JFrame {
             bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bottomPanelLayout.createSequentialGroup()
                 .addGap(2, 2, 2)
-                .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
+                .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(undoButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(extraSteps)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(previousButton)
-                .addGap(7, 7, 7)
-                .addComponent(nextButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelButton)
+                .addComponent(nextButton)
                 .addContainerGap())
         );
         bottomPanelLayout.setVerticalGroup(
@@ -438,9 +435,8 @@ public class WizardForm extends javax.swing.JFrame {
                 .addGroup(bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(previousButton)
                     .addComponent(nextButton)
-                    .addComponent(cancelButton)
                     .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(undoButton))
+                    .addComponent(extraSteps))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -449,206 +445,213 @@ public class WizardForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-
-        
-    }//GEN-LAST:event_cancelButtonActionPerformed
-
     public void clearText() {
         try {
-            
-        matrixPanel.setVisible(false);
-        matrixBox.removeAllItems();
-        matrixMap = new TreeMap<>(new NaturalOrderComparator());
-        
-        
-        jTextPane1.getDocument().remove(0, jTextPane1.getDocument().getLength());
-        } catch (Exception e) {e.printStackTrace();
-               
-                }
+
+            matrixPanel.setVisible(false);
+            matrixBox.removeAllItems();
+            matrixMap = new TreeMap<>(new NaturalOrderComparator());
+
+            jTextPane1.getDocument().remove(0, jTextPane1.getDocument().getLength());
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
-    
+
     public void addToMatrixBox(String name, Matrix m) {
-        
+
         matrixBox.addItem(name);
-        matrixMap.put(name, m);        
-        
+        matrixMap.put(name, m);
+
         matrixPanel.setVisible(true);
-        
+
     }
-    
-    
+
     public void printText(String line) {
         try {
-        StyledDocument doc = jTextPane1.getStyledDocument();                
-        doc.insertString(doc.getLength(), line, null);
-                        
+            StyledDocument doc = jTextPane1.getStyledDocument();
+            doc.insertString(doc.getLength(), line, null);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-    }
-    
-    
-    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
-       
-        
-        if (currentStep==null || currentStep.getClass().equals(Step1.class)) {
-            
+    }
+
+    
+    //Called from the NEXT button
+    private void doStep() {
+        if (currentStep == null || currentStep.getClass().equals(Step1.class)) {
+
             //MUST CHECK EMPTYNESS TOO
-            if(matrices.getSize()==0) {
+            if (matrices.getSize() == 0) {
                 JOptionPane.showMessageDialog(
-                this, "You must add at least one requirement!", "Requirements missing", JOptionPane.WARNING_MESSAGE);
-                
+                        this, "You must add at least one requirement!", "Requirements missing", JOptionPane.WARNING_MESSAGE);
+
                 return;
             }
-            
-            currentStep=new Step1(matrices.getList(),this);
+
+            currentStep = new Step1(matrices.getList(), this);
             currentStep.setPreviousCommand(new NullCommand());
-        }                                
-        
-         progressBar.setValue(progressBar.getValue()+1);
-        
-        
+        }
+
+        progressBar.setValue(progressBar.getValue() + 1);
+
         //Execute the step
         currentStep.execute();
-        
+
         Command previous = currentStep;
         //Get next step
-        currentStep=currentStep.getNext();                        
+        currentStep = currentStep.getNext();
         currentStep.setPreviousCommand(previous);
-        
+
         //Find the according panel to the next step and set it
-        setActivePanel(panelMap.get(currentStep.getClass()));                              
+        setActivePanel(panelMap.get(currentStep.getClass()));
+    }
+
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+
+        if (extraSteps.isSelected()) {
+                        
+            while (currentStep==null || currentStep.isSkippable()) {
+                doStep();           
+            }            
+            
+        } else {
+            doStep();
+        }
+
+        
 
     }//GEN-LAST:event_nextButtonActionPerformed
 
-        
     public void setActivePanel(JPanel p) {
-        
+
         s1.setVisible(false);
-        s2.setVisible(false);        
-         
-        p.setVisible(true);        
-        
+        s2.setVisible(false);
+
+        p.setVisible(true);
+
         infoLabel.setText(currentStep.getClass().toString());
         updateNextPrevButtons();
-        
+
     }
-    
-    
+
+
     private void previousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousButtonActionPerformed
-       
-        progressBar.setValue(progressBar.getValue()-2);
+
+        progressBar.setValue(progressBar.getValue() - 2);
         currentStep = currentStep.getPreviousCommand();
-        
+
         if (currentStep.getClass().equals(Step1.class)) {
-            setActivePanel(panelMap.get(currentStep.getClass())); 
+            setActivePanel(panelMap.get(currentStep.getClass()));
             return;
         }
-        
+
         currentStep = currentStep.getPreviousCommand();
-        this.nextButtonActionPerformed(evt);          
-    
+        doStep();
+
     }//GEN-LAST:event_previousButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (jList1.getSelectedIndex()==-1) return;
-        Matrix test = matrices.get(jList1.getSelectedIndex());                       
-        GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,false); //Load ID here
+        if (jList1.getSelectedIndex() == -1) {
+            return;
+        }
+        Matrix test = matrices.get(jList1.getSelectedIndex());
+        GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled, test, false); //Load ID here
         mat.setVisible(true);
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-if (jList1.getSelectedIndex()==-1) return;
-JOptionPane.showMessageDialog(
-         null, new JLabel( "<html><pre>" + matrices.get(jList1.getSelectedIndex()).print()));
- 
+        if (jList1.getSelectedIndex() == -1) {
+            return;
+        }
+        JOptionPane.showMessageDialog(
+                null, new JLabel("<html><pre>" + matrices.get(jList1.getSelectedIndex()).print()));
+
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_undoButtonActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        matrices.add(new Matrix());           
-        
+
+        matrices.add(new Matrix());
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        if (jList1.getSelectedIndex()==-1) return;
+        if (jList1.getSelectedIndex() == -1) {
+            return;
+        }
         matrices.remove(jList1.getSelectedIndex());
         jList1.clearSelection();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
 
-        
         int returnVal = fc.showSaveDialog(this);
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            
-        File[] s = fc.getSelectedFiles();
-        File ss = s[0];
-        String path = ss.getAbsolutePath();
-        if (!path.toLowerCase().endsWith(".csv")) path=path+".csv";
-        
-        MatrixFiles.generateCsvFile(path, matrices.get(jList1.getSelectedIndex()));
+
+            File[] s = fc.getSelectedFiles();
+            File ss = s[0];
+            String path = ss.getAbsolutePath();
+            if (!path.toLowerCase().endsWith(".csv")) {
+                path = path + ".csv";
+            }
+
+            MatrixFiles.generateCsvFile(path, matrices.get(jList1.getSelectedIndex()));
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-     
+
         int returnVal = fc.showOpenDialog(this);
-        
+
         //????
-        if (returnVal==JFileChooser.APPROVE_OPTION) {
-            
-            
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+
             File[] files = fc.getSelectedFiles();
-            
-            for (File f: files) {            
-              Matrix n = MatrixFiles.loadFromCsvFile(f.getAbsolutePath());
-              matrices.add(n);
+
+            for (File f : files) {
+                Matrix n = MatrixFiles.loadFromCsvFile(f.getAbsolutePath());
+                matrices.add(n);
             }
-              
-            
-            
+
         }
-        
-      
-        
+
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if (jList1.getSelectedIndex()==-1) return;
+        if (jList1.getSelectedIndex() == -1) {
+            return;
+        }
         Matrix test = matrices.get(jList1.getSelectedIndex());
-        
-        GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled,test,true); //Load ID here
-        
-         mat.setArrange(GraphEditorPanel.Arrange.FAST_ORGANIC);            
-         mat.fixReadOnly();
-         mat.updateTitle(jList1.getSelectedValue().toString());     
-        
+
+        GraphEditor mat = new GraphEditor(this, rootPaneCheckingEnabled, test, true); //Load ID here
+
+        mat.setArrange(GraphEditorPanel.Arrange.FAST_ORGANIC);
+        mat.fixReadOnly();
+        mat.updateTitle(jList1.getSelectedValue().toString());
+
         mat.setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jList1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jList1ValueChanged
-                  
+
         //Buttons that turn off when nothing is selected in list
-        boolean isElementSelected = (jList1.getSelectedIndex()!=-1);
-      
-            jButton2.setEnabled(isElementSelected);
-            jButton3.setEnabled(isElementSelected);
-            jButton4.setEnabled(isElementSelected);
-            jButton6.setEnabled(isElementSelected);
-            jButton7.setEnabled(isElementSelected);
-   
+        boolean isElementSelected = (jList1.getSelectedIndex() != -1);
+
+        jButton2.setEnabled(isElementSelected);
+        jButton3.setEnabled(isElementSelected);
+        jButton4.setEnabled(isElementSelected);
+        jButton6.setEnabled(isElementSelected);
+        jButton7.setEnabled(isElementSelected);
+
     }//GEN-LAST:event_jList1ValueChanged
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -656,28 +659,28 @@ JOptionPane.showMessageDialog(
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void progressBarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_progressBarStateChanged
-        progressBar.setString("Step "+progressBar.getValue()+" of "+progressBar.getMaximum());
+        progressBar.setString("Step " + progressBar.getValue() + " of " + progressBar.getMaximum());
     }//GEN-LAST:event_progressBarStateChanged
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        
+
         jTextPane1.copy();
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        
-        if (matrixBox.getSelectedItem()!=null) {
-            Matrix m = matrixMap.get(matrixBox.getSelectedItem());        
 
-            GraphEditor mat = new GraphEditor(this,true,m,true); //Load ID here
-            mat.setArrange(GraphEditorPanel.Arrange.FAST_ORGANIC);            
+        if (matrixBox.getSelectedItem() != null) {
+            Matrix m = matrixMap.get(matrixBox.getSelectedItem());
+
+            GraphEditor mat = new GraphEditor(this, true, m, true); //Load ID here
+            mat.setArrange(GraphEditorPanel.Arrange.FAST_ORGANIC);
             mat.fixReadOnly();
-            mat.updateTitle(matrixBox.getSelectedItem().toString());            
-            
+            mat.updateTitle(matrixBox.getSelectedItem().toString());
+
             mat.setVisible(true);
         }
-         
+
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void matrixBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matrixBoxActionPerformed
@@ -720,7 +723,7 @@ JOptionPane.showMessageDialog(
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;
-    private javax.swing.JButton cancelButton;
+    private javax.swing.JCheckBox extraSteps;
     private javax.swing.JLabel infoLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -748,6 +751,5 @@ JOptionPane.showMessageDialog(
     private javax.swing.JPanel s1;
     private javax.swing.JPanel s2;
     private javax.swing.JPanel topPanel;
-    private javax.swing.JButton undoButton;
     // End of variables declaration//GEN-END:variables
 }

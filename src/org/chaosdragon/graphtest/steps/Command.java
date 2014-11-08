@@ -13,6 +13,8 @@ public abstract class Command {
 //   abstract public void undo();
    abstract public Command getNext();
    
+   protected boolean skippable = true;
+   
    private Command previousCommand;
 
     /**
@@ -42,6 +44,20 @@ public abstract class Command {
 //        }        
         
 //    }
+
+    /**
+     * @return the skippable
+     */
+    public boolean isSkippable() {
+        return skippable;
+    }
+
+    /**
+     * @param skippable the skippable to set
+     */
+    public void setSkippable(boolean skippable) {
+        this.skippable = skippable;
+    }
     
     
    

@@ -9,11 +9,17 @@ package org.chaosdragon.graphtest.steps;
  */
 public class FinalCommand extends Command{
 
+      
     @Override
     public boolean execute() {        
         return false;
     }
 
+    //Last one is not skippable
+    public FinalCommand() {
+        super();     
+        skippable = false;    
+    }    
 
     @Override
     public Command getNext() {
