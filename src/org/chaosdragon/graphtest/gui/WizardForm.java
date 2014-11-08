@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.FileChooserUI;
 import javax.swing.text.StyledDocument;
 import org.chaosdragon.graphtest.steps.*;
+import org.chaosdragon.graphtest.tables.KeyTableModel;
 import org.chaosdragon.tools.NaturalOrderComparator;
 
 /**
@@ -38,6 +39,8 @@ public class WizardForm extends javax.swing.JFrame {
 
     private HashMap<Class<? extends Command>, JPanel> panelMap = new HashMap<>();
 
+    
+    //EDIT ME
     public void updateNextPrevButtons() {
         nextButton.setEnabled(true);
         if (currentStep == null
@@ -66,11 +69,18 @@ public class WizardForm extends javax.swing.JFrame {
         
     }
     
+    public void setKeyModel(KeyTableModel model) {
+        
+        keyTable.setModel(model);
+        
+    }
+    
+    
     public WizardForm() {
         initComponents();             
         
-        
-        panelMap.put(Step1.class, s1);
+        panelMap.put(NullCommand.class, s1);   
+        panelMap.put(Step1.class, s2);
         panelMap.put(Step2.class, s2);
         panelMap.put(Step3.class, s2);
         panelMap.put(Step4.class, s2);
@@ -78,7 +88,8 @@ public class WizardForm extends javax.swing.JFrame {
         panelMap.put(Step6.class, s2);
         panelMap.put(Step7.class, s2);
         panelMap.put(Step8.class, s2);
-        panelMap.put(NullCommand.class, s1);
+        panelMap.put(Step9.class, s3);
+        
         panelMap.put(FinalCommand.class, s2);
         progressBarStateChanged(null);
         //currentStep = new Step1();
@@ -98,6 +109,9 @@ public class WizardForm extends javax.swing.JFrame {
         
         //Disable for real situation
         setTestEnvironment();
+        
+        currentStep = new NullCommand();
+        setActivePanel(panelMap.get(currentStep.getClass()));
         
     }
 
@@ -134,6 +148,16 @@ public class WizardForm extends javax.swing.JFrame {
         matrixBox = new javax.swing.JComboBox();
         jButton9 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        s3 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        keyTable = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList();
+        keyBar = new javax.swing.JProgressBar();
+        keyPrev = new javax.swing.JButton();
+        keyNext = new javax.swing.JButton();
         bottomPanel = new javax.swing.JPanel();
         nextButton = new javax.swing.JButton();
         previousButton = new javax.swing.JButton();
@@ -151,7 +175,7 @@ public class WizardForm extends javax.swing.JFrame {
         jPopupMenu1.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Special Data Processing Technologies © 2014 David Griberman");
+        setTitle("Special Data Processing Technologies © 2014 David Griberman 101RDB242");
         setMinimumSize(new java.awt.Dimension(900, 600));
         setPreferredSize(new java.awt.Dimension(900, 600));
 
@@ -165,7 +189,7 @@ public class WizardForm extends javax.swing.JFrame {
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(topPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 838, Short.MAX_VALUE)
+                .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 839, Short.MAX_VALUE)
                 .addContainerGap())
         );
         topPanelLayout.setVerticalGroup(
@@ -181,8 +205,6 @@ public class WizardForm extends javax.swing.JFrame {
         middlePanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
         middlePanel.setPreferredSize(new java.awt.Dimension(1167, 566));
         middlePanel.setLayout(new java.awt.CardLayout());
-
-        s1.setBackground(new java.awt.Color(204, 255, 204));
 
         jList1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -290,7 +312,7 @@ public class WizardForm extends javax.swing.JFrame {
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(524, Short.MAX_VALUE))
+                .addContainerGap(525, Short.MAX_VALUE))
         );
         s1Layout.setVerticalGroup(
             s1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,7 +339,6 @@ public class WizardForm extends javax.swing.JFrame {
 
         middlePanel.add(s1, "card3");
 
-        s2.setBackground(new java.awt.Color(255, 153, 204));
         s2.setLayout(new java.awt.CardLayout());
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -372,7 +393,7 @@ public class WizardForm extends javax.swing.JFrame {
                 .addComponent(matrixBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton9)
-                .addContainerGap(307, Short.MAX_VALUE))
+                .addContainerGap(363, Short.MAX_VALUE))
         );
 
         jPanel1.add(matrixPanel, java.awt.BorderLayout.EAST);
@@ -380,6 +401,78 @@ public class WizardForm extends javax.swing.JFrame {
         s2.add(jPanel1, "card3");
 
         middlePanel.add(s2, "card2");
+
+        s3.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        keyTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        keyTable.setColumnSelectionAllowed(false);
+        keyTable.setRowSelectionAllowed(false);
+        keyTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(keyTable);
+
+        s3.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel2.setPreferredSize(new java.awt.Dimension(200, 283));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/1415503646_key-64.png"))); // NOI18N
+        jLabel3.setText("Select primary key");
+        jLabel3.setToolTipText("");
+        jPanel2.add(jLabel3);
+
+        jList2.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jList2.setMaximumSize(new java.awt.Dimension(333, 80));
+        jList2.setMinimumSize(new java.awt.Dimension(333, 80));
+        jList2.setPreferredSize(new java.awt.Dimension(150, 80));
+        jScrollPane4.setViewportView(jList2);
+
+        jPanel2.add(jScrollPane4);
+
+        keyBar.setMaximum(25);
+        keyBar.setMinimum(1);
+        keyBar.setToolTipText("");
+        keyBar.setString("Group 1 of 8");
+        keyBar.setStringPainted(true);
+        keyBar.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                keyBarStateChanged(evt);
+            }
+        });
+        jPanel2.add(keyBar);
+
+        keyPrev.setText("< Previous");
+        keyPrev.setToolTipText("");
+        keyPrev.setEnabled(false);
+        jPanel2.add(keyPrev);
+
+        keyNext.setText("Next >");
+        keyNext.setToolTipText("");
+        keyNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keyNextActionPerformed(evt);
+            }
+        });
+        jPanel2.add(keyNext);
+
+        s3.add(jPanel2, java.awt.BorderLayout.EAST);
+
+        middlePanel.add(s3, "card4");
 
         getContentPane().add(middlePanel, java.awt.BorderLayout.CENTER);
 
@@ -419,7 +512,7 @@ public class WizardForm extends javax.swing.JFrame {
             bottomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bottomPanelLayout.createSequentialGroup()
                 .addGap(2, 2, 2)
-                .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+                .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(extraSteps)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -482,8 +575,8 @@ public class WizardForm extends javax.swing.JFrame {
     
     //Called from the NEXT button
     private void doStep() {
-        if (currentStep == null || currentStep.getClass().equals(Step1.class)) {
-
+      
+        if (currentStep.getClass().equals(NullCommand.class)) {
             //MUST CHECK EMPTYNESS TOO
             if (matrices.getSize() == 0) {
                 JOptionPane.showMessageDialog(
@@ -507,15 +600,17 @@ public class WizardForm extends javax.swing.JFrame {
         currentStep.setPreviousCommand(previous);
 
         //Find the according panel to the next step and set it
-        setActivePanel(panelMap.get(currentStep.getClass()));
+        setActivePanel(panelMap.get(currentStep.getPreviousCommand().getClass()));
     }
 
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
+        //if (currentStep!=null && currentStep.getClass().equals(NullCommand.class)) currentStep=null;
+                
         if (extraSteps.isSelected()) {
-                        
-            while (currentStep==null || currentStep.isSkippable()) {
+            doStep(); 
+            while (currentStep.isSkippable()) {
                 doStep();           
             }            
             
@@ -531,27 +626,49 @@ public class WizardForm extends javax.swing.JFrame {
 
         s1.setVisible(false);
         s2.setVisible(false);
+        s3.setVisible(false);
 
         p.setVisible(true);
 
-        infoLabel.setText(currentStep.getClass().toString());
+        infoLabel.setText("Current step"+currentStep.getClass().getSimpleName());
         updateNextPrevButtons();
 
     }
 
-
-    private void previousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousButtonActionPerformed
-
+    private void stepBack() {
+            //  if (currentStep.getClass().equals(NullCommand.class)) currentStep=null;        
         progressBar.setValue(progressBar.getValue() - 2);
         currentStep = currentStep.getPreviousCommand();
 
-        if (currentStep.getClass().equals(Step1.class)) {
+        if (currentStep.getClass().equals(NullCommand.class)) {
             setActivePanel(panelMap.get(currentStep.getClass()));
             return;
         }
 
         currentStep = currentStep.getPreviousCommand();
-        doStep();
+        
+        if (currentStep.getClass().equals(NullCommand.class)) {
+            setActivePanel(panelMap.get(currentStep.getClass()));
+            return;
+        }
+        
+        doStep(); 
+    }
+    
+    
+    private void previousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousButtonActionPerformed
+
+        //HAS NOT BEEN TESTED, BEWARE!
+        if (extraSteps.isSelected()) {
+            stepBack(); 
+            while (currentStep.isSkippable()) {
+                stepBack();           
+            }            
+            
+        } else {
+            stepBack();
+        }
+        
 
     }//GEN-LAST:event_previousButtonActionPerformed
 
@@ -687,6 +804,14 @@ public class WizardForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_matrixBoxActionPerformed
 
+    private void keyBarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_keyBarStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_keyBarStateChanged
+
+    private void keyNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyNextActionPerformed
+        keyBar.setValue(keyBar.getValue()+1);
+    }//GEN-LAST:event_keyNextActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -735,13 +860,22 @@ public class WizardForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JList jList1;
+    private javax.swing.JList jList2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextPane jTextPane1;
+    private javax.swing.JProgressBar keyBar;
+    private javax.swing.JButton keyNext;
+    private javax.swing.JButton keyPrev;
+    private javax.swing.JTable keyTable;
     private javax.swing.JComboBox matrixBox;
     private javax.swing.JPanel matrixPanel;
     private javax.swing.JPanel middlePanel;
@@ -750,6 +884,7 @@ public class WizardForm extends javax.swing.JFrame {
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JPanel s1;
     private javax.swing.JPanel s2;
+    private javax.swing.JPanel s3;
     private javax.swing.JPanel topPanel;
     // End of variables declaration//GEN-END:variables
 }

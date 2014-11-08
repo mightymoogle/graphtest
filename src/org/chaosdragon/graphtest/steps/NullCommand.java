@@ -10,6 +10,10 @@ package org.chaosdragon.graphtest.steps;
  */
 public class NullCommand extends Command{
 
+    public NullCommand(){
+       skippable = false; 
+    }
+    
     @Override
     public boolean execute() {
         return false;
@@ -19,7 +23,7 @@ public class NullCommand extends Command{
 
     @Override
     public Command getNext() {
-        return null;
+        return new NullCommand();
     }
     
 }

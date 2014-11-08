@@ -37,6 +37,7 @@ public class Step8 extends Command {
     ArrayList<Matrix> submatrices;
     //Current requirement -> Level-> Group
     ArrayList<ArrayList<Set<String>>> groupLevels;
+    ArrayList<Matrix> newMatrices;
 
     //Current requirement -> Group id from D-> Content
     ArrayList<Map<String, Set<String>>> groupInformation;
@@ -60,7 +61,7 @@ public class Step8 extends Command {
     public boolean execute() {
 
         //Newly added
-        ArrayList<Matrix> newMatrices = new ArrayList<Matrix>();
+        newMatrices = new ArrayList<Matrix>();
 
         w.clearText();
         w.printText("Step 8\n");
@@ -143,7 +144,7 @@ public class Step8 extends Command {
                 
             }
              System.out.println(b);
-               newMatrices.add(b);
+              newMatrices.add(b);
        ///PUT MATRIX HERE
             w.printText("Matrix B"+(current+1)+"*"+"\n"+b+"\n");
             w.addToMatrixBox("B"+(current+1)+"*", b);
@@ -162,7 +163,7 @@ public class Step8 extends Command {
     @Override
     public Command getNext() {
 
-        return new FinalCommand();
+        return new Step9(this);
 
     }
 
