@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import org.chaosdragon.graphtest.gui.GraphEditor;
 import org.chaosdragon.graphtest.gui.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
+import org.chaosdragon.graphtest.tables.KeyTableListener;
 import org.chaosdragon.graphtest.tables.KeyTableModel;
 import org.chaosdragon.tools.NaturalOrderComparator;
 
@@ -44,6 +45,11 @@ public class Step9 extends Command {
 
     //Current requirement -> Group id from D-> Content
     ArrayList<Map<String, Set<String>>> groupInformation;
+     
+    
+    ArrayList<ElementTable> elementTableList; //Step9 tables
+    private int currentElement; //For ^ 
+     
 
     public Step9(Step8 old) {
         w = old.w;
@@ -63,27 +69,125 @@ public class Step9 extends Command {
         //SEEMS BUGGED!
         newMatrices = old.newMatrices;
         
-       // skippable = false;
-        
-        //Prepare the table;      
+       
         
     }
     
-    public void prepare() {
-        String[] names = requirements.get(0).getIds();
+    public class ElementTable {
         
-        groupInformation = null;
+        private String[] names;
+        private byte[][] data;
+
+        /**
+         * @return the names
+         */
+        public String[] getNames() {
+            return names;
+        }
+
+        /**
+         * @param names the names to set
+         */
+        public void setNames(String[] names) {
+            this.names = names;
+        }
+
+        /**
+         * @return the data
+         */
+        public byte[][] getData() {
+            return data;
+        }
+
+        /**
+         * @param data the data to set
+         */
+        public void setData(byte[][] data) {
+            this.data = data;
+        }
         
-        byte[][] data= new byte[names.length][names.length];  
+        public KeyTableModel getModel() {
+             return new KeyTableModel(names, data);       
+        }
         
-        for (int i=0; i<data.length; i++) {
+        public ElementTable() {
+            
+        }
+        
+        public void fillData() {
+            data= new byte[names.length][names.length];  
+        
+            for (int i=0; i<data.length; i++) {
             for (int j=0; j<data.length; j++) {
                 data[i][j]=1;
             }
+            }            
+            
         }
         
-        KeyTableModel tableModel = new KeyTableModel(names, data);        
-        w.setKeyModel(tableModel); 
+    }
+    
+    public boolean hasNext() {
+        
+        return (currentElement+1<elementTableList.size());
+        
+    }
+    
+    
+    public void nextKey() {
+        
+        if (currentElement<elementTableList.size()) {
+            
+            currentElement++;
+            
+            //IF SIZE == 1 (NOTHING CAN BE CHANGED -> just set the key automaticaly)
+            //- CAN BE LAZY WITH THIS ONE
+            
+            setModel(currentElement);
+        }       
+            
+    }
+    
+    private void setModel(int element) {
+       KeyTableModel m = elementTableList.get(element).getModel();    
+       w.setKeyModel(m);
+       
+       //MAYBE ONE FOR ALL?
+       m.addTableModelListener(new KeyTableListener(w));
+       m.fireTableDataChanged();
+    }
+    
+    
+    public void prepare() {
+       
+        //Global storage
+        elementTableList  =  new ArrayList<>();
+        
+    for (int current = 0; current < requirements.size(); current++) {
+
+       // ArrayList<ElementTable> elementTableList = new ArrayList<>();
+        
+        
+              
+        Set<String> s = requirementGroups.get(current);
+        Set<String> currentSet = new TreeSet<>();
+        for (String p:s) {        
+           ElementTable e = new ElementTable();             
+           currentSet = groupInformation.get(0).get(p);           
+           //Sets names
+           e.setNames(currentSet.toArray(new String[0]));
+           e.fillData();
+           elementTableList.add(e);
+                }       
+     
+       // elementTableListList.add(elementTableList);
+        
+    }    
+        
+     currentElement=0;
+     setModel(0);
+     //CALL CLEARING OF THE KEYLIST ON W? RESET THE KEYBAR AND SO ON???
+    
     }
     
 

@@ -59,13 +59,17 @@ public class Step7 extends Command {
         w.clearText();
         newRequirements = new ArrayList<>();
 
+         ArrayList<Map<String, Set<String>>> newGroupInformation = new ArrayList<>();
+        
+        
         for (int current = 0; current < requirements.size(); current++) {
             
             
             //Doubling element ID -> H(ID)->Set of H
             Map<String, Map<String, Set<String>>> doublingMap = new TreeMap<>(new NaturalOrderComparator());
 
-            Map<String, Set<String>> H = groupInformation.get(current);
+            Map<String, Set<String>> H = new TreeMap<String, Set<String>>(groupInformation.get(current));
+                    
 
             Matrix submatrix = submatrices.get(current);
             Set<String> D = informationalElements.get(current);
@@ -123,6 +127,11 @@ public class Step7 extends Command {
                                 delete.add(""+Hx.getKey()+","+Hy.getKey());
                                 b2.setValue(Hx.getKey(), Hy.getKey(), 0);
                                 
+                                
+                                //Delete from H
+                                H.get(Hy.getKey()).remove(Hx.getKey());
+                                                              
+                                
                             } else {
 
                                save.add(""+Hx.getKey()+","+Hy.getKey()); 
@@ -142,7 +151,11 @@ public class Step7 extends Command {
             w.printText("\nResulting matrix:\n"+b2+"\n");
             w.addToMatrixBox("B"+(current+1)+"*", b2);
             newRequirements.add(b2);
+            newGroupInformation.add(H);
         }
+        
+        //groupInformation = H;
+        groupInformation = newGroupInformation; ///FIX ME!!!!
         
         return false;
 

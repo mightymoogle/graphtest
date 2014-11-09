@@ -16,6 +16,11 @@ public class KeyTableModel extends AbstractTableModel {
     private String[] columnNames;
     private byte[][] data;
     
+    
+    public String[] getColumnNames() {
+        return columnNames;
+    }
+    
     public KeyTableModel(String[] columnNames, byte[][] data) {        
         this.columnNames =  columnNames;
         this.data = data;        
@@ -33,9 +38,10 @@ public class KeyTableModel extends AbstractTableModel {
     
     @Override
     public String getColumnName(int col) {
-        return columnNames[col];
+        return "d"+columnNames[col];
     }
-
+    
+    
     @Override
     public Byte getValueAt(int rowIndex, int columnIndex) {       
         return data[rowIndex][columnIndex];
