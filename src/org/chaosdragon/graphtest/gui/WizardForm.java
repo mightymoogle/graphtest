@@ -431,6 +431,11 @@ public class WizardForm extends javax.swing.JFrame {
         ));
         keyTable.setRowSelectionAllowed(false);
         keyTable.getTableHeader().setReorderingAllowed(false);
+        keyTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                keyTableMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(keyTable);
 
         s3.add(jScrollPane3, java.awt.BorderLayout.CENTER);
@@ -862,6 +867,13 @@ public class WizardForm extends javax.swing.JFrame {
                 //FINISH UP AND ENABLE THE MAIN NEXT> BUTTON
                 
                 nextButton.setEnabled(true);
+                keyNext.setEnabled(false);
+                
+                //DISABLE JTABLE ALSO?
+                
+                //OR JUST RUN THE NEXT?
+                nextButtonActionPerformed(evt);
+                
             }
             
             
@@ -877,6 +889,16 @@ public class WizardForm extends javax.swing.JFrame {
           keyNext.setEnabled(true);
         }
     }//GEN-LAST:event_keyListValueChanged
+
+    private void keyTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyTableMouseClicked
+        
+        
+        //FIX ME
+        if (evt.getButton()==java.awt.event.MouseEvent.BUTTON3) {
+            System.out.println("CHANGE THE VALUE HERE 1->2 2->1");
+        }
+        
+    }//GEN-LAST:event_keyTableMouseClicked
 
     /**
      * @param args the command line arguments

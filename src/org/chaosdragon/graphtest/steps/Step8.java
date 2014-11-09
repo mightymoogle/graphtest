@@ -143,7 +143,7 @@ public class Step8 extends Command {
                 
                 
             }
-             System.out.println(b);
+             //System.out.println(b);
               newMatrices.add(b);
        ///PUT MATRIX HERE
             w.printText("Matrix B"+(current+1)+"*"+"\n"+b+"\n");

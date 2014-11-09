@@ -173,7 +173,7 @@ public class Step9 extends Command {
         Set<String> currentSet = new TreeSet<>();
         for (String p:s) {        
            ElementTable e = new ElementTable();             
-           currentSet = groupInformation.get(0).get(p);           
+           currentSet = groupInformation.get(current).get(p);           
            //Sets names
            e.setNames(currentSet.toArray(new String[0]));
            e.fillData();
