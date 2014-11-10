@@ -3,6 +3,8 @@
  */
 package org.chaosdragon.graphtest.steps;
 
+import org.chaosdragon.graphtest.matrix.Matrix;
+import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.*;
 import java.util.ArrayList;
 import javax.swing.JLabel;

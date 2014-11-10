@@ -3,7 +3,7 @@
  */
 package org.chaosdragon.graphtest.steps;
 
-import org.chaosdragon.graphtest.gui.Matrix;
+import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.swing.JPanel;
 import org.chaosdragon.graphtest.gui.GraphEditor;
-import org.chaosdragon.graphtest.gui.MatrixTools;
+import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
 import org.chaosdragon.tools.NaturalOrderComparator;
 
@@ -56,6 +56,13 @@ public class Step8 extends Command {
         groupLevels = old.groupLevels;
         groupInformation = old.groupInformation;
     }
+    
+    public boolean groupsConnected() {
+        
+        
+        return false;
+    }
+    
 
     @Override
     public boolean execute() {

@@ -4,6 +4,7 @@
  */
 package org.chaosdragon.graphtest.gui;
 
+import org.chaosdragon.graphtest.matrix.Matrix;
 import java.awt.BorderLayout;
 import java.awt.Image;
 import java.io.IOException;

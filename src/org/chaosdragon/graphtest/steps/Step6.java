@@ -3,7 +3,7 @@
  */
 package org.chaosdragon.graphtest.steps;
 
-import org.chaosdragon.graphtest.gui.Matrix;
+import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;

@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.chaosdragon.graphtest.gui;
+package org.chaosdragon.graphtest.matrix;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  *
@@ -108,10 +109,13 @@ public class MatrixTools {
         
         //STRING BUILDER HERE!!!!!!!!!!!
                 
-        int len = matrix.length;        
+        int len1 = matrix.length;        
+        int len2 = matrix[0].length;
         int maxLength = 0;
         
-        for (int i=0; i<len; i++) {
+        
+        //Find max length of a name label
+        for (int i=0; i<len2; i++) {
             if (resultNames[i].length()>maxLength)
                 maxLength = resultNames[i].length();
         }
@@ -120,20 +124,25 @@ public class MatrixTools {
         
         String r = String.format("%"+(maxLength+1)+"s", "");
         
-        for (int i=0; i<len;i++) {
+        //Output Labels
+        for (int i=0; i<len2;i++) {
             r=r+String.format("%"+maxLength+"s",resultNames[i]);
         }
         r=r+"\n";
         
-        for (int i=0; i<=len; i++) {
+        
+        //The border line
+        for (int i=0; i<=len2; i++) {
             for (int j=0; j<=maxLength; j++) r=r+"-";
         }
         r=r+'\n';
                 
-        for (int i=0; i<len; i++) {
+        
+        //Output the elements
+        for (int i=0; i<len1; i++) {
              r=r+String.format("%"+(maxLength+1)+"s",resultNames[i]+"|");
 
-            for (int j=0; j<len; j++) {
+            for (int j=0; j<len2; j++) {
                 r=r+String.format("%"+maxLength+"d",matrix[i][j]);                
             }
             
@@ -152,7 +161,23 @@ public class MatrixTools {
         ArrayList<int[]>list = remainingOnes(m, m2);
        
         
+    }
+    
+    
+    public static boolean setsConnected(Set<String> s1, Set<String> s2, Matrix m) {
         
+        if (s1.equals(s2)) return false;
+
+            for (String a:s1) {
+                for (String b:s2) {
+                    if (m.isConnected(a, b)) {
+                        return true;
+                    }
+                }
+            }
+        
+             
+        return false;
     }
     
     

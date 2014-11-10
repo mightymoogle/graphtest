@@ -4,6 +4,9 @@
  */
 package org.chaosdragon.graphtest.gui;
 
+import org.chaosdragon.graphtest.matrix.MatrixListModel;
+import org.chaosdragon.graphtest.matrix.MatrixFiles;
+import org.chaosdragon.graphtest.matrix.Matrix;
 import java.io.File;
 import java.util.*;
 import javax.swing.DefaultListModel;
@@ -41,6 +44,8 @@ public class WizardForm extends javax.swing.JFrame {
 
     private HashMap<Class<? extends Command>, JPanel> panelMap = new HashMap<>();
     DefaultListModel listModel;
+    
+    ArrayList<String> keys;        
     
     //EDIT ME
     public void updateNextPrevButtons() {
@@ -94,6 +99,7 @@ public class WizardForm extends javax.swing.JFrame {
         panelMap.put(Step7.class, s2);
         panelMap.put(Step8.class, s2);
         panelMap.put(Step9.class, s3);
+        panelMap.put(Step10.class, s2);
         
         panelMap.put(FinalCommand.class, s2);
         progressBarStateChanged(null);
@@ -119,6 +125,7 @@ public class WizardForm extends javax.swing.JFrame {
         setActivePanel(panelMap.get(currentStep.getClass()));
         listModel = new DefaultListModel();
         keyList.setModel(listModel);
+        keys = new ArrayList<>();
         
     }
 
@@ -658,6 +665,7 @@ public class WizardForm extends javax.swing.JFrame {
             }            
             
         } else {
+            
             doStep();
         }
 
@@ -701,6 +709,7 @@ public class WizardForm extends javax.swing.JFrame {
     
     private void previousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousButtonActionPerformed
 
+        keys= new ArrayList<>();
         //HAS NOT BEEN TESTED, BEWARE!
         if (extraSteps.isSelected()) {
             stepBack(); 
@@ -854,6 +863,9 @@ public class WizardForm extends javax.swing.JFrame {
     private void keyNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyNextActionPerformed
         
         if (currentStep.getPreviousCommand() instanceof Step9) {
+            
+            String result = (String) keyList.getSelectedValue();
+            keys.add(result.substring(1));
         
             //FIX TO STEP 10 LATER!!! ^ TOO
             Step9 step = (Step9)currentStep.getPreviousCommand();
@@ -871,7 +883,16 @@ public class WizardForm extends javax.swing.JFrame {
                 
                 //DISABLE JTABLE ALSO?
                 
+                
+
+
                 //OR JUST RUN THE NEXT?
+                
+                //RESET THE NEXT STEP
+                Step9 previous = (Step9)currentStep.getPreviousCommand();
+                currentStep = new Step10(previous);
+                currentStep.setPreviousCommand(previous);
+                ((Step10) currentStep).setKeys(keys);
                 nextButtonActionPerformed(evt);
                 
             }

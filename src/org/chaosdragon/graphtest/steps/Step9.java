@@ -3,7 +3,7 @@
  */
 package org.chaosdragon.graphtest.steps;
 
-import org.chaosdragon.graphtest.gui.Matrix;
+import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +15,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import javax.swing.JPanel;
 import org.chaosdragon.graphtest.gui.GraphEditor;
-import org.chaosdragon.graphtest.gui.MatrixTools;
+import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
 import org.chaosdragon.graphtest.tables.KeyTableListener;
 import org.chaosdragon.graphtest.tables.KeyTableModel;
@@ -193,16 +193,14 @@ public class Step9 extends Command {
 
     @Override
     public boolean execute() {
-
         prepare();        
         return false;
-
     }
 
     @Override
     public Command getNext() {
 
-        return new FinalCommand();
+        return new Step10(this);
 
     }
 

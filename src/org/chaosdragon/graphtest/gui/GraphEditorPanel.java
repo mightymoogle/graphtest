@@ -1,5 +1,6 @@
 package org.chaosdragon.graphtest.gui;
 
+import org.chaosdragon.graphtest.matrix.Matrix;
 import com.mxgraph.io.mxCodec;
 import com.mxgraph.layout.*;
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
@@ -23,7 +24,7 @@ import com.mxgraph.util.mxXmlUtils;
 import com.mxgraph.util.png.mxPngEncodeParam;
 import com.mxgraph.util.png.mxPngImageEncoder;
 import com.mxgraph.view.mxGraph;
-import org.chaosdragon.graphtest.gui.MatrixTools;
+import org.chaosdragon.graphtest.matrix.MatrixTools;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
@@ -95,8 +96,8 @@ public class GraphEditorPanel extends JPanel {
             
             int[][] connections = matr.getConnections();
             
-            for (int i=0; i<names.length; i++) {
-                for (int j=0; j<names.length; j++) {
+            for (int i=0; i<connections.length; i++) {
+                for (int j=0; j<connections[0].length; j++) {
                     
                     if (connections[i][j]==1) {
                         graph.insertEdge(parent, null, "", vertices[i], vertices[j]);
