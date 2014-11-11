@@ -180,11 +180,10 @@ public class Step10 extends Command {
     @Override
     public boolean execute() {
         w.clearText();
-        w.printText("STEP 10 SUCKS badly");
-        
+               
         if (keys==null) {
             
-            w.printText("FATAL ERROR");
+            w.printText("FATAL ERROR!!!\n");
             return false;
         }
         
@@ -234,7 +233,8 @@ public class Step10 extends Command {
                int keyIndex = numberInArrayList(keys,fakeKeys.get(i));
                    m[keyIndex][elementIndex]=1;
                }
-               System.out.println(setElement);                                                          
+               
+                                                                                      
            }                                 
            i++;
        }
@@ -302,8 +302,12 @@ public class Step10 extends Command {
        //Find the labels
        String[] ss =concat(keys.toArray(new String[0]),elements.toArray(new String[0]));
        
-       System.out.println(new Matrix(ss,m));
-       w.addToMatrixBox("SS",new Matrix(ss,m));
+              
+       Matrix done = new Matrix(ss,m);
+       String doneLabel = "B"+(current+1)+"*";
+       
+       w.printText(doneLabel+":\n"+done+"\n");
+       w.addToMatrixBox(doneLabel,done);
        
         return false;
     }

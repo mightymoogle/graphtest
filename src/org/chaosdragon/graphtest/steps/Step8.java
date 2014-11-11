@@ -68,7 +68,7 @@ public class Step8 extends Command {
     public boolean execute() {
 
         //Newly added
-        System.out.println(newRequirements);
+        //System.out.println(newRequirements);
         
         newMatrices = new ArrayList<Matrix>();
         

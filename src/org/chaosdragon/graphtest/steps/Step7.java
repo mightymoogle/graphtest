@@ -55,9 +55,7 @@ public class Step7 extends Command {
 
     @Override
     public boolean execute() {
-
         System.err.println(groupInformation);
-        
         w.clearText();
         newRequirements = new ArrayList<>();
 
@@ -172,9 +170,9 @@ public class Step7 extends Command {
             newGroupInformation.add(H);
         }
         
-        //groupInformation = H;        
+        //groupInformation = H;           
         groupInformation = newGroupInformation; ///FIX ME!!!!
-        System.out.println(groupInformation);
+        //System.out.println(groupInformation);
                 
         
         return false;
