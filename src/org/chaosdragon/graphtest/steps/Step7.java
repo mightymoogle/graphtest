@@ -68,7 +68,14 @@ public class Step7 extends Command {
             //Doubling element ID -> H(ID)->Set of H
             Map<String, Map<String, Set<String>>> doublingMap = new TreeMap<>(new NaturalOrderComparator());
 
-            Map<String, Set<String>> H = new TreeMap<String, Set<String>>(groupInformation.get(current));
+            //Map<String, Set<String>> H = new TreeMap<String, Set<String>>(groupInformation.get(current));
+                    Map<String, Set<String>> H = new TreeMap<>(new NaturalOrderComparator());
+                    
+                    for (Map.Entry<String, Set<String>> entry : groupInformation.get(current).entrySet()) {
+                        
+                        H.put(entry.getKey(), entry.getValue());
+                        
+                    }
                     
 
             Matrix submatrix = submatrices.get(current);
@@ -129,8 +136,7 @@ public class Step7 extends Command {
                                 
                                 
                                 //Delete from H
-                                H.get(Hy.getKey()).remove(Hx.getKey());
-                                                              
+                                H.get(Hy.getKey()).remove(Hx.getKey());                                
                                 
                             } else {
 

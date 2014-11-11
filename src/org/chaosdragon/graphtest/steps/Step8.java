@@ -109,7 +109,7 @@ public class Step8 extends Command {
 
             w.printText(m.toString());
             w.printText("\n");
-            newMatrices.add(m);
+          //  newMatrices.add(m); //WHAT IS THIS?
 
             Matrix m2 = new Matrix(m);
             //ArrayList<int[]> foundStuff = new ArrayList<>();
@@ -137,7 +137,7 @@ public class Step8 extends Command {
                     
                         //Get strings from values recieved
                         String s1 = m.getIds()[item[0]];
-                        String s2 = m.getIds()[item[0]];
+                        String s2 = m.getIds()[item[1]];
                         
                         b.setValue(s1, s2, 0);                        
                     

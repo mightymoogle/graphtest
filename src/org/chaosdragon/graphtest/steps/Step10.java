@@ -147,7 +147,7 @@ public class Step10 extends Command {
    public void setKeys(ArrayList<String> keys) {
        
        fakeKeys = keys;
-       
+                     
        //Hail LinkedHashSet! Keeps the order intact!
        Set<String> temp = new LinkedHashSet<>();
        temp.addAll(keys);
@@ -156,6 +156,9 @@ public class Step10 extends Command {
        this.keys = new ArrayList<String>();
        for (String str : temp)  
         this.keys.add(str);             
+       
+       //DEBUG
+       //this.keys = keys;
        
    }
    
@@ -225,9 +228,10 @@ public class Step10 extends Command {
            String currentKey = fakeKeys.get(i); //EPIC FAIL
            
            for (String setElement:set.getValue()) {
-               if (!currentKey.equals(setElement)) {                   
+               if (!currentKey.equals(setElement) && elements.contains(setElement)) {                   
                    int elementIndex = keys.size() +numberInArrayList(elements, setElement);
-                   int keyIndex = numberInArrayList(keys,fakeKeys.get(i));
+                   
+               int keyIndex = numberInArrayList(keys,fakeKeys.get(i));
                    m[keyIndex][elementIndex]=1;
                }
                System.out.println(setElement);                                                          
@@ -241,15 +245,14 @@ public class Step10 extends Command {
        i =0;       
        for (String key1:keys) {
            int j=0;
-           for (String key2:keys) {
+           for (String key2:keys) {               
                
-               
-               //Cros key links
-               
+               //Cros key links               
                if (req.isConnected(key1, key2)) {
                    
-                   m[i][j]=1;
+              
                    
+                 m[i][j]=1;                   
                }
                
                j++;
@@ -260,9 +263,9 @@ public class Step10 extends Command {
               
        
        
-       Map<String,Set<String>> groups = groupInformation.get(current);
-       changeSubMatrices();
-       Matrix sub = submatrices.get(current);
+      Map<String,Set<String>> groups = groupInformation.get(current);
+      changeSubMatrices();
+      Matrix sub = submatrices.get(current);
        
          //Reachability to other groups
        String[] subIds = sub.getIds();
@@ -270,11 +273,25 @@ public class Step10 extends Command {
        for (int j=0; j<subIds.length; j++) {
            for (int k=0; k<subIds.length; k++) {
                
-               if (sub.isConnected(subIds[j], subIds[k]) && j!=k) {                   
+               if (sub.isConnected(subIds[j], subIds[k]) && 
+                       !fakeKeys.get(j).equals(fakeKeys.get(k))
+                       ) {                   
+                    
+                 int keyIndex = numberInArrayList(keys,fakeKeys.get(j));                  
+                 int keyIndex2 = numberInArrayList(keys,fakeKeys.get(k));                  
+                
+                    if (keys.get(keyIndex).equals("19") && keys.get(keyIndex2).equals("2")) {
+                       System.out.println("WHY?");
+                   }
+                    
+                    if (keyIndex==2 && keyIndex2==0) {
+                        System.out.println("WTF");
+                        System.out.println(sub);
+                    }
+                 
+                 
+                 m[keyIndex][keyIndex2]=1;                   
                    
-                   
-                   
-                   m[j][k]=1;                   
                }
                
            }
