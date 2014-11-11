@@ -73,7 +73,10 @@ public class Step7 extends Command {
                     
                     for (Map.Entry<String, Set<String>> entry : groupInformation.get(current).entrySet()) {
                         
-                        H.put(entry.getKey(), entry.getValue());
+                        Set<String> temp = new TreeSet<>(new NaturalOrderComparator());
+                        temp.addAll(entry.getValue());
+                        
+                        H.put(entry.getKey(), temp);
                         
                     }
                     
@@ -160,8 +163,10 @@ public class Step7 extends Command {
             newGroupInformation.add(H);
         }
         
-        //groupInformation = H;
+        //groupInformation = H;        
         groupInformation = newGroupInformation; ///FIX ME!!!!
+        System.out.println(groupInformation);
+                
         
         return false;
 

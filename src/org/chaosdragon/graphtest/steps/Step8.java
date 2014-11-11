@@ -68,8 +68,11 @@ public class Step8 extends Command {
     public boolean execute() {
 
         //Newly added
+        System.out.println(newRequirements);
+        
         newMatrices = new ArrayList<Matrix>();
-
+        
+        
         w.clearText();
         w.printText("Step 8\n");
 
@@ -78,6 +81,8 @@ public class Step8 extends Command {
             //Formejam Matricu
             int size = requirementGroups.get(current).size();
             int[][] matr = new int[size][size];
+            
+            //WARNING
             Set<String> group = requirementGroups.get(current);
 
             int i = 0;
@@ -163,6 +168,7 @@ public class Step8 extends Command {
         
         //Reizinam un citi brinumi
         //Gala jaizdod Bk no pilna
+    
         return false;
 
     }
@@ -170,6 +176,7 @@ public class Step8 extends Command {
     @Override
     public Command getNext() {
 
+        //return new FinalCommand();
         return new Step9(this);
 
     }
