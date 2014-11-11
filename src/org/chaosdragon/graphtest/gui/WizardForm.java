@@ -66,10 +66,12 @@ public class WizardForm extends javax.swing.JFrame {
 
     //Sets path and automatically loads file
     public void setTestEnvironment() {
-        fc.setCurrentDirectory(new File("h:\\Archive\\RTU\\Specializeta Datu Apstrade (Novickis)\\Faili\\"));
+        //fc.setCurrentDirectory(new File("h:\\Archive\\RTU\\Specializeta Datu Apstrade (Novickis)\\Faili\\"));
+        fc.setCurrentDirectory(new File("//home//mighty//Faili//Lekcijas//"));
+        
         extraSteps.setSelected(true);
         
-        File f = new File(fc.getCurrentDirectory()+"\\Lekcijas\\LekcijasS4.csv");        
+        File f = new File(fc.getCurrentDirectory()+"//LekcijasS4.csv");        
         Matrix n = MatrixFiles.loadFromCsvFile(f.getAbsolutePath());
         matrices.add(n);
         
@@ -392,7 +394,7 @@ public class WizardForm extends javax.swing.JFrame {
             .addGroup(matrixPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(matrixPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(matrixBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(matrixPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -420,7 +422,8 @@ public class WizardForm extends javax.swing.JFrame {
         s3.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Relation table for group Hx (set 1 for simple, 2 for complex relation)");
+        jLabel2.setText("Relation table for current group (set 1 for simple, 2 for complex relation)");
+        jLabel2.setToolTipText("");
         s3.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         jScrollPane3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));

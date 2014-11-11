@@ -56,6 +56,8 @@ public class Step7 extends Command {
     @Override
     public boolean execute() {
 
+        System.err.println(groupInformation);
+        
         w.clearText();
         newRequirements = new ArrayList<>();
 
@@ -74,7 +76,14 @@ public class Step7 extends Command {
                     for (Map.Entry<String, Set<String>> entry : groupInformation.get(current).entrySet()) {
                         
                         Set<String> temp = new TreeSet<>(new NaturalOrderComparator());
-                        temp.addAll(entry.getValue());
+                        for (String tempS:entry.getValue()) {
+                            
+                            temp.add(tempS);
+                            
+                        }
+                        
+                        
+                        //temp.addAll(entry.getValue());
                         
                         H.put(entry.getKey(), temp);
                         

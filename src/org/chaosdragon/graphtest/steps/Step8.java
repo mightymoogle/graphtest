@@ -144,7 +144,8 @@ public class Step8 extends Command {
                         String s1 = m.getIds()[item[0]];
                         String s2 = m.getIds()[item[1]];
                         
-                        b.setValue(s1, s2, 0);                        
+                        b.setValue(s1, s2, 0); 
+                        w.printText("Removed link from "+s1+" to "+s2+ "!\n\n");
                     
                     }
                 }
