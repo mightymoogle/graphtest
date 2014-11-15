@@ -38,6 +38,7 @@ public class Step7 extends Command {
 
     //Current requirement -> Group id from D-> Content
     ArrayList<Map<String, Set<String>>> groupInformation;
+    ArrayList<Map<String, Set<String>>> newGroupInformation; //for next step only, previous one bugs for some reason
 
     public Step7(Step6 old) {
         w = old.w;
@@ -49,17 +50,17 @@ public class Step7 extends Command {
         ids = old.ids;
         reachabilityMatrices = old.reachabilityMatrices;
         submatrices = old.submatrices;
-        groupLevels = old.groupLevels;
+        groupLevels = old.groupLevels;       
         groupInformation = old.groupInformation;
     }
 
     @Override
     public boolean execute() {
-        System.err.println(groupInformation);
+        
         w.clearText();
         newRequirements = new ArrayList<>();
 
-         ArrayList<Map<String, Set<String>>> newGroupInformation = new ArrayList<>();
+        newGroupInformation = new ArrayList<>();
         
         
         for (int current = 0; current < requirements.size(); current++) {
@@ -142,8 +143,7 @@ public class Step7 extends Command {
                             if (submatrix.isConnected(Hz.getKey(),Hy.getKey())) {
 
                                 delete.add(""+Hx.getKey()+","+Hy.getKey());
-                                b2.setValue(Hx.getKey(), Hy.getKey(), 0);
-                                
+                                b2.setValue(Hx.getKey(), Hy.getKey(), 0);                                
                                 
                                 //Delete from H
                                 H.get(Hy.getKey()).remove(Hx.getKey());                                
@@ -170,8 +170,9 @@ public class Step7 extends Command {
             newGroupInformation.add(H);
         }
         
-        //groupInformation = H;           
-        groupInformation = newGroupInformation; ///FIX ME!!!!
+        //groupInformation = H;       
+    //     ArrayList<Map<String, Set<String>>>  test = groupInformation;
+    //    groupInformation = newGroupInformation; ///FIX ME!!!!
         //System.out.println(groupInformation);
                 
         

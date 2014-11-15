@@ -54,7 +54,7 @@ public class Step8 extends Command {
         reachabilityMatrices = old.reachabilityMatrices;
         submatrices = old.submatrices;
         groupLevels = old.groupLevels;
-        groupInformation = old.groupInformation;
+        groupInformation = old.newGroupInformation; //WATCH OUT!
     }
     
     public boolean groupsConnected() {

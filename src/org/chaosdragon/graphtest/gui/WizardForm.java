@@ -66,8 +66,8 @@ public class WizardForm extends javax.swing.JFrame {
 
     //Sets path and automatically loads file
     public void setTestEnvironment() {
-        //fc.setCurrentDirectory(new File("h:\\Archive\\RTU\\Specializeta Datu Apstrade (Novickis)\\Faili\\"));
-        fc.setCurrentDirectory(new File("//home//mighty//Faili//Lekcijas//"));
+        fc.setCurrentDirectory(new File("h://Archive//RTU//Specializeta Datu Apstrade (Novickis)//Faili//Lekcijas"));
+        //fc.setCurrentDirectory(new File("//home//mighty//Faili//Lekcijas//"));
         
         extraSteps.setSelected(true);
         
@@ -876,7 +876,12 @@ public class WizardForm extends javax.swing.JFrame {
             if (step.hasNext()) {
                 
                 step.nextKey(); 
-                keyBar.setValue(keyBar.getValue()+1);
+                keyBar.setValue(keyBar.getValue()+1);//FAILS
+                
+                //IF???
+                keyList.setSelectedIndex(0);
+                
+                
             } else {
                 
                 //FINISH UP AND ENABLE THE MAIN NEXT> BUTTON
