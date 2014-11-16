@@ -3,6 +3,7 @@
  */
 package org.chaosdragon.graphtest.steps;
 
+import com.sun.glass.events.KeyEvent;
 import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,17 +40,15 @@ public class Step9 extends Command {
     ArrayList<Matrix> submatrices;
     //Current requirement -> Level-> Group
     ArrayList<ArrayList<Set<String>>> groupLevels;
-    
+
     //For new matrices after Round 1 (from step 8 )
     ArrayList<Matrix> newMatrices;
 
     //Current requirement -> Group id from D-> Content
     ArrayList<Map<String, Set<String>>> groupInformation;
-     
-    
+
     ArrayList<ElementTable> elementTableList; //Step9 tables
     private int currentElement; //For ^ 
-     
 
     public Step9(Step8 old) {
         w = old.w;
@@ -64,17 +63,14 @@ public class Step9 extends Command {
         submatrices = old.submatrices;
         groupLevels = old.groupLevels;
         groupInformation = old.groupInformation;
-        
-        
+
         //SEEMS BUGGED!
         newMatrices = old.newMatrices;
-        
-       
-        
+
     }
-    
+
     public class ElementTable {
-        
+
         private String[] names;
         private byte[][] data;
 
@@ -105,95 +101,93 @@ public class Step9 extends Command {
         public void setData(byte[][] data) {
             this.data = data;
         }
-        
+
         public KeyTableModel getModel() {
-             return new KeyTableModel(names, data);       
+            return new KeyTableModel(names, data);
         }
-        
+
         public ElementTable() {
-            
+
         }
-        
+
         public void fillData() {
-            data= new byte[names.length][names.length];  
-        
-            for (int i=0; i<data.length; i++) {
-            for (int j=0; j<data.length; j++) {
-                data[i][j]=1;
+            data = new byte[names.length][names.length];
+
+            for (int i = 0; i < data.length; i++) {
+                for (int j = 0; j < data.length; j++) {
+                    data[i][j] = 1;
+                }
             }
-            }            
-            
+
         }
-        
+
     }
-    
+
     public boolean hasNext() {
-        
-        return (currentElement+1<elementTableList.size());
-        
+
+        return (currentElement + 1 < elementTableList.size());
+
     }
-    
-    
+
     public void nextKey() {
-        
-        if (currentElement<elementTableList.size()) {
-            
+
+        if (currentElement < elementTableList.size()) {
+
             currentElement++;
-            
+
             //IF SIZE == 1 (NOTHING CAN BE CHANGED -> just set the key automaticaly)
             //- CAN BE LAZY WITH THIS ONE
-            
             setModel(currentElement);
-        }       
-            
+        }
+
     }
-    
+
     private void setModel(int element) {
-       KeyTableModel m = elementTableList.get(element).getModel();    
-       w.setKeyModel(m);
+        KeyTableModel m = elementTableList.get(element).getModel();
+        w.setKeyModel(m);
+
+        //MAYBE ONE FOR ALL?
+        m.addTableModelListener(new KeyTableListener(w));
+        m.fireTableDataChanged();       
        
-       //MAYBE ONE FOR ALL?
-       m.addTableModelListener(new KeyTableListener(w));
-       m.fireTableDataChanged();
-    }
-    
-    
-    public void prepare() {
-       
-        //Global storage
-        elementTableList  =  new ArrayList<>();
+        if (m.getColumnCount()<2) {            
+            w.pressNextKeyKey();            
+        }
         
-    for (int current = 0; current < requirements.size(); current++) {
+        
+    }
+
+    public void prepare() {
+
+        //Global storage
+        elementTableList = new ArrayList<>();
+
+        for (int current = 0; current < requirements.size(); current++) {
 
        // ArrayList<ElementTable> elementTableList = new ArrayList<>();
-        
-        
-              
-        Set<String> s = requirementGroups.get(current);
-        Set<String> currentSet = new TreeSet<>();
-        for (String p:s) {        
-           ElementTable e = new ElementTable();             
-           currentSet = groupInformation.get(current).get(p);           
-           //Sets names
-           e.setNames(currentSet.toArray(new String[0]));
-           e.fillData();
-           elementTableList.add(e);
-                }       
-     
+            Set<String> s = requirementGroups.get(current);
+            Set<String> currentSet = new TreeSet<>();
+            for (String p : s) {
+                ElementTable e = new ElementTable();
+                currentSet = groupInformation.get(current).get(p);
+                //Sets names
+                e.setNames(currentSet.toArray(new String[0]));
+                e.fillData();
+                elementTableList.add(e);
+            }
+
        // elementTableListList.add(elementTableList);
-        
-    }    
-        
-     currentElement=0;
-     setModel(0);
+        }
+
+        currentElement = 0;
+        setModel(0);
      //CALL CLEARING OF THE KEYLIST ON W? RESET THE KEYBAR AND SO ON???
-    
+
     }
-    
 
     @Override
     public boolean execute() {
-        prepare();        
+        prepare();
         return false;
     }
 

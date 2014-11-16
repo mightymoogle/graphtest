@@ -111,9 +111,7 @@ public class Step3 extends Command{
       }
     
     
-    
-    
-     return false;
+    return false;
     
     }
 

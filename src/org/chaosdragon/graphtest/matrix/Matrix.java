@@ -4,6 +4,7 @@
  */
 package org.chaosdragon.graphtest.matrix;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
@@ -132,6 +133,49 @@ public class Matrix {
         return print();
     }
     
+    
+    public int getColumnId(String name) {
+        for (int i=0; i<ids.length; i++) {
+            
+            if (ids[i].equals(name)) return i;
+            
+        }
+        
+        return -1;
+    }
+    
+    public void removeAttributeColumn(String name) {
+        
+        int[][] tem = new int[connections.length][connections[0].length-1];
+        
+        int skip = getColumnId(name);
+        int step = 0;
+        
+        for (int i=0; i<connections.length; i++) {
+            step=0;
+            for (int j=0; j<connections[0].length; j++) {
+            
+                if (j==skip) { 
+                    step++; 
+                    continue;
+                }
+                
+                tem[i][j-step]=connections[i][j];                
+                
+            }
+        }
+        
+        connections = tem;
+        
+        ArrayList<String> idList= 
+                       new ArrayList<>(Arrays.asList(getIds()));
+                
+        idList.remove(name);
+        ids = idList.toArray(new String[0]);
+        
+        
+    }
+    
 
     /**
      * @return the name
@@ -149,15 +193,16 @@ public class Matrix {
 
     public static void main(String[] args) {
         
-        String[] ids = {"d1","d4","d7"};
-        int[][] matr = {{1,0,0},{1,1,0},{1,1,1}};
-        
+        String[] ids = {"2","6","19","20","3","5","8"};
+        int[][] matr = {{0,0,0,1,1,0,0},{1,0,0,0,0,1,0},{0,1,0,1,0,0,1},{0,0,0,0,0,0,0}};
         
         Matrix m = new Matrix(ids,matr);
-       // System.out.println(m);
-       // System.out.println(m.isConnected("d1", "d1"));
+        System.out.println(m);
         
+        m.removeAttributeColumn("8");
+        System.out.println(m);
         
+
     }
     
 }

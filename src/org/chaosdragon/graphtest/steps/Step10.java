@@ -52,8 +52,12 @@ public class Step10 extends Command {
 
     //Will need another arraylist!
     ArrayList<ArrayList<String>> keys;    //W1
-    private ArrayList<ArrayList<String>> fakeKeys;    //for doubling
-    ArrayList<String> elements; //W2   
+    ArrayList<ArrayList<String>> fakeKeys;    //for doubling
+    ArrayList<ArrayList<String>> notKeys; //W2
+    
+    ArrayList<String> elements; //W2 subset  
+    
+    ArrayList<Matrix> bStarMatrix; //New matrices
 
     public Step10(Step9 old) {
         w = old.w;
@@ -84,7 +88,7 @@ public class Step10 extends Command {
             }
             i++;
         }
-
+        System.err.println("["+b+"] not in "+a);
         return -1;
     }
 
@@ -179,7 +183,8 @@ public class Step10 extends Command {
         //for (ArrayList<String> arr:this.keys) {
             
              Set<String> temp = new LinkedHashSet<>();
-             temp.addAll(this.keys.get(i));
+             temp.addAll(this.keys.get(i));             
+             
             ArrayList<String> t =  this.keys.get(i);             
             t = new ArrayList<>(temp);
             tempKeys.add(t);
@@ -204,19 +209,24 @@ public class Step10 extends Command {
     @Override
     public boolean execute() {
         w.clearText();
-
-        if (keys == null) {
-
+        bStarMatrix = new ArrayList<>();
+        
+        if (keys == null) {                       
+            
             w.printText("FATAL ERROR!!!\n");
             return false;
         }
 
         int current = 0;
-
+        
+        notKeys = new ArrayList<>();
+                
+        
         for (current = 0; current < requirements.size(); current++) {
 
             ArrayList<String> keys = this.keys.get(current);
-
+                    
+            
             Map<String, Set<String>> sets = groupInformation.get(current);
 
 
@@ -233,7 +243,8 @@ public class Step10 extends Command {
             e = new ArrayList<>(temp);
 
             setElements(e);
-
+            notKeys.add(e);            
+            
             int[][] m = new int[keys.size()][keys.size() + elements.size()];
 
             int i = 0; //ROW
@@ -309,16 +320,18 @@ public class Step10 extends Command {
 
             w.printText(doneLabel + ":\n" + done + "\n");
             w.addToMatrixBox(doneLabel, done);
-
-        }
-
+            w.printText("Keys: "+this.keys.get(current)+ "\n");
+            w.printText("Elements: "+notKeys.get(current)+ "\n\n");
+            bStarMatrix.add(done);
+        }        
+                
         return false;
     }
 
     @Override
     public Command getNext() {
 
-        return new FinalCommand();
+        return new Step11(this);
 
     }
 

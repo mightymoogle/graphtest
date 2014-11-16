@@ -66,15 +66,17 @@ public class WizardForm extends javax.swing.JFrame {
 
     //Sets path and automatically loads file
     public void setTestEnvironment() {
-        fc.setCurrentDirectory(new File("h://Archive//RTU//Specializeta Datu Apstrade (Novickis)//Faili//Lekcijas"));
+        fc.setCurrentDirectory(new File("h://Archive//RTU//Specializeta Datu Apstrade (Novickis)//Faili"));
         //fc.setCurrentDirectory(new File("//home//mighty//Faili//Lekcijas//"));
         
         extraSteps.setSelected(true);
         
-        File f = new File(fc.getCurrentDirectory()+"//LekcijasS4.csv");        
-        Matrix n = MatrixFiles.loadFromCsvFile(f.getAbsolutePath());
-        matrices.add(n);
-        
+        for (int i=1; i<=4; i++) {
+            File f = new File(fc.getCurrentDirectory()+"//Lekcijas//LekcijasS"+i+".csv");        
+            //File f = new File(fc.getCurrentDirectory()+"//Uzdevums//Uzdevums"+i+".csv");        
+            Matrix n = MatrixFiles.loadFromCsvFile(f.getAbsolutePath());        
+            matrices.add(n);
+        }
         
     }
     
@@ -102,6 +104,7 @@ public class WizardForm extends javax.swing.JFrame {
         panelMap.put(Step8.class, s2);
         panelMap.put(Step9.class, s3);
         panelMap.put(Step10.class, s2);
+        panelMap.put(Step11.class, s2);
         
         panelMap.put(FinalCommand.class, s2);
         progressBarStateChanged(null);
@@ -847,6 +850,9 @@ public class WizardForm extends javax.swing.JFrame {
 
             GraphEditor mat = new GraphEditor(this, true, m, true); //Load ID here
             mat.setArrange(GraphEditorPanel.Arrange.FAST_ORGANIC);
+            //mat.setArrange(GraphEditorPanel.Arrange.HIERARCHY);
+            
+            
             mat.fixReadOnly();
             mat.updateTitle(matrixBox.getSelectedItem().toString());
 
@@ -863,13 +869,30 @@ public class WizardForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_keyBarStateChanged
 
+    public void pressNextKeyKey() {
+        keyNextActionPerformed(null);
+    }
+    
+    
     private void keyNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyNextActionPerformed
         
         if (currentStep.getPreviousCommand() instanceof Step9) {
             
-            String result = (String) keyList.getSelectedValue();
-            keys.add(result.substring(1));
-        
+            
+            
+            if (keyList.getSelectedIndex()==-1) {
+               
+                System.err.println("FIX ME!");                
+                
+                keys.add("");
+                
+            } else {
+                
+                String result = (String) keyList.getSelectedValue();
+                keys.add(result.substring(1));        
+            }
+            
+            
             //FIX TO STEP 10 LATER!!! ^ TOO
             Step9 step = (Step9)currentStep.getPreviousCommand();
             
@@ -888,13 +911,7 @@ public class WizardForm extends javax.swing.JFrame {
                 
                 nextButton.setEnabled(true);
                 keyNext.setEnabled(false);
-                
-                //DISABLE JTABLE ALSO?
-                
-                
 
-
-                //OR JUST RUN THE NEXT?
                 
                 //RESET THE NEXT STEP
                 Step9 previous = (Step9)currentStep.getPreviousCommand();
