@@ -170,10 +170,13 @@ public class Step9 extends Command {
             for (String p : s) {
                 ElementTable e = new ElementTable();
                 currentSet = groupInformation.get(current).get(p);
-                //Sets names
-                e.setNames(currentSet.toArray(new String[0]));
-                e.fillData();
-                elementTableList.add(e);
+                
+//                if (currentSet!=null) {
+                    //Sets names
+                    e.setNames(currentSet.toArray(new String[0]));
+                    e.fillData();
+                    elementTableList.add(e);
+                //}
             }
 
        // elementTableListList.add(elementTableList);

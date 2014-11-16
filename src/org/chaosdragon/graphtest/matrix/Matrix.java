@@ -190,6 +190,34 @@ public class Matrix {
     public void setName(String name) {
         this.name = name;
     }
+    
+    
+    //Left part of the matrix for uneven ones
+    public Matrix getLeftMatrix() {
+                
+        if (ids.length>connections.length) {
+            
+            int len = connections.length;
+            int[][] cc = new int[len][len];
+            
+            for (int i=0; i<len; i++) {
+                for (int j=0; j<len; j++) {
+                 
+                    cc[i][j]=connections[i][j];
+                    
+                }                
+            }
+            
+            
+            return new Matrix(ids,cc);
+            
+            
+        } else {
+            return this;
+        }
+                
+    }
+    
 
     public static void main(String[] args) {
         
@@ -202,6 +230,7 @@ public class Matrix {
         m.removeAttributeColumn("8");
         System.out.println(m);
         
+        System.out.println(m.getLeftMatrix());
 
     }
     

@@ -57,6 +57,14 @@ public class Step11 extends Command {
 
     ArrayList<String> elements; //W2 subset  
     ArrayList<Matrix> bStarMatrix; //New matrices
+    
+    //The global ones
+    ArrayList<String> W1; 
+    ArrayList<String> W2;
+    ArrayList<String> W0;
+    //Global matrix
+    Matrix global;    
+    
 
     public Step11(Step10 old) {
         w = old.w;
@@ -75,10 +83,11 @@ public class Step11 extends Command {
         //SEEMS BUGGED!
         newMatrices = old.newMatrices;
         elementTableList = old.elementTableList;
-        skippable = false;
+        //skippable = false;
         keys = old.keys;
         notKeys = old.notKeys;
         fakeKeys = old.fakeKeys;
+                
         
         
         //Will be changed!!!
@@ -142,12 +151,12 @@ public class Step11 extends Command {
         
         
         for (String k: fakeKeys.get(num)) {
-            Matrix currentMatrix = bStarMatrix.get(num);
+            Matrix currentMatrix = new Matrix(bStarMatrix.get(num));
             if (currentMatrix.isConnected(k, check)) {
          
                result[0] =k;              
                currentMatrix.removeAttributeColumn(check);
-               System.out.println(currentMatrix);
+               //System.out.println(currentMatrix);
                result[1]=check;                             
                return result;
                    
@@ -162,9 +171,9 @@ public class Step11 extends Command {
 
         //ArrayList<String> keySet = keys.get(current);
         //ArrayList<String> notKeySet = notKeys.get(current);
-        ArrayList<String> W1 = nonRemainderSet(keys, "W1^0");
-        ArrayList<String> W2 = nonRemainderSet(notKeys, "W2^0");
-                
+        W1 = nonRemainderSet(keys, "W1^0");
+        W2 = nonRemainderSet(notKeys, "W2^0");
+           
         ArrayList<String> splitz = new ArrayList<>();
         splitz.addAll(W1);
         splitz.retainAll(W2);
@@ -196,13 +205,12 @@ public class Step11 extends Command {
             }
         }
             //Form the global matrix
-            ArrayList<String> W0 = new ArrayList<>();
+            W0 = new ArrayList<>();
             W0.addAll(W1);
             W2.removeAll(splitz);
             W0.addAll(W2);
             
-            System.out.println(W0);
-            
+                        
             int[][]data = new int[W1.size()][W0.size()];
             
             
@@ -222,7 +230,7 @@ public class Step11 extends Command {
                 }
             }
             
-            Matrix global = new Matrix(W0.toArray(new String[0]),data);            
+            global = new Matrix(W0.toArray(new String[0]),data);            
             //add toRemove from the final matrix
             for (String[] adder:toAdd) {
                 
@@ -234,12 +242,6 @@ public class Step11 extends Command {
             w.printText("\nCombined matrix B0:\n"+global);
             w.addToMatrixBox("B0", global);
             
-            
-        
-        
-        
-        
-
     }
 
     @Override
@@ -256,7 +258,7 @@ public class Step11 extends Command {
     @Override
     public Command getNext() {
 
-        return new FinalCommand();
+        return new Step12(this);
 
     }
 

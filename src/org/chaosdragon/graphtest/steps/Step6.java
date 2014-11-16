@@ -91,15 +91,33 @@ public class Step6 extends Command{
                    }
                    
                }
-               
+              if (H.size()>0)  {
               w.printText("H"+S1+"="+H+"\n");
               groupInformation.get(current).put(S1, H);
+              }
+              
+              
+              
            }           
                      
           w.printText("\n");
+          
+//          
+//          //FIX
+//          Iterator<Map.Entry<String, Set<String>>> it = groupInformation.get(current).entrySet().iterator();
+//        while (it.hasNext()) {
+//        Map.Entry<String, Set<String>> e = it.next();
+//        String key = e.getKey();
+//        Set<String> value = e.getValue();
+//        if (value.isEmpty()) {
+//            it.remove();
+//        }
+//          
+//      }
+//        //End of non-working fix
+        
       }
-      
-      
+
          
       
 

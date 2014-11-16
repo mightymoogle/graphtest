@@ -105,6 +105,7 @@ public class WizardForm extends javax.swing.JFrame {
         panelMap.put(Step9.class, s3);
         panelMap.put(Step10.class, s2);
         panelMap.put(Step11.class, s2);
+        panelMap.put(Step12.class, s2);
         
         panelMap.put(FinalCommand.class, s2);
         progressBarStateChanged(null);
