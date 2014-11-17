@@ -21,6 +21,37 @@ public class Matrix {
     private String name = "S";
     //Coordinates???
 
+    public boolean containsCycles() {
+        
+        int[][]result;
+        
+        if (connections.length!=ids.length) {
+            
+            result = MatrixTools.multiply(getLeftMatrix().connections,
+                    getLeftMatrix().connections);                
+            
+        } else {
+            
+             result = MatrixTools.multiply(connections, connections);                
+            
+        }
+        int s =0;
+       while (s<result.length) {
+        for (int i=0; i<result.length; i++) {
+            for (int j=0; j<result.length; j++) {
+                
+                if (result[i][j]>1) {
+                    return true;
+                }
+           
+            }
+        }        
+        s++;
+    }
+        return false;
+    }
+    
+    
     public static int[][] cloneArray(int[][] src) {
         int length = src.length;
         int[][] target = new int[length][src[0].length];
@@ -208,8 +239,9 @@ public class Matrix {
                 }                
             }
             
+            String[] idsNew = Arrays.copyOf(ids, connections.length);
             
-            return new Matrix(ids,cc);
+            return new Matrix(idsNew,cc);
             
             
         } else {

@@ -44,9 +44,9 @@ public class WizardForm extends javax.swing.JFrame {
 
     private HashMap<Class<? extends Command>, JPanel> panelMap = new HashMap<>();
     DefaultListModel listModel;
-    
-    ArrayList<String> keys;        
-    
+
+    ArrayList<String> keys;
+
     //EDIT ME
     public void updateNextPrevButtons() {
         nextButton.setEnabled(true);
@@ -68,32 +68,29 @@ public class WizardForm extends javax.swing.JFrame {
     public void setTestEnvironment() {
         fc.setCurrentDirectory(new File("h://Archive//RTU//Specializeta Datu Apstrade (Novickis)//Faili"));
         //fc.setCurrentDirectory(new File("//home//mighty//Faili//Lekcijas//"));
-        
+
         extraSteps.setSelected(true);
-        
-        for (int i=1; i<=4; i++) {
-            File f = new File(fc.getCurrentDirectory()+"//Lekcijas//LekcijasS"+i+".csv");        
+
+        for (int i = 1; i <= 4; i++) {
+            File f = new File(fc.getCurrentDirectory() + "//Lekcijas//LekcijasS" + i + ".csv");
             //File f = new File(fc.getCurrentDirectory()+"//Uzdevums//Uzdevums"+i+".csv");        
-            Matrix n = MatrixFiles.loadFromCsvFile(f.getAbsolutePath());        
+            Matrix n = MatrixFiles.loadFromCsvFile(f.getAbsolutePath());
             matrices.add(n);
         }
-        
+
     }
-    
+
     public void setKeyModel(KeyTableModel model) {
+
+        keyTable.setModel(model);
         
-        keyTable.setModel(model);       
         //NEED A ROW LABEL TOO =(        
     }
-    
-    
-    
-    
-    
+
     public WizardForm() {
-        initComponents();             
-        
-        panelMap.put(NullCommand.class, s1);   
+        initComponents();
+
+        panelMap.put(NullCommand.class, s1);
         panelMap.put(Step1.class, s2);
         panelMap.put(Step2.class, s2);
         panelMap.put(Step3.class, s2);
@@ -106,7 +103,7 @@ public class WizardForm extends javax.swing.JFrame {
         panelMap.put(Step10.class, s2);
         panelMap.put(Step11.class, s2);
         panelMap.put(Step12.class, s2);
-        
+
         panelMap.put(FinalCommand.class, s2);
         progressBarStateChanged(null);
         //currentStep = new Step1();
@@ -123,16 +120,15 @@ public class WizardForm extends javax.swing.JFrame {
         fc.setFileFilter(filter);
         fc.addChoosableFileFilter(filter);
 
-        
         //Disable for real situation
         setTestEnvironment();
-        
+
         currentStep = new NullCommand();
         setActivePanel(panelMap.get(currentStep.getClass()));
         listModel = new DefaultListModel();
         keyList.setModel(listModel);
         keys = new ArrayList<>();
-        
+
     }
 
     /**
@@ -593,27 +589,36 @@ public class WizardForm extends javax.swing.JFrame {
 
         matrixBox.addItem(name);
         matrixMap.put(name, m);
-
         matrixPanel.setVisible(true);
 
     }
 
     public void setPossibleKeys(String[] s) {
-        keyList.setEnabled(true);     
+        keyList.setEnabled(true);
         //keyNext.setEnabled(true);
-        
+
         listModel.removeAllElements();
-        
-        for (String p:s) {        
+
+        for (String p : s) {
             listModel.addElement(p);
-        }                
-        
-        if (s.length==1) {
+        }
+
+        if (s.length == 1) {
             keyList.setEnabled(false);
             keyList.setSelectedIndex(0);
         }
-         
+
         keyListValueChanged(null); //????
+
+    }
+
+    
+    //Sets selection of the keyList to the first
+    public void setSelectedKeyInList() {
+        
+        if (keyList.getModel().getSize()>0) {
+            keyList.setSelectedIndex(0);
+        }
         
     }
     
@@ -629,10 +634,9 @@ public class WizardForm extends javax.swing.JFrame {
 
     }
 
-    
     //Called from the NEXT button
     private void doStep() {
-      
+
         if (currentStep.getClass().equals(NullCommand.class)) {
             //MUST CHECK EMPTYNESS TOO
             if (matrices.getSize() == 0) {
@@ -664,19 +668,17 @@ public class WizardForm extends javax.swing.JFrame {
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
 
         //if (currentStep!=null && currentStep.getClass().equals(NullCommand.class)) currentStep=null;
-                
         if (extraSteps.isSelected()) {
-            doStep(); 
+            doStep();
             while (currentStep.isSkippable()) {
-                doStep();           
-            }            
-            
+                doStep();
+            }
+
         } else {
-            
+
             doStep();
         }
 
-        
 
     }//GEN-LAST:event_nextButtonActionPerformed
 
@@ -688,13 +690,13 @@ public class WizardForm extends javax.swing.JFrame {
 
         p.setVisible(true);
 
-        infoLabel.setText("Current step"+currentStep.getClass().getSimpleName());
+        infoLabel.setText("Current step" + currentStep.getClass().getSimpleName());
         updateNextPrevButtons();
 
     }
 
     private void stepBack() {
-            //  if (currentStep.getClass().equals(NullCommand.class)) currentStep=null;        
+        //  if (currentStep.getClass().equals(NullCommand.class)) currentStep=null;        
         progressBar.setValue(progressBar.getValue() - 2);
         currentStep = currentStep.getPreviousCommand();
 
@@ -704,30 +706,30 @@ public class WizardForm extends javax.swing.JFrame {
         }
 
         currentStep = currentStep.getPreviousCommand();
-        
+
         if (currentStep.getClass().equals(NullCommand.class)) {
             setActivePanel(panelMap.get(currentStep.getClass()));
             return;
         }
-        
-        doStep(); 
+
+        doStep();
     }
-    
-    
+
+
     private void previousButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previousButtonActionPerformed
 
-        keys= new ArrayList<>();
+        keys = new ArrayList<>();
         //HAS NOT BEEN TESTED, BEWARE!
         if (extraSteps.isSelected()) {
-            stepBack(); 
+            stepBack();
             while (currentStep.isSkippable()) {
-                stepBack();           
-            }            
-            
+                stepBack();
+            }
+
         } else {
             stepBack();
         }
-        
+
 
     }//GEN-LAST:event_previousButtonActionPerformed
 
@@ -852,8 +854,7 @@ public class WizardForm extends javax.swing.JFrame {
             GraphEditor mat = new GraphEditor(this, true, m, true); //Load ID here
             mat.setArrange(GraphEditorPanel.Arrange.FAST_ORGANIC);
             //mat.setArrange(GraphEditorPanel.Arrange.HIERARCHY);
-            
-            
+
             mat.fixReadOnly();
             mat.updateTitle(matrixBox.getSelectedItem().toString());
 
@@ -873,78 +874,90 @@ public class WizardForm extends javax.swing.JFrame {
     public void pressNextKeyKey() {
         keyNextActionPerformed(null);
     }
-    
-    
+
+
     private void keyNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keyNextActionPerformed
-        
+
         if (currentStep.getPreviousCommand() instanceof Step9) {
-            
-            
-            
-            if (keyList.getSelectedIndex()==-1) {
-               
-                System.err.println("FIX ME!");                
-                
+
+            if (keyList.getSelectedIndex() == -1) {
+
+                System.err.println("FIX ME!");
+
                 keys.add("ERROR");
-                
+
             } else {
-                
+
                 String result = (String) keyList.getSelectedValue();
-                keys.add(result.substring(1));        
+                keys.add(result.substring(1));
             }
-            
-            
+
             //FIX TO STEP 10 LATER!!! ^ TOO
-            Step9 step = (Step9)currentStep.getPreviousCommand();
-            
+            Step9 step = (Step9) currentStep.getPreviousCommand();
+
             if (step.hasNext()) {
-                
-                step.nextKey(); 
-                keyBar.setValue(keyBar.getValue()+1);//FAILS
-                
-                //IF???
+
+                step.nextKey();
+                keyBar.setValue(keyBar.getValue() + 1);//FAILS
+
                 keyList.setSelectedIndex(0);
+
+                //DEBUG ONLY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                if (keyList.getModel().getSize()>=2) {
+                    if (keyList.getModel().getElementAt(0).equals("d5")
+                            && keyList.getModel().getElementAt(1).equals("d6")) {
+
+                        keyList.setSelectedIndex(1);
+
+                    }
+                    if (keyList.getModel().getElementAt(0).equals("d8")
+                            && keyList.getModel().getElementAt(1).equals("d19")) {
+
+                        keyList.setSelectedIndex(1);
+                    }
+                }
+                //DEBUG ONLY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 
                 
+
             } else {
-                
+
                 //FINISH UP AND ENABLE THE MAIN NEXT> BUTTON
-                
                 nextButton.setEnabled(true);
                 keyNext.setEnabled(false);
 
-                
                 //RESET THE NEXT STEP
-                Step9 previous = (Step9)currentStep.getPreviousCommand();
+                Step9 previous = (Step9) currentStep.getPreviousCommand();
                 currentStep = new Step10(previous);
                 currentStep.setPreviousCommand(previous);
                 ((Step10) currentStep).setKeys(keys);
                 nextButtonActionPerformed(evt);
-                
+
             }
-            
-            
-        }      
-        
+
+        }
+
     }//GEN-LAST:event_keyNextActionPerformed
 
     private void keyListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_keyListValueChanged
        //If nothing selected, disable NEXT
-        if (keyList.getSelectedIndex()==-1) {                        
+
+        if (keyList.getSelectedIndex() == -1) {
             keyNext.setEnabled(false);
         } else {
-          keyNext.setEnabled(true);
+            keyNext.setEnabled(true);
         }
+
+
     }//GEN-LAST:event_keyListValueChanged
 
     private void keyTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_keyTableMouseClicked
-        
-        
+
         //FIX ME
-        if (evt.getButton()==java.awt.event.MouseEvent.BUTTON3) {
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
             System.out.println("CHANGE THE VALUE HERE 1->2 2->1");
         }
-        
+
     }//GEN-LAST:event_keyTableMouseClicked
 
     /**

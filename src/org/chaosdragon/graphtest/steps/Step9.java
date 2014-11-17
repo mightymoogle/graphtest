@@ -149,7 +149,10 @@ public class Step9 extends Command {
         //MAYBE ONE FOR ALL?
         m.addTableModelListener(new KeyTableListener(w));
         m.fireTableDataChanged();       
-       
+        
+        //Sets selection of the keyList to the first
+        w.setSelectedKeyInList();
+        
         if (m.getColumnCount()<2) {            
             w.pressNextKeyKey();            
         }

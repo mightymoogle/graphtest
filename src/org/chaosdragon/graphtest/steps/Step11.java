@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.chaosdragon.graphtest.gui.GraphEditor;
 import org.chaosdragon.graphtest.matrix.MatrixTools;
@@ -241,6 +242,16 @@ public class Step11 extends Command {
 
             w.printText("\nCombined matrix B0:\n"+global);
             w.addToMatrixBox("B0", global);
+            
+      if (global.containsCycles()) {
+            
+//          JOptionPane.showMessageDialog(w,
+//    "Step11: CYCLE DETECTED!!! Further results may fail!\n Try selecting different keys.",
+//    "Warning!",
+//    JOptionPane.WARNING_MESSAGE);
+    //        System.err.println("Step11: CYCLE DETECTED!!! Further results may fail!");
+        }
+            
             
     }
 

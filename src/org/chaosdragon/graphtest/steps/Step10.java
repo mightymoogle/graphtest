@@ -79,7 +79,7 @@ public class Step10 extends Command {
         skippable = false;
     }
 
-    private int numberInArrayList(ArrayList<String> a, String b) {
+    public static int numberInArrayList(ArrayList<String> a, String b) {
 
         int i = 0;
         for (String s : a) {
@@ -215,6 +215,42 @@ public class Step10 extends Command {
             
             w.printText("FATAL ERROR!!!\n");
             return false;
+            //DO NOT WORK!!!!! F#@%#@%^#@
+//            keys = new ArrayList<>();
+//            keys.add(new ArrayList<String>());
+//            keys.add(new ArrayList<String>());
+//            keys.add(new ArrayList<String>());
+//            keys.add(new ArrayList<String>());
+//            fakeKeys = new ArrayList<>();
+//            
+//            keys.get(0).add("2");
+//            keys.get(0).add("6");
+//            keys.get(0).add("8");
+//            keys.get(1).add("2");
+//            keys.get(1).add("11");
+//            keys.get(2).add("2");
+//            keys.get(2).add("11");
+//            keys.get(2).add("15");
+//            keys.get(3).add("2");
+//            keys.get(3).add("6");
+//            keys.get(3).add("19");
+//            keys.get(3).add("20");
+//         
+//               
+//            fakeKeys.get(0).add("2");
+//            fakeKeys.get(0).add("6");
+//            fakeKeys.get(0).add("8");
+//            fakeKeys.get(1).add("2");
+//            fakeKeys.get(1).add("11");
+//            fakeKeys.get(2).add("2");
+//            fakeKeys.get(2).add("11");
+//            fakeKeys.get(2).add("15");
+//            fakeKeys.get(3).add("2");
+//            fakeKeys.get(3).add("6");
+//            fakeKeys.get(3).add("19");
+//            fakeKeys.get(3).add("20");
+            
+            
         }
 
         int current = 0;
