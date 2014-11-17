@@ -662,6 +662,11 @@ public class WizardForm extends javax.swing.JFrame {
 
         //Find the according panel to the next step and set it
         setActivePanel(panelMap.get(currentStep.getPreviousCommand().getClass()));
+        
+        if (currentStep instanceof Step10) {
+            nextButton.setEnabled(false);
+        }
+        
     }
 
 

@@ -101,11 +101,14 @@ public class Step12 extends Command {
     }
 
     //Copy paste from step 8
-    public void removeExtraConnections() {
+    public Matrix removeExtraConnections() {
 
        
 
-        Matrix subBase = global.getLeftMatrix();
+        Matrix subBase = new Matrix(global.getLeftMatrix());
+        
+        Matrix newGlobal = new Matrix(global);
+        
         //System.out.println(subBase);
         if (PRINTALL) {
             w.printText("Base SubMatrix:\n" + subBase);
@@ -141,17 +144,19 @@ public class Step12 extends Command {
                     String s1 = multi.getIds()[item[0]];
                     String s2 = multi.getIds()[item[1]];
 
-                    global.setValue(s1, s2, 0);
+                    newGlobal.setValue(s1, s2, 0);
                     w.printText("Removed link from " + s1 + " to " + s2 + "!\n");
 
                 }
             }
 
             if (MatrixTools.isMatrixZeroOnly(multi.getConnections())) {
-                return;
+                return newGlobal;
             }
 
         }
+        
+        return newGlobal;
 
     }
 
@@ -443,18 +448,18 @@ public class Step12 extends Command {
         ///
         
         
-        System.out.println(candidates);    
+        //System.out.println(candidates);    
         
         }
         
-        System.out.println(count);
+        //System.out.println(count);
                 
         return p;
     }
     
     public void doStep() {
 
-        removeExtraConnections(); //Remove extra links
+        global = removeExtraConnections(); //Remove extra links - needs fixing when cycles!
 
         //Remove doubling elements?
         Matrix subMatrix = getSubMatrix(global.getLeftMatrix()); //A01
