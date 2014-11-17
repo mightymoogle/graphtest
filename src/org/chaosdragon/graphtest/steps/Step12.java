@@ -1,5 +1,5 @@
 /*
- * Remove duplicate elements (slides 43-45)
+ * Remove unneeded links (75-76)
  */
 package org.chaosdragon.graphtest.steps;
 

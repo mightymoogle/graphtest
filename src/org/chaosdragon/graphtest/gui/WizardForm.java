@@ -885,7 +885,7 @@ public class WizardForm extends javax.swing.JFrame {
                
                 System.err.println("FIX ME!");                
                 
-                keys.add("");
+                keys.add("ERROR");
                 
             } else {
                 

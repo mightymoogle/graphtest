@@ -1,5 +1,5 @@
 /*
- * Remove duplicate elements (slides 43-45)
+ * Form the global matrix
  */
 package org.chaosdragon.graphtest.steps;
 

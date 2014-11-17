@@ -91,10 +91,10 @@ public class Step6 extends Command{
                    }
                    
                }
-              if (H.size()>0)  {
+              //if (H.size()>0)  {
               w.printText("H"+S1+"="+H+"\n");
               groupInformation.get(current).put(S1, H);
-              }
+              //}
               
               
               
