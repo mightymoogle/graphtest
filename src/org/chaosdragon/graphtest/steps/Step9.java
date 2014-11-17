@@ -162,6 +162,8 @@ public class Step9 extends Command {
 
     public void prepare() {
 
+        
+        
         //Global storage
         elementTableList = new ArrayList<>();
 
@@ -185,8 +187,15 @@ public class Step9 extends Command {
        // elementTableListList.add(elementTableList);
         }
 
+        int totalKeys = elementTableList.size();
+        
+        
+        
+        
         currentElement = 0;
         setModel(0);
+        w.resetKeyBar(totalKeys);
+        
      //CALL CLEARING OF THE KEYLIST ON W? RESET THE KEYBAR AND SO ON???
 
     }

@@ -83,7 +83,7 @@ public class WizardForm extends javax.swing.JFrame {
     public void setKeyModel(KeyTableModel model) {
 
         keyTable.setModel(model);
-        
+
         //NEED A ROW LABEL TOO =(        
     }
 
@@ -173,7 +173,6 @@ public class WizardForm extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         keyList = new javax.swing.JList();
         keyBar = new javax.swing.JProgressBar();
-        keyPrev = new javax.swing.JButton();
         keyNext = new javax.swing.JButton();
         bottomPanel = new javax.swing.JPanel();
         nextButton = new javax.swing.JButton();
@@ -480,6 +479,7 @@ public class WizardForm extends javax.swing.JFrame {
         keyBar.setMaximum(25);
         keyBar.setMinimum(1);
         keyBar.setToolTipText("");
+        keyBar.setPreferredSize(new java.awt.Dimension(150, 17));
         keyBar.setString("Group 1 of 8");
         keyBar.setStringPainted(true);
         keyBar.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -489,13 +489,9 @@ public class WizardForm extends javax.swing.JFrame {
         });
         jPanel2.add(keyBar);
 
-        keyPrev.setText("< Previous");
-        keyPrev.setToolTipText("");
-        keyPrev.setEnabled(false);
-        jPanel2.add(keyPrev);
-
-        keyNext.setText("Next >");
+        keyNext.setText("Next key >");
         keyNext.setToolTipText("");
+        keyNext.setPreferredSize(new java.awt.Dimension(150, 35));
         keyNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 keyNextActionPerformed(evt);
@@ -612,17 +608,15 @@ public class WizardForm extends javax.swing.JFrame {
 
     }
 
-    
     //Sets selection of the keyList to the first
     public void setSelectedKeyInList() {
-        
-        if (keyList.getModel().getSize()>0) {
+
+        if (keyList.getModel().getSize() > 0) {
             keyList.setSelectedIndex(0);
         }
-        
+
     }
-    
-    
+
     public void printText(String line) {
         try {
             StyledDocument doc = jTextPane1.getStyledDocument();
@@ -662,11 +656,11 @@ public class WizardForm extends javax.swing.JFrame {
 
         //Find the according panel to the next step and set it
         setActivePanel(panelMap.get(currentStep.getPreviousCommand().getClass()));
-        
+
         if (currentStep instanceof Step10) {
             nextButton.setEnabled(false);
         }
-        
+
     }
 
 
@@ -771,6 +765,11 @@ public class WizardForm extends javax.swing.JFrame {
         }
         matrices.remove(jList1.getSelectedIndex());
         jList1.clearSelection();
+        
+        if (jList1.getModel().getSize()>0) {
+            jList1.setSelectedIndex(0);
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -873,11 +872,19 @@ public class WizardForm extends javax.swing.JFrame {
     }//GEN-LAST:event_matrixBoxActionPerformed
 
     private void keyBarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_keyBarStateChanged
-        // TODO add your handling code here:
+        keyBar.setString("Key " + keyBar.getValue() + " of " + keyBar.getMaximum());
+
     }//GEN-LAST:event_keyBarStateChanged
 
     public void pressNextKeyKey() {
         keyNextActionPerformed(null);
+    }
+
+    public void resetKeyBar(int max) {
+
+        keyBar.setMaximum(max);
+        keyBar.setValue(0);
+
     }
 
 
@@ -908,7 +915,7 @@ public class WizardForm extends javax.swing.JFrame {
                 keyList.setSelectedIndex(0);
 
                 //DEBUG ONLY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                if (keyList.getModel().getSize()>=2) {
+                if (keyList.getModel().getSize() >= 2) {
                     if (keyList.getModel().getElementAt(0).equals("d5")
                             && keyList.getModel().getElementAt(1).equals("d6")) {
 
@@ -922,8 +929,6 @@ public class WizardForm extends javax.swing.JFrame {
                     }
                 }
                 //DEBUG ONLY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                
-                
 
             } else {
 
@@ -945,7 +950,7 @@ public class WizardForm extends javax.swing.JFrame {
     }//GEN-LAST:event_keyNextActionPerformed
 
     private void keyListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_keyListValueChanged
-       //If nothing selected, disable NEXT
+        //If nothing selected, disable NEXT
 
         if (keyList.getSelectedIndex() == -1) {
             keyNext.setEnabled(false);
@@ -1028,7 +1033,6 @@ public class WizardForm extends javax.swing.JFrame {
     private javax.swing.JProgressBar keyBar;
     private javax.swing.JList keyList;
     private javax.swing.JButton keyNext;
-    private javax.swing.JButton keyPrev;
     private javax.swing.JTable keyTable;
     private javax.swing.JComboBox matrixBox;
     private javax.swing.JPanel matrixPanel;
