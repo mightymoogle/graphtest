@@ -3,24 +3,14 @@
  */
 package org.chaosdragon.graphtest.steps;
 
-import com.sun.glass.events.KeyEvent;
 import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
-import javax.swing.JPanel;
-import org.chaosdragon.graphtest.gui.GraphEditor;
-import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
 import org.chaosdragon.graphtest.tables.KeyTableListener;
 import org.chaosdragon.graphtest.tables.KeyTableModel;
-import org.chaosdragon.tools.NaturalOrderComparator;
 
 /**
  *
@@ -148,69 +138,58 @@ public class Step9 extends Command {
 
         //MAYBE ONE FOR ALL?
         m.addTableModelListener(new KeyTableListener(w));
-        m.fireTableDataChanged();       
-        
+        m.fireTableDataChanged();
+
         //Sets selection of the keyList to the first
         w.setSelectedKeyInList();
-        
-        if (m.getColumnCount()<2) {            
-            w.pressNextKeyKey();            
+
+        if (m.getColumnCount() < 2) {
+            w.pressNextKeyKey();
         }
-        
-        
+
     }
 
     public void prepare() {
 
-        
-        
         //Global storage
         elementTableList = new ArrayList<>();
 
         for (int current = 0; current < requirements.size(); current++) {
 
-       // ArrayList<ElementTable> elementTableList = new ArrayList<>();
+            // ArrayList<ElementTable> elementTableList = new ArrayList<>();
             Set<String> s = requirementGroups.get(current);
             Set<String> currentSet = new TreeSet<>();
             for (String p : s) {
                 ElementTable e = new ElementTable();
                 currentSet = groupInformation.get(current).get(p);
-                
+
 //                if (currentSet!=null) {
-                    //Sets names
-                    e.setNames(currentSet.toArray(new String[0]));
-                    e.fillData();
-                    elementTableList.add(e);
+                //Sets names
+                e.setNames(currentSet.toArray(new String[0]));
+                e.fillData();
+                elementTableList.add(e);
                 //}
             }
 
-       // elementTableListList.add(elementTableList);
+            // elementTableListList.add(elementTableList);
         }
 
         int totalKeys = elementTableList.size();
-        
-        
-        
-        
+
         currentElement = 0;
         setModel(0);
         w.resetKeyBar(totalKeys);
-        
-     //CALL CLEARING OF THE KEYLIST ON W? RESET THE KEYBAR AND SO ON???
 
+     //CALL CLEARING OF THE KEYLIST ON W? RESET THE KEYBAR AND SO ON???
     }
 
     @Override
-    public boolean execute() {
+    public void execute() {
         prepare();
-        return false;
     }
 
     @Override
     public Command getNext() {
-
         return new Step10(this);
-
     }
-
 }

@@ -9,12 +9,11 @@ package org.chaosdragon.graphtest.steps;
  * @author Mighty
  */
 public abstract class Command {      
-   abstract public boolean execute();
+   abstract public void execute();
 //   abstract public void undo();
    abstract public Command getNext();
    
-   protected boolean skippable = true;
-   
+   protected boolean skippable = true;   
    private Command previousCommand;
 
     /**
@@ -29,21 +28,7 @@ public abstract class Command {
      */
     public void setPreviousCommand(Command previousCommand) {
         this.previousCommand = previousCommand;
-    }   
-     
-//    public class CommandBuilder{
-//        
-//        public CommandBuilder() {
-//            
-//        }
-//        
-//        public Command buildCommand() {
-//            
-//            return null;
-//            
-//        }        
-        
-//    }
+    }      
 
     /**
      * @return the skippable

@@ -5,29 +5,15 @@ package org.chaosdragon.graphtest.steps;
 
 import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import javax.swing.JPanel;
-import org.chaosdragon.graphtest.gui.GraphEditor;
-import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
-import org.chaosdragon.graphtest.tables.KeyTableListener;
-import org.chaosdragon.graphtest.tables.KeyTableModel;
-import org.chaosdragon.tools.NaturalOrderComparator;
-
 /**
  *
  * @author Mighty
  */
 public class Step10 extends Command {
-
     WizardForm w;
     ArrayList<Matrix> requirements; //Bx       
     ArrayList<Matrix> newRequirements; //!!!! with deleted from step7
@@ -38,7 +24,6 @@ public class Step10 extends Command {
     ArrayList<String[]> ids;
     ArrayList<Matrix> reachabilityMatrices;
     ArrayList<Matrix> submatrices;
-    //Current requirement -> Level-> Group
     ArrayList<ArrayList<Set<String>>> groupLevels;
 
     //For new matrices after Round 1 (from step 8 )
@@ -207,50 +192,13 @@ public class Step10 extends Command {
     }
 
     @Override
-    public boolean execute() {
+    public void execute() {
         w.clearText();
         bStarMatrix = new ArrayList<>();
         
-        if (keys == null) {                       
-            
+        if (keys == null) {
             w.printText("FATAL ERROR!!!\n");
-            return false;
-            //DO NOT WORK!!!!! F#@%#@%^#@
-//            keys = new ArrayList<>();
-//            keys.add(new ArrayList<String>());
-//            keys.add(new ArrayList<String>());
-//            keys.add(new ArrayList<String>());
-//            keys.add(new ArrayList<String>());
-//            fakeKeys = new ArrayList<>();
-//            
-//            keys.get(0).add("2");
-//            keys.get(0).add("6");
-//            keys.get(0).add("8");
-//            keys.get(1).add("2");
-//            keys.get(1).add("11");
-//            keys.get(2).add("2");
-//            keys.get(2).add("11");
-//            keys.get(2).add("15");
-//            keys.get(3).add("2");
-//            keys.get(3).add("6");
-//            keys.get(3).add("19");
-//            keys.get(3).add("20");
-//         
-//               
-//            fakeKeys.get(0).add("2");
-//            fakeKeys.get(0).add("6");
-//            fakeKeys.get(0).add("8");
-//            fakeKeys.get(1).add("2");
-//            fakeKeys.get(1).add("11");
-//            fakeKeys.get(2).add("2");
-//            fakeKeys.get(2).add("11");
-//            fakeKeys.get(2).add("15");
-//            fakeKeys.get(3).add("2");
-//            fakeKeys.get(3).add("6");
-//            fakeKeys.get(3).add("19");
-//            fakeKeys.get(3).add("20");
-            
-            
+            return;       
         }
 
         int current = 0;
@@ -359,16 +307,12 @@ public class Step10 extends Command {
             w.printText("Keys: "+this.keys.get(current)+ "\n");
             w.printText("Elements: "+notKeys.get(current)+ "\n\n");
             bStarMatrix.add(done);
-        }        
-                
-        return false;
+        }     
     }
 
     @Override
     public Command getNext() {
-
         return new Step11(this);
-
     }
 
 }

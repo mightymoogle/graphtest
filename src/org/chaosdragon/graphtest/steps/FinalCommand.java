@@ -8,11 +8,9 @@ package org.chaosdragon.graphtest.steps;
  * @author Mighty
  */
 public class FinalCommand extends Command{
-
       
     @Override
-    public boolean execute() {        
-        return false;
+    public void execute() {      
     }
 
     //Last one is not skippable

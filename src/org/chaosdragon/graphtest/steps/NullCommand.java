@@ -15,8 +15,8 @@ public class NullCommand extends Command{
     }
     
     @Override
-    public boolean execute() {
-        return false;
+    public void execute() {
+
     }
 
 
