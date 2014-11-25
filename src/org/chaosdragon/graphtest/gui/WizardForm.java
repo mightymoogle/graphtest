@@ -491,6 +491,7 @@ public class WizardForm extends javax.swing.JFrame {
         jPanel2.add(keyBar);
 
         jButton10.setText("Set as a subkey");
+        jButton10.setEnabled(false);
         jPanel2.add(jButton10);
 
         keyNext.setText("Next key >");
