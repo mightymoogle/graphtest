@@ -3,6 +3,7 @@
  */
 package org.chaosdragon.graphtest.steps;
 
+import java.awt.Frame;
 import java.util.AbstractMap;
 import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.swing.JFrame;
 import org.chaosdragon.graphtest.gui.GraphEditor;
 import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
@@ -83,6 +85,7 @@ public class Step12 extends Command {
            
         newGlobal = new Matrix(newGlobal);        
         for (Map.Entry<String,String> e : repeatingKeys) {            
+            
             backGraph.updateGraph(newGlobal);
                 if (backGraph.showLinkQuestion(e.getKey(), e.getValue())) {             
                     newGlobal.setValue(e.getKey(), e.getValue(), 0);
