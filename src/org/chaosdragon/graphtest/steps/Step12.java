@@ -3,12 +3,15 @@
  */
 package org.chaosdragon.graphtest.steps;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
+import java.util.AbstractMap;
 import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -49,7 +52,7 @@ public class Step12 extends Command {
     //Global matrix
     Matrix global;
     boolean PRINTALL = false;
-    Map<String,String> repeatingKeys;
+    Set<Map.Entry<String,String>> repeatingKeys;
 
     public Step12(Step11 old) {
         w = old.w;
@@ -80,10 +83,10 @@ public class Step12 extends Command {
     }
           
     public Matrix askRepeatingKeys(GraphEditor backGraph, Matrix newGlobal,
-            Map<String,String> repeatingKeys) {
+            Set<Map.Entry<String,String>> repeatingKeys) {
            
         newGlobal = new Matrix(newGlobal);        
-        for (Map.Entry<String,String> e: repeatingKeys.entrySet()) {
+        for (Map.Entry<String,String> e : repeatingKeys) {            
             backGraph.updateGraph(newGlobal);
                 if (backGraph.showLinkQuestion(e.getKey(), e.getValue())) {             
                     newGlobal.setValue(e.getKey(), e.getValue(), 0);
@@ -101,7 +104,7 @@ public class Step12 extends Command {
         Matrix subBase = new Matrix(global.getLeftMatrix());
         Matrix newGlobal = new Matrix(global);
         
-        repeatingKeys = new HashMap<>();
+        repeatingKeys = new HashSet<>();
         
         if (PRINTALL) 
             w.printText("Base SubMatrix:\n" + subBase);        
@@ -127,8 +130,9 @@ public class Step12 extends Command {
                 for (int[] item : found) {
                     //Get strings from values recieved
                     String s1 = multi.getIds()[item[0]];
-                    String s2 = multi.getIds()[item[1]];                   
-                    repeatingKeys.put(s1, s2);
+                    String s2 = multi.getIds()[item[1]];                  
+                                        
+                    repeatingKeys.add(new AbstractMap.SimpleEntry<>(s1,s2));
                 }
             }
 
