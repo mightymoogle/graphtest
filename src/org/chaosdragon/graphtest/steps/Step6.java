@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.*;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.swing.JOptionPane;
 import org.chaosdragon.graphtest.gui.WizardForm;
 import org.chaosdragon.tools.NaturalOrderComparator;
 
@@ -76,10 +77,21 @@ public class Step6 extends Command {
                 }
                 w.printText("H" + S1 + "=" + H + "\n");
                 groupInformation.get(current).put(S1, H);
+                
+                if (H.size()==0) {
+                    JOptionPane.showMessageDialog(w,
+                        "Group H"+S1+" is empty for requirement "+(current+1)+
+                            "!\nThat can lead to errors while selecting group keys."
+                            + "\nPlease check your input data again.",
+                        "WARNING",
+                        JOptionPane.WARNING_MESSAGE);
+                }
+                
             }
 
             w.printText("\n");
-        }
+        }        
+                
     }
 
     @Override

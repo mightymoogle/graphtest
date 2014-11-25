@@ -68,6 +68,12 @@ public class GraphEditor extends javax.swing.JDialog {
     }    
     
     
+    public void updateGraph(Matrix in) {        
+      x= new GraphEditorPanel(in,true);          
+    }
+    
+        
+    
     //Call after SetArrange() if it was read_only. Fixes bug
     public void fixReadOnly() {
         x.setMode(GraphEditorPanel.Mode.READ_ONLY);

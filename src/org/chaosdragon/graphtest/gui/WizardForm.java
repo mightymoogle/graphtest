@@ -173,6 +173,7 @@ public class WizardForm extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         keyList = new javax.swing.JList();
         keyBar = new javax.swing.JProgressBar();
+        jButton10 = new javax.swing.JButton();
         keyNext = new javax.swing.JButton();
         bottomPanel = new javax.swing.JPanel();
         nextButton = new javax.swing.JButton();
@@ -488,6 +489,9 @@ public class WizardForm extends javax.swing.JFrame {
             }
         });
         jPanel2.add(keyBar);
+
+        jButton10.setText("Set as a subkey");
+        jPanel2.add(jButton10);
 
         keyNext.setText("Next key >");
         keyNext.setToolTipText("");
@@ -894,10 +898,22 @@ public class WizardForm extends javax.swing.JFrame {
 
             if (keyList.getSelectedIndex() == -1) {
 
-                System.err.println("FIX ME!");
-
-                keys.add("ERROR");
-
+                int dialogResult = JOptionPane.showConfirmDialog(this, "Unable to select a key for a group. Please go back and check your data.\n"
+                        + "Would you like to add an ERROR key instead?","ERROR: group empty, cannot select keys.",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
+                
+                if (dialogResult==JOptionPane.YES_OPTION) {
+                    keys.add("ERROR");
+                } else {
+                    return;
+                }
+  
+//                   JOptionPane.showMessageDialog(this,
+//                        "Unable to select a key for a group. Please go back and check your data.",   
+//                        "ERROR",
+//                        JOptionPane.ERROR_MESSAGE,
+//                        );
+//                   return;
+                
             } else {
 
                 String result = (String) keyList.getSelectedValue();
@@ -1009,6 +1025,7 @@ public class WizardForm extends javax.swing.JFrame {
     private javax.swing.JCheckBox extraSteps;
     private javax.swing.JLabel infoLabel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

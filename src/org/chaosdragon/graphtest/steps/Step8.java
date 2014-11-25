@@ -7,6 +7,7 @@ import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.JOptionPane;
 import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
 
@@ -103,8 +104,19 @@ public class Step8 extends Command {
                         //Get strings from values recieved
                         String s1 = m.getIds()[item[0]];
                         String s2 = m.getIds()[item[1]];
-                        b.setValue(s1, s2, 0);
-                        w.printText("Removed link from " + s1 + " to " + s2 + "!\n\n");
+                        
+                        int dialogResult = JOptionPane.showConfirmDialog(w, 
+                                "The link from "+s1+" to "+s2+" could be unnecessary.\n"
+                                        + "Would you like to remove it?",
+                                "Unnecessary link",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+                
+                if (dialogResult==JOptionPane.YES_OPTION) {
+                    b.setValue(s1, s2, 0);
+                    w.printText("Removed link from " + s1 + " to " + s2 + "!\n\n");
+                }    
+                       
+                        
+                        
                     }
                 }
             }

@@ -559,6 +559,11 @@
                     <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="keyBarStateChanged"/>
                   </Events>
                 </Component>
+                <Component class="javax.swing.JButton" name="jButton10">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Set as a subkey"/>
+                  </Properties>
+                </Component>
                 <Component class="javax.swing.JButton" name="keyNext">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Next key &gt;"/>
