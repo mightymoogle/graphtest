@@ -3,19 +3,15 @@
  */
 package org.chaosdragon.graphtest.steps;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.util.AbstractMap;
 import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.swing.JOptionPane;
 import org.chaosdragon.graphtest.gui.GraphEditor;
 import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;

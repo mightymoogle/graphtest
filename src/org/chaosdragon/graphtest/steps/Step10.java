@@ -9,6 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import org.chaosdragon.graphtest.gui.WizardForm;
+import org.chaosdragon.graphtest.matrix.MatrixTools;
 /**
  *
  * @author Mighty
@@ -190,7 +191,7 @@ public class Step10 extends Command {
         System.arraycopy(B, 0, C, aLen, bLen);
         return C;
     }
-
+    
     @Override
     public void execute() {
         w.clearText();
@@ -252,32 +253,36 @@ public class Step10 extends Command {
             }
 
             Matrix req = newRequirements.get(current);
-
+            req = reachabilityMatrices.get(current);
+            
             //Now set intergroup links
             i = 0;
+          
             for (String key1 : keys) {
                 int j = 0;
+               
                 for (String key2 : keys) {
 
                     //Cros key links               
                     if (req.isConnected(key1, key2)) {
-
-                        m[i][j] = 1;
+                        m[i][j] = 1;                        
                     }
-
+                   
                     j++;
                 }
-
+                              
                 i++;
             }
 
+                                    
             Map<String, Set<String>> groups = groupInformation.get(current);
             changeSubMatrices();
             Matrix sub = submatrices.get(current);
 
             //Reachability to other groups
-            String[] subIds = sub.getIds();
-
+            String[] subIds = sub.getIds();                        
+            
+            
             for (int j = 0; j < subIds.length; j++) {
                 for (int k = 0; k < subIds.length; k++) {
 
@@ -300,6 +305,9 @@ public class Step10 extends Command {
             String[] ss = concat(keys.toArray(new String[0]), elements.toArray(new String[0]));
 
             Matrix done = new Matrix(ss, m);
+            done.fixOrphanKeys(keys);
+            
+            
             String doneLabel = "B" + (current + 1) + "*";
 
             w.printText(doneLabel + ":\n" + done + "\n");

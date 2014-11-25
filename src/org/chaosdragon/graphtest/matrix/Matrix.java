@@ -6,6 +6,8 @@ package org.chaosdragon.graphtest.matrix;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import org.chaosdragon.graphtest.steps.Step5;
@@ -250,20 +252,103 @@ public class Matrix {
                 
     }
     
-
+    Set<String> checked;    
+    public boolean isLinkedIndirectly(String S1, String S2) {
+        checked = new HashSet<>();
+        return isIndirectlyLinked(S1, S2);
+    }
+    
+    private boolean isIndirectlyLinked(String S1, String S2) {
+        
+        for (String a:ids) {
+            
+            if (isConnected(S1, a)||isConnected(a,S1)) {
+                
+                if (a.equals(S2)) return true;                
+                
+                if (!checked.contains(a)) {
+                    checked.add(a);
+                    return isIndirectlyLinked(a, S2)||isIndirectlyLinked(S2, a);                
+                }                
+            }            
+        }             
+                
+        return false;        
+    }
+    
+    public boolean isKeyOrphan(ArrayList<String> keys,String key) {
+        
+        int counter =0;
+        for (String key1:keys) {            
+     
+                if (isConnected(key, key1)) counter++;                
+                   
+        }        
+        
+        return counter==0;
+    }
+    
+    
+    public void fixOrphanKeys(ArrayList<String> keys) {
+        
+        
+        for (String key1:keys) {
+            
+            for (String key2:keys) {                
+                
+                if (!key1.equals(key2) && 
+                        isKeyOrphan(keys, key1) && 
+                        isKeyOrphan(keys, key2) 
+                        //&& !isConnected(key2, key1)
+                        ) {
+                    setValue(key1, key2, 1);
+                }
+                
+            }            
+        }        
+    }
+    
+    
     public static void main(String[] args) {
         
-        String[] ids = {"2","6","19","20","3","5","8"};
-        int[][] matr = {{0,0,0,1,1,0,0},{1,0,0,0,0,1,0},{0,1,0,1,0,0,1},{0,0,0,0,0,0,0}};
-        
-        Matrix m = new Matrix(ids,matr);
-        System.out.println(m);
-        
-        m.removeAttributeColumn("8");
-        System.out.println(m);
-        
-        System.out.println(m.getLeftMatrix());
+//        String[] ids = {"2","6","19","20","3","5","8"};
+//        int[][] matr = {{0,0,0,1,1,0,0},{1,0,0,0,0,1,0},{0,1,0,1,0,0,1},{0,0,0,0,0,0,0}};
+//        
+//        Matrix m = new Matrix(ids,matr);
+//        System.out.println(m);
+//        
+//        m.removeAttributeColumn("8");
+//        System.out.println(m);
+//        
+//        System.out.println(m.getLeftMatrix());
 
+                
+        int[][] mm = {{0,0,0,0},{1,0,0,0},{1,0,0,0},{0,0,0,0}};
+        String[] ids ={"1","5","28","X"};
+        Matrix matr = new Matrix(ids, mm);
+        
+        
+//        System.out.println(matr.isConnected("5", "28"));
+//        System.out.println(matr.isConnected("28","5"));
+//        
+                
+//        System.out.println(matr.isLinkedIndirectly("28","5"));        
+//        System.out.println(matr.isLinkedIndirectly("5","28"));        
+//        System.out.println(matr.isLinkedIndirectly("1","5"));        
+//        System.out.println(matr.isLinkedIndirectly("28","1"));
+//        System.out.println(matr.isLinkedIndirectly("28","X"));
+        ArrayList<String> temp = new ArrayList<>();
+        //ArrayList temp = new ArrayList<String>(Arrays.asList(ids));
+        temp.add("5");temp.add("28");
+        
+        System.out.println(matr.isKeyOrphan(temp, "5"));
+        System.out.println(matr.isKeyOrphan(temp, "28"));
+                
+        matr.fixOrphanKeys(temp);
+        
+        
+        System.out.println(matr);
+        
     }
     
 }
