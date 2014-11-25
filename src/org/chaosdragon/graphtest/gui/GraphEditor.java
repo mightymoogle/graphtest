@@ -68,11 +68,24 @@ public class GraphEditor extends javax.swing.JDialog {
     }    
     
     
-    public void updateGraph(Matrix in) {        
-      x= new GraphEditorPanel(in,true);          
+    public void updateGraph(Matrix in) {  
+        //x.loadMatrix(in);      
+      x.loadMatrix(in);      
+      x.repaint();      
+      x.setMode(GraphEditorPanel.Mode.READ_ONLY);
     }
     
-        
+    public boolean showLinkQuestion(String s1,String s2) {
+        this.setModal(false);
+        x.autoArrange(GraphEditorPanel.Arrange.HIERARCHY);
+        if (!this.isVisible()) this.setVisible(true);        
+        int dialogResult = JOptionPane.showConfirmDialog(this, 
+                                "The link from "+s1+" to "+s2+" could be unnecessary.\n"
+                                        + "Would you like to remove it?",
+                                "Unnecessary link",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+        //this.setVisible(false);
+        return dialogResult==JOptionPane.YES_OPTION;        
+    }    
     
     //Call after SetArrange() if it was read_only. Fixes bug
     public void fixReadOnly() {

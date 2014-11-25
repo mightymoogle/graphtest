@@ -81,9 +81,12 @@ public class GraphEditorPanel extends JPanel {
         setMode(Mode.HAND); //Make editable
 
         mxGraph graph = graphComponent.getGraph();
+        
         Object parent = graph.getDefaultParent();
         graph.getModel().beginUpdate();
-
+        graph.selectAll();
+        graph.removeCells();
+        
         try {
             String[] names = matr.getIds();
             Object[] vertices = new Object[names.length];

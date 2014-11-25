@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.JOptionPane;
+import org.chaosdragon.graphtest.gui.GraphEditor;
 import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;
 import org.chaosdragon.tools.NaturalOrderComparator;
@@ -76,7 +77,7 @@ public class Step12 extends Command {
     }
 
     //Copy paste from step 8
-    public Matrix removeExtraConnections() {
+    public Matrix removeExtraConnections(GraphEditor backGraph) {
         Matrix subBase = new Matrix(global.getLeftMatrix());
         Matrix newGlobal = new Matrix(global);
         if (PRINTALL) 
@@ -105,16 +106,12 @@ public class Step12 extends Command {
                     String s1 = multi.getIds()[item[0]];
                     String s2 = multi.getIds()[item[1]];
                     
-                      int dialogResult = JOptionPane.showConfirmDialog(w, 
-                                "The link from "+s1+" to "+s2+" could be unnecessary.\n"
-                                        + "Would you like to remove it?",
-                                "Unnecessary link",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-                
-                if (dialogResult==JOptionPane.YES_OPTION) {
-                    
+                    backGraph.updateGraph(newGlobal);
+                if (backGraph.showLinkQuestion(s1, s2)) {             
                     newGlobal.setValue(s1, s2, 0);
                     w.printText("Removed link from " + s1 + " to " + s2 + "!\n");
                 }
+                backGraph.setVisible(false);
                 
                 }
             }
@@ -364,7 +361,8 @@ public class Step12 extends Command {
     }
 
     public void doStep() {
-        global = removeExtraConnections(); //Remove extra links - needs fixing when cycles!
+        GraphEditor backGraph = new GraphEditor(w, false, null,true);  
+        global = removeExtraConnections(backGraph); //Remove extra links - needs fixing when cycles!
         //Remove doubling elements?
         Matrix subMatrix = getSubMatrix(global.getLeftMatrix()); //A01
         ArrayList<Set<String>> reachabilitySetsR = getReachabilitySets(subMatrix); //R
