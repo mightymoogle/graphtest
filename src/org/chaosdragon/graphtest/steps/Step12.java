@@ -7,6 +7,8 @@ import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -47,6 +49,7 @@ public class Step12 extends Command {
     //Global matrix
     Matrix global;
     boolean PRINTALL = false;
+    Map<String,String> repeatingKeys;
 
     public Step12(Step11 old) {
         w = old.w;
@@ -75,11 +78,31 @@ public class Step12 extends Command {
         //Will be changed!!!
         global = new Matrix(old.global);
     }
+          
+    public Matrix askRepeatingKeys(GraphEditor backGraph, Matrix newGlobal,
+            Map<String,String> repeatingKeys) {
+           
+        newGlobal = new Matrix(newGlobal);        
+        for (Map.Entry<String,String> e: repeatingKeys.entrySet()) {
+            backGraph.updateGraph(newGlobal);
+                if (backGraph.showLinkQuestion(e.getKey(), e.getValue())) {             
+                    newGlobal.setValue(e.getKey(), e.getValue(), 0);
+                    w.printText("Removed link from " + e.getKey()
+                            + " to " + e.getValue() + "!\n");
+                }
+                backGraph.setVisible(false);
+        }
+        return newGlobal;
+        
+    }
 
     //Copy paste from step 8
-    public Matrix removeExtraConnections(GraphEditor backGraph) {
+    public Matrix removeExtraConnections() {
         Matrix subBase = new Matrix(global.getLeftMatrix());
         Matrix newGlobal = new Matrix(global);
+        
+        repeatingKeys = new HashMap<>();
+        
         if (PRINTALL) 
             w.printText("Base SubMatrix:\n" + subBase);        
         Matrix multi = new Matrix(subBase);
@@ -104,15 +127,8 @@ public class Step12 extends Command {
                 for (int[] item : found) {
                     //Get strings from values recieved
                     String s1 = multi.getIds()[item[0]];
-                    String s2 = multi.getIds()[item[1]];
-                    
-                    backGraph.updateGraph(newGlobal);
-                if (backGraph.showLinkQuestion(s1, s2)) {             
-                    newGlobal.setValue(s1, s2, 0);
-                    w.printText("Removed link from " + s1 + " to " + s2 + "!\n");
-                }
-                backGraph.setVisible(false);
-                
+                    String s2 = multi.getIds()[item[1]];                   
+                    repeatingKeys.put(s1, s2);
                 }
             }
 
@@ -362,7 +378,8 @@ public class Step12 extends Command {
 
     public void doStep() {
         GraphEditor backGraph = new GraphEditor(w, false, null,true);  
-        global = removeExtraConnections(backGraph); //Remove extra links - needs fixing when cycles!
+        global = removeExtraConnections(); //Remove extra links - needs fixing when cycles!
+        global = askRepeatingKeys(backGraph, global, repeatingKeys);
         //Remove doubling elements?
         Matrix subMatrix = getSubMatrix(global.getLeftMatrix()); //A01
         ArrayList<Set<String>> reachabilitySetsR = getReachabilitySets(subMatrix); //R
