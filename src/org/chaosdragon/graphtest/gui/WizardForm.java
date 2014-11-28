@@ -128,6 +128,7 @@ public class WizardForm extends javax.swing.JFrame {
         listModel = new DefaultListModel();
         keyList.setModel(listModel);
         keys = new ArrayList<>();
+        infoLabel.setVisible(false);
 
     }
 
@@ -155,7 +156,6 @@ public class WizardForm extends javax.swing.JFrame {
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
         s2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -173,7 +173,6 @@ public class WizardForm extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         keyList = new javax.swing.JList();
         keyBar = new javax.swing.JProgressBar();
-        jButton10 = new javax.swing.JButton();
         keyNext = new javax.swing.JButton();
         bottomPanel = new javax.swing.JPanel();
         nextButton = new javax.swing.JButton();
@@ -302,17 +301,6 @@ public class WizardForm extends javax.swing.JFrame {
             }
         });
 
-        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/org/chaosdragon/graphtest/gui/icons/info (2).png"))); // NOI18N
-        jButton8.setText("Edit matrix");
-        jButton8.setToolTipText("");
-        jButton8.setEnabled(false);
-        jButton8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout s1Layout = new javax.swing.GroupLayout(s1);
         s1.setLayout(s1Layout);
         s1Layout.setHorizontalGroup(
@@ -327,8 +315,7 @@ public class WizardForm extends javax.swing.JFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(525, Short.MAX_VALUE))
         );
         s1Layout.setVerticalGroup(
@@ -343,15 +330,13 @@ public class WizardForm extends javax.swing.JFrame {
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
 
         middlePanel.add(s1, "card3");
@@ -490,10 +475,6 @@ public class WizardForm extends javax.swing.JFrame {
         });
         jPanel2.add(keyBar);
 
-        jButton10.setText("Set as a subkey");
-        jButton10.setEnabled(false);
-        jPanel2.add(jButton10);
-
         keyNext.setText("Next key >");
         keyNext.setToolTipText("");
         keyNext.setPreferredSize(new java.awt.Dimension(150, 35));
@@ -525,7 +506,7 @@ public class WizardForm extends javax.swing.JFrame {
             }
         });
 
-        progressBar.setMaximum(25);
+        progressBar.setMaximum(13);
         progressBar.setMinimum(1);
         progressBar.setToolTipText("");
         progressBar.setRequestFocusEnabled(false);
@@ -633,6 +614,19 @@ public class WizardForm extends javax.swing.JFrame {
 
     }
 
+    private boolean checkEmptyMatrices() {
+        for (int i = 0; i < matrices.getList().size(); i++) {
+
+            if (matrices.get(i).getIds().length < 2) {
+                JOptionPane.showMessageDialog(
+                        this, "Requirements S" + (i + 1) + " cannot be empty! At least 2 elements!", "Requirements missing", JOptionPane.WARNING_MESSAGE);
+                return true;
+            }
+
+        }
+        return false;
+    }
+
     //Called from the NEXT button
     private void doStep() {
 
@@ -645,10 +639,16 @@ public class WizardForm extends javax.swing.JFrame {
                 return;
             }
 
+            if (checkEmptyMatrices()) {
+                return;
+            }
             currentStep = new Step1(matrices.getList(), this);
             currentStep.setPreviousCommand(new NullCommand());
         }
 
+        if (checkEmptyMatrices()) {
+            return;
+        }
         progressBar.setValue(progressBar.getValue() + 1);
 
         //Execute the step
@@ -670,19 +670,28 @@ public class WizardForm extends javax.swing.JFrame {
 
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        try {
+            //if (currentStep!=null && currentStep.getClass().equals(NullCommand.class)) currentStep=null;
+            if (extraSteps.isSelected()) {
 
-        //if (currentStep!=null && currentStep.getClass().equals(NullCommand.class)) currentStep=null;
-        if (extraSteps.isSelected()) {
-            doStep();
-            while (currentStep.isSkippable()) {
+                doStep();
+                while (currentStep.isSkippable()) {
+                    doStep();
+                }
+
+            } else {
+
                 doStep();
             }
+        } catch (Exception e) {
 
-        } else {
-
-            doStep();
+            JOptionPane.showMessageDialog(
+                    this, "An error has occured in step" + currentStep.toString()
+                    + "\n Please check your input data again!"
+                    + "\n" + e, "FATAL ERROR", JOptionPane.ERROR_MESSAGE);
+            stepBack();
+            progressBar.setValue(progressBar.getValue() - 1);
         }
-
 
     }//GEN-LAST:event_nextButtonActionPerformed
 
@@ -748,9 +757,11 @@ public class WizardForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
         if (jList1.getSelectedIndex() == -1) {
             return;
         }
+        System.out.println(matrices.get(jList1.getSelectedIndex()).print());
         JOptionPane.showMessageDialog(
                 null, new JLabel("<html><pre>" + matrices.get(jList1.getSelectedIndex()).print()));
 
@@ -770,11 +781,11 @@ public class WizardForm extends javax.swing.JFrame {
         }
         matrices.remove(jList1.getSelectedIndex());
         jList1.clearSelection();
-        
-        if (jList1.getModel().getSize()>0) {
+
+        if (jList1.getModel().getSize() > 0) {
             jList1.setSelectedIndex(0);
         }
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -841,10 +852,6 @@ public class WizardForm extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jList1ValueChanged
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
-
     private void progressBarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_progressBarStateChanged
         progressBar.setString("Step " + progressBar.getValue() + " of " + progressBar.getMaximum());
     }//GEN-LAST:event_progressBarStateChanged
@@ -899,22 +906,24 @@ public class WizardForm extends javax.swing.JFrame {
 
             if (keyList.getSelectedIndex() == -1) {
 
-                int dialogResult = JOptionPane.showConfirmDialog(this, "Unable to select a key for a group. Please go back and check your data.\n"
-                        + "Would you like to add an ERROR key instead?","ERROR: group empty, cannot select keys.",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
-                
-                if (dialogResult==JOptionPane.YES_OPTION) {
-                    keys.add("ERROR");
-                } else {
-                    return;
-                }
-  
-//                   JOptionPane.showMessageDialog(this,
-//                        "Unable to select a key for a group. Please go back and check your data.",   
-//                        "ERROR",
-//                        JOptionPane.ERROR_MESSAGE,
-//                        );
-//                   return;
-                
+//                int dialogResult = JOptionPane.showMessageDialog(this, "Unable to select a key for a group. Please go back and check your data."
+//                        //+ "\nWould you like to add an ERROR key instead?"
+//                        ,"ERROR: group empty, cannot select keys."
+//                        ,JOptionPane.ERROR_MESSAGE);
+//                        //,JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
+//                
+//                if (dialogResult==JOptionPane.YES_OPTION) {
+//                    keys.add("ERROR");
+//                } else {
+//                    return;
+//                }
+                JOptionPane.showMessageDialog(this,
+                        "Unable to select a key for a group. Please go back and check your data.",
+                        "Cannot select key",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+
             } else {
 
                 String result = (String) keyList.getSelectedValue();
@@ -1026,14 +1035,12 @@ public class WizardForm extends javax.swing.JFrame {
     private javax.swing.JCheckBox extraSteps;
     private javax.swing.JLabel infoLabel;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

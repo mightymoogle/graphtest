@@ -20,7 +20,7 @@ public class GraphEditor extends javax.swing.JDialog {
      
      private GraphEditorPanel x;    
      private boolean done = false;
-     private GraphEditorPanel.Arrange arrangeType = GraphEditorPanel.Arrange.CIRCLE;     
+     private GraphEditorPanel.Arrange arrangeType = GraphEditorPanel.Arrange.FAST_ORGANIC;     
      Matrix input;    
         
     /**
