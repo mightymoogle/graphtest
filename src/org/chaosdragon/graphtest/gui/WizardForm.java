@@ -121,7 +121,7 @@ public class WizardForm extends javax.swing.JFrame {
         fc.addChoosableFileFilter(filter);
 
         //Disable for real situation
-        setTestEnvironment();
+        //setTestEnvironment();
 
         currentStep = new NullCommand();
         setActivePanel(panelMap.get(currentStep.getClass()));
