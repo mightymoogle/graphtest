@@ -5,6 +5,7 @@ package org.chaosdragon.graphtest.steps;
 
 import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import org.chaosdragon.graphtest.gui.WizardForm;
@@ -95,7 +96,8 @@ public class Step11 extends Command {
             temp.removeAll(W1);
             W1.addAll(temp);
         }
-        W1.sort(new NaturalOrderComparator());
+        Collections.sort(W1, new NaturalOrderComparator());
+        //W1.sort(new NaturalOrderComparator());
         w.printText(title + "=" + W1 + "\n");
         return W1;
     }

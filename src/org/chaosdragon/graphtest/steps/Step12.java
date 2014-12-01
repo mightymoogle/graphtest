@@ -8,6 +8,7 @@ import java.util.AbstractMap;
 import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
@@ -368,7 +369,9 @@ public class Step12 extends Command {
                     candidates.add(ids[i]);
                 }
             }
-            candidates.sort(new findBossKey(sortedKeys));
+            
+            Collections.sort(candidates, new findBossKey(sortedKeys));
+            //candidates.sort();
             //Connect fixMe ot the first candidate
             p.setValue(candidates.get(0), element, 1);
             //Remove links to all other candidates

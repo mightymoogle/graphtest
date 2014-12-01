@@ -311,43 +311,43 @@ public class Matrix {
     
     public static void main(String[] args) {
         
-//        String[] ids = {"2","6","19","20","3","5","8"};
-//        int[][] matr = {{0,0,0,1,1,0,0},{1,0,0,0,0,1,0},{0,1,0,1,0,0,1},{0,0,0,0,0,0,0}};
-//        
-//        Matrix m = new Matrix(ids,matr);
-//        System.out.println(m);
-//        
-//        m.removeAttributeColumn("8");
-//        System.out.println(m);
-//        
-//        System.out.println(m.getLeftMatrix());
+        String[] ids = {"2","6","19","20","3","5","8"};
+        int[][] matr = {{0,0,0,1,1,0,0},{1,0,0,0,0,1,0},{0,1,0,1,0,0,1},{0,0,0,0,0,0,0}};
+        
+        Matrix m = new Matrix(ids,matr);
+        System.out.println(m);
+        
+        m.removeAttributeColumn("8");
+        System.out.println(m);
+        
+        System.out.println(m.getLeftMatrix());
 
-                
-        int[][] mm = {{0,0,0,0},{1,0,0,0},{1,0,0,0},{0,0,0,0}};
-        String[] ids ={"1","5","28","X"};
-        Matrix matr = new Matrix(ids, mm);
-        
-        
-//        System.out.println(matr.isConnected("5", "28"));
-//        System.out.println(matr.isConnected("28","5"));
+//                
+//        int[][] mm = {{0,0,0,0},{1,0,0,0},{1,0,0,0},{0,0,0,0}};
+//        String[] ids ={"1","5","28","X"};
+//        Matrix matr = new Matrix(ids, mm);
 //        
-                
-//        System.out.println(matr.isLinkedIndirectly("28","5"));        
-//        System.out.println(matr.isLinkedIndirectly("5","28"));        
-//        System.out.println(matr.isLinkedIndirectly("1","5"));        
-//        System.out.println(matr.isLinkedIndirectly("28","1"));
-//        System.out.println(matr.isLinkedIndirectly("28","X"));
-        ArrayList<String> temp = new ArrayList<>();
-        //ArrayList temp = new ArrayList<String>(Arrays.asList(ids));
-        temp.add("5");temp.add("28");
-        
-        System.out.println(matr.isKeyOrphan(temp, "5"));
-        System.out.println(matr.isKeyOrphan(temp, "28"));
-                
-        matr.fixOrphanKeys(temp);
-        
-        
-        System.out.println(matr);
+//        
+////        System.out.println(matr.isConnected("5", "28"));
+////        System.out.println(matr.isConnected("28","5"));
+////        
+//                
+////        System.out.println(matr.isLinkedIndirectly("28","5"));        
+////        System.out.println(matr.isLinkedIndirectly("5","28"));        
+////        System.out.println(matr.isLinkedIndirectly("1","5"));        
+////        System.out.println(matr.isLinkedIndirectly("28","1"));
+////        System.out.println(matr.isLinkedIndirectly("28","X"));
+//        ArrayList<String> temp = new ArrayList<>();
+//        //ArrayList temp = new ArrayList<String>(Arrays.asList(ids));
+//        temp.add("5");temp.add("28");
+//        
+//        System.out.println(matr.isKeyOrphan(temp, "5"));
+//        System.out.println(matr.isKeyOrphan(temp, "28"));
+//                
+//        matr.fixOrphanKeys(temp);
+//        
+//        
+//        System.out.println(matr);
         
     }
     
