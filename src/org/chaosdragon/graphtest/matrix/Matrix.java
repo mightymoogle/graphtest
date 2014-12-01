@@ -317,7 +317,7 @@ public class Matrix {
         Matrix m = new Matrix(ids,matr);
         System.out.println(m);
         
-        m.removeAttributeColumn("8");
+        m.removeAttributeColumn("5");
         System.out.println(m);
         
         System.out.println(m.getLeftMatrix());

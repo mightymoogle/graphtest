@@ -106,9 +106,9 @@ public class Step11 extends Command {
     public String[] removeExtraElement(int num, String check) {
         //Clone the array bStar?        
         String[] result = {"-1", "-1"};
-        Matrix newBMatrix;
+        
         for (String k : fakeKeys.get(num)) {
-            Matrix currentMatrix = new Matrix(bStarMatrix.get(num));
+            Matrix currentMatrix = bStarMatrix.get(num);
             if (currentMatrix.isConnected(k, check)) {
                 result[0] = k;
                 currentMatrix.removeAttributeColumn(check);
