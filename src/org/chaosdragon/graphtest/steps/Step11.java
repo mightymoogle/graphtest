@@ -35,13 +35,14 @@ public class Step11 extends Command {
     ArrayList<ArrayList<String>> notKeys; //W2
     ArrayList<ArrayList<String>> fakeKeys;    //for doubling    
     ArrayList<Matrix> bStarMatrix; //New matrices
-
+    
     //The global ones
     ArrayList<String> W1;
     ArrayList<String> W2;
     ArrayList<String> elements; //W2 subset 
     ArrayList<String> W0;
     Matrix global; //Global matrix
+    ArrayList<Matrix> replacementMatrices;
 
     public Step11(Step10 old) {
         w = old.w;
@@ -64,12 +65,9 @@ public class Step11 extends Command {
 
         //Will be changed!!!
         bStarMatrix = old.bStarMatrix;
-        ArrayList<Matrix> replacementMatrices = new ArrayList<>();
-        for (int i = 0; i < bStarMatrix.size(); i++) {
-            replacementMatrices.add(new Matrix(bStarMatrix.get(i)));
-        }
+                
         //So we copy everything!
-        bStarMatrix = replacementMatrices;
+        //bStarMatrix = replacementMatrices;
 
     }
 
@@ -127,6 +125,11 @@ public class Step11 extends Command {
         splitz.retainAll(W2);
         ArrayList<String[]> toAdd = new ArrayList<>();
 
+        System.err.println(keys);
+        System.err.println(fakeKeys);
+        
+        
+        
         //If has extra elements, do the painful removal procedure
         if (splitz.size() > 0) {
             w.printText("Remainder: " + splitz + "\n");
@@ -175,7 +178,17 @@ public class Step11 extends Command {
     @Override
     public void execute() {
         w.clearText();
-        doStep();
+        
+        //Quick fix
+        ArrayList<Matrix> replacementMatrices = new ArrayList<>();
+        for (int i = 0; i < bStarMatrix.size(); i++) {
+            replacementMatrices.add(new Matrix(bStarMatrix.get(i)));
+        }                
+        ArrayList<Matrix> temp = bStarMatrix;        
+        bStarMatrix = replacementMatrices;
+        doStep();        
+        bStarMatrix = temp;        
+        
     }
 
     @Override
