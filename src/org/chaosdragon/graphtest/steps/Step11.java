@@ -124,11 +124,6 @@ public class Step11 extends Command {
         splitz.addAll(W1);
         splitz.retainAll(W2);
         ArrayList<String[]> toAdd = new ArrayList<>();
-
-        System.err.println(keys);
-        System.err.println(fakeKeys);
-        
-        
         
         //If has extra elements, do the painful removal procedure
         if (splitz.size() > 0) {
