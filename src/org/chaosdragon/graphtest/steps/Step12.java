@@ -3,7 +3,6 @@
  */
 package org.chaosdragon.graphtest.steps;
 
-import java.awt.Frame;
 import java.util.AbstractMap;
 import org.chaosdragon.graphtest.matrix.Matrix;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.swing.JFrame;
 import org.chaosdragon.graphtest.gui.GraphEditor;
 import org.chaosdragon.graphtest.matrix.MatrixTools;
 import org.chaosdragon.graphtest.gui.WizardForm;

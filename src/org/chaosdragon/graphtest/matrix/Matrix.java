@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.StyledDocument;
 import org.chaosdragon.graphtest.steps.Step5;
 
 /**

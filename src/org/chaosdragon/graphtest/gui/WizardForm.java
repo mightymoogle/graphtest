@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.plaf.FileChooserUI;
 import javax.swing.text.StyledDocument;
 import org.chaosdragon.graphtest.steps.*;
 import org.chaosdragon.graphtest.tables.KeyTableModel;
